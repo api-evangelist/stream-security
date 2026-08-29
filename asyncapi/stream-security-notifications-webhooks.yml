@@ -1,0 +1,89 @@
+generated: '2026-08-29'
+method: derived
+type: Webhooks
+source: >-
+  openapi/stream-security-api-openapi.json - the POST /notifications request body schema
+  (notifications-create), which declares the event types and delivery channels verbatim; plus
+  https://docs.streamsec.io/reference/notifications-create.
+asyncapi_published: false
+asyncapi_note: >-
+  Stream.Security publishes NO AsyncAPI document. Probed /asyncapi.yaml and /asyncapi.json on
+  www.stream.security, docs.streamsec.io and app.streamsec.io - no document. The event surface is
+  real but is described only through the notification-rule REST API, so this artifact captures the
+  webhook catalog rather than a spec. NOTHING HERE IS FABRICATED - the event types and channel
+  types below are the literal enum values in the provider's own request schema.
+delivery_model: >-
+  Stream.Security does not expose a subscribe/unsubscribe webhook endpoint. Delivery is configured
+  by creating a NOTIFICATION RULE via POST /notifications: the rule names an event_type, one or
+  more destination channels, and a nested boolean filter condition tree that decides which events
+  match. The generic `webhook` channel type is the HTTP-callback delivery path.
+management_api:
+  create: POST /notifications
+  list: GET /notifications
+  read: GET /notifications/{id}
+  update: PATCH /notifications/{id}
+  delete: DELETE /notifications/{id}
+  see: openapi/stream-security-api-openapi.json
+event_types:
+- name: cloud_event
+  description: >-
+    Configuration/state change events from the monitored cloud - the write audit events surfaced by
+    the Config Changes resource group.
+  source: 'POST /notifications requestBody properties.event_type enum'
+- name: detection
+  description: Threat detections raised by the platform's detection rules.
+  source: 'POST /notifications requestBody properties.event_type enum'
+- name: simulation_event
+  description: Events produced by simulation (the documented TF Simulation capability).
+  source: 'POST /notifications requestBody properties.event_type enum'
+channels:
+- type: webhook
+  description: Generic HTTP callback - the true webhook delivery path.
+- type: slack
+  description: Slack destination.
+- type: splunk
+  description: Splunk destination.
+- type: pagerduty
+  description: PagerDuty destination.
+- type: microsoftteams
+  description: Microsoft Teams destination.
+- type: opsgenie
+  description: Opsgenie destination.
+- type: logzio
+  description: Logz.io destination.
+- type: googlecards
+  description: Google Chat cards destination.
+- type: paloaltocortexxsiam
+  description: Palo Alto Cortex XSIAM destination.
+- type: torq
+  description: Torq workflow-automation destination.
+filtering:
+  model: nested boolean condition tree
+  operands: [and, or]
+  match_types: [is, is_not, contains, not_contains, regex, gte, lte, exists, not_exists, empty, not_empty]
+  tag_match_types: [is, is_not, contains, not_contains, empty, not_empty, regex]
+  note: >-
+    Filters match on an arbitrary `field` name plus a match_type and value, and can nest a further
+    filters[] group, so subscriptions can be scoped precisely. Tag matching is a first-class
+    key/match_type/value structure.
+rule_fields:
+  name: required, 1-100 chars
+  description: optional, max 250 chars
+  enabled: boolean, default true
+  event_type: required, one of the three enum values
+  channels: array of {type, subtype, id}
+security:
+  signing: not-documented
+  retries: not-documented
+  replay: not-documented
+  note: >-
+    The provider documents no payload signing scheme, no retry/backoff policy and no replay
+    protection for webhook delivery. A consumer cannot verify that a delivered payload came from
+    Stream.Security. Recorded as an honest gap.
+payload_schemas:
+  published: false
+  note: >-
+    The shape of a delivered cloud_event / detection / simulation_event payload is NOT published.
+    The closest published proxies are the GET /config-changes and GET /detections response schemas
+    in the OpenAPI, but the provider does not state that the webhook payload matches them, so no
+    equivalence is asserted here.

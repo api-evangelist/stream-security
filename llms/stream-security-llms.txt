@@ -1,0 +1,216 @@
+# StreamSecurity Documentation
+
+> Realtime, Posture-aware, Cloud Detection and Response
+
+Append .md to any documentation page URL to get its markdown version.
+
+## Guides
+- [Stream Security Onboarding](https://docs.streamsec.io/docs/onboarding.md)
+- [Supported Cloud Services and Resources](https://docs.streamsec.io/docs/onboarding-services.md)
+- [Stream Security SaaS IP Ranges](https://docs.streamsec.io/docs/onboarding-iprange.md)
+- [Retrieve Cluster Integration Information via Public API](https://docs.streamsec.io/docs/how-to-retrieve-cluster-integration-information-using-the-public-api.md)
+- [External API Reporting Tool for StreamSec Platform](https://docs.streamsec.io/docs/general-purpose-external-tools-ui.md)
+- [Enrich your favorite cloud tools with Contextual Cloud Posture](https://docs.streamsec.io/docs/enrich-your-favorite-cloud-tools-with-contextual-cloud-posture.md): Lightlytics Chrome Extension:  Your cloud tools just got BETTER
+- [Workspaces](https://docs.streamsec.io/docs/workspaces.md)
+- [Users and Access](https://docs.streamsec.io/docs/user-management.md)
+- [User Groups](https://docs.streamsec.io/docs/user-groups.md)
+- [Feature access control](https://docs.streamsec.io/docs/feature-access-control.md)
+- [API Token Management](https://docs.streamsec.io/docs/token-management.md)
+- [How to Get Your Workspace ID](https://docs.streamsec.io/docs/how-to-get-your-workspace-id.md)
+- [User and Security Preferences](https://docs.streamsec.io/docs/user-preferences.md)
+- [Single Sign-On (SSO)](https://docs.streamsec.io/docs/single-sign-on-sso.md)
+- [Azure Active Directory as a SAML IDP](https://docs.streamsec.io/docs/azure-active-directory-as-a-saml-idp.md)
+- [Okta as a SAML IDP](https://docs.streamsec.io/docs/okta-as-a-saml-idp.md)
+- [AWS as a SAML IDP](https://docs.streamsec.io/docs/aws-as-a-saml-idp.md)
+- [Google Workspace SAML IDP](https://docs.streamsec.io/docs/google-workspace-saml-idp.md)
+- [Service Groups](https://docs.streamsec.io/docs/service-groups.md)
+- [Logs Collection Status](https://docs.streamsec.io/docs/logs-collection-status.md)
+- [Stream Security Audit Logs](https://docs.streamsec.io/docs/stream-security-audit-logs.md): Stream Security records every configuration change and authentication event made against your tenant so that you can answer _who did what, where, and when_ — both as a daily operational signal and as evidence during compliance reviews and incident investigations.
+- [Map Microsoft Entra Groups to Stream User Groups](https://docs.streamsec.io/docs/map-microsoft-entra-groups-to-stream-user-groups.md): Stream Security can now use your Microsoft Entra group membership to decide which Stream **user groups** a user belongs to. Configure the mapping once, and every time a user signs in via SSO Stream re-syncs their workspace memberships from the SAML assertion — so when you move someone in Entra, their Stream access follows automatically.
+- [Discovery Overview](https://docs.streamsec.io/docs/discovery-overview.md)
+- [Inventory](https://docs.streamsec.io/docs/inventory.md): Search for any cloud resource within your inventory
+- [Resource Information Panel](https://docs.streamsec.io/docs/resoruce-information.md)
+- [Advanced Resource Search](https://docs.streamsec.io/docs/advanced-resource-search.md): Easily search for resources within your infrastructure inventory by type and resource configuration attributes.
+- [Analyze Relationships and Dependencies](https://docs.streamsec.io/docs/analyze-relationships-and-dependencies.md)
+- [Overview](https://docs.streamsec.io/docs/events-overview.md): Stay up-to-date with the latest configuration and state changes made to your infrastructure resources and posture, understand the impact of each change.
+- [VMware vSphere Integration](https://docs.streamsec.io/docs/vmware-vsphere-integration.md): Connect your VMware vSphere environment to Stream Security for full visibility into your on-premises virtual infrastructure — including virtual machines, networking, security policies, and configuration changes.  This guide walks you through every step, from preparing your VMware environment to deploying the Stream Security collector appliance.
+- [AI Workload Visibility & Threat Detection](https://docs.streamsec.io/docs/ai-workload-visibility-threat-detection.md): Discover where AI is running in your environment, show you what it's doing, and detect attacks targeting it.
+- [AWS Bedrock Model Invocation Logs](https://docs.streamsec.io/docs/aws-bedrock-model-invocation-logs.md): Send Amazon Bedrock model invocation logs to Stream.Security by writing logs to an S3 bucket and adding that bucket as a trigger to the existing Stream.Security Lambda collector.
+- [Posture Security Rules](https://docs.streamsec.io/docs/main-page.md)
+- [Custom Rules](https://docs.streamsec.io/docs/rule.md)
+- [AI Assisted Remediation](https://docs.streamsec.io/docs/ai-remediation-suggestions-based-on-openai-gpt.md): Streamline violation remediations, making the process more efficient and effective.
+- [Auto-Remediation](https://docs.streamsec.io/docs/auto-remediation.md)
+- [Threat Response](https://docs.streamsec.io/docs/threat-response.md)
+- [Risk mitigation prioritization](https://docs.streamsec.io/docs/attack-path.md)
+- [Kubernetes Agents Integration](https://docs.streamsec.io/docs/kubernetes-integration.md): The Kubernetes integration provides real-time visibility and response capabilities for your Kubernetes workloads through two components deployed in your cluster.
+- [Kubernetes Agent Installation](https://docs.streamsec.io/docs/kubernetes-agent-installation.md)
+- [Kubernetes Integration View](https://docs.streamsec.io/docs/k8s-integration-view.md): Manage and monitor all Kubernetes cluster integrations with real-time visibility into version, health, connectivity, mode, and runtime agent status.
+- [Kubernetes Agent RBAC Specification](https://docs.streamsec.io/docs/kubernetes-rbac-permissions.md): The Stream Security Kubernetes agent uses read-only permissions based on the native Kubernetes RBAC model. When the Runtime Agent is enabled with response actions, additional permissions for Cilium CRDs are included.
+- [Virtual Machine Runtime Agent](https://docs.streamsec.io/docs/runtime-agent-vm.md): The VM Runtime Agent provides real-time detection and response capabilities for stand-alone virtual machines and bare-metal servers outside of container orchestration platforms.
+- [VM Agent Installation](https://docs.streamsec.io/docs/vm-agent-installation.md)
+- [Virtual Machines Integration View](https://docs.streamsec.io/docs/vm-runtime-agent-view.md): Manage and monitor all VM runtime agent integrations with real-time visibility into status, mode, and agent health.
+- [ECS Runtime Agent](https://docs.streamsec.io/docs/ecs-cluster-agent.md): The ECS Runtime Agent provides real-time detection and response capabilities for Amazon ECS clusters running on EC2 instances (Auto Scaling Groups
+- [ECS Agent Installation](https://docs.streamsec.io/docs/ecs-agent-installation.md)
+- [ECS Fargate Agent Installation](https://docs.streamsec.io/docs/ecs-fargate-agent-installation.md)
+- [ECS Integration View](https://docs.streamsec.io/docs/ecs-integration-view.md): Manage and monitor all ECS cluster integrations with real-time visibility into agent status, mode, and per-node health.
+- [Cloud Providers](https://docs.streamsec.io/docs/cloud-providers.md)
+- [AWS - Amazon Web Services](https://docs.streamsec.io/docs/integrations-cloud-aws.md): Gain unified visibility across your cloud environments by integrating cloud configuration, activity, and asset data into Stream Security.
+- [AWS Accounts auto Onboarding via Lambda](https://docs.streamsec.io/docs/integrations-cloud-aws-automated.md)
+- [AWS Organization onboarding](https://docs.streamsec.io/docs/integrations-cloud-aws-org.md): The following guide explains how the integration can be done via the AWS organization
+- [AWS Organization onboarding EKS Clusters](https://docs.streamsec.io/docs/integrations-k8s-eks-org.md): The following guide explains how the integration can be done via the AWS organization
+- [AWS Integration via Terraform](https://docs.streamsec.io/docs/integrations-cloud-aws-terraform.md): The following guide explains how the integration can be done via Terraform
+- [AWS Connection over PrivateLink](https://docs.streamsec.io/docs/integrations-cloud-aws-privatelink.md): In these few short steps, you will configure the StreamSecurity integration via AWS PrivateLink, to establish private connectivity between your VPCs and services hosted on AWS, without exposing your traffic and data to the public internet with the same level of security and performance as your virtual network appliances or custom traffic inspection logic, while reducing your costs.
+- [Update StreamSecurity CloudFormation Stacks](https://docs.streamsec.io/docs/integrations-cloud-aws-updatecf.md)
+- [AWS CloudTrail Logs](https://docs.streamsec.io/docs/integrations-cloud-aws-cloudtrail.md): Collect CloudTrail logs iinto Stream to enable identity context and insights of your cloud environment in StreamSec.
+- [AWS VPC Flow Logs](https://docs.streamsec.io/docs/integrations-cloud-aws-vpc.md): Collect Network Traffic Logs via VPC Flow Logs to StreamSec to enable Data-plane context and availability insights of your cloud environment in Lightlytics.
+- [S3 Access Logs](https://docs.streamsec.io/docs/integrations-cloud-aws-s3logs.md): Collect S3 Access Logs to StreamSec to enable Data-plane context and availability insights of your S3 buckets in StreamSec.
+- [Configure S3 Event Notifications with Amazon EventBridge](https://docs.streamsec.io/docs/integrations-cloud-aws-s3notification.md): Amazon EventBridge is a serverless event bus service that helps connect application components using events. It can ingest, filter, transform, and deliver events from AWS services, custom applications, and SaaS applications to targets such as AWS Lambda, Amazon SQS, Amazon Kinesis, or another event bus.  This guide explains how to configure Amazon S3 Event Notifications with Amazon EventBridge and route S3 object events to a Stream Security collection Lambda function.
+- [Retrieve old flowlogs from AWS](https://docs.streamsec.io/docs/integrations-cloud-aws-oldlogs.md)
+- [Removing the AWS Organization Integration](https://docs.streamsec.io/docs/removing-the-aws-organization-onboarding-integration.md)
+- [AWS Route53 DNS Query Logs ](https://docs.streamsec.io/docs/aws-route53-dns-query-logs.md): Connect AWS Route53 Resolver DNS query logging to Stream Security for DNS visibility and threat detection
+- [ELB/ALB Access Logs ](https://docs.streamsec.io/docs/elbalb-access-logs-integration-guide.md): Connect AWS Elastic Load Balancer access logging to Stream Security for HTTP traffic visibility and threat detection
+- [API Gateway Access Logs](https://docs.streamsec.io/docs/api-gateway-access-logs.md)
+- [AWS WAF Logs Integration](https://docs.streamsec.io/docs/aws-waf-logs-integration.md)
+- [Azure](https://docs.streamsec.io/docs/integrations-cloud-azure.md): Gain unified visibility across your cloud environments by integrating cloud configuration, activity, and asset data into Stream Security.
+- [Azure Integration via Terraform](https://docs.streamsec.io/docs/integrations-cloud-azure-terraform.md): This guide walks through integrating your Azure tenant with the Stream Security CDR platform using Terraform. The integration collects control plane logs (Entra ID audit, sign-in, subscription activity) and optionally data plane logs (Key Vault audit events, Storage Account blob operations) across multiple regions.
+- [Azure Automated Subscription onboarding](https://docs.streamsec.io/docs/integrations-cloud-azure-automated.md)
+- [Azure Subscription Update via API](https://docs.streamsec.io/docs/integrations-cloud-azure-api.md)
+- [Connecting Existing Azure Diagnostic Settings](https://docs.streamsec.io/docs/integrations-cloud-azure-diag.md): Manually Connecting Stream Security to Existing Azure Diagnostic Settings via Event Hub
+- [Azure EntraID Audit Logs](https://docs.streamsec.io/docs/integrations-cloud-azure-auditlogs.md)
+- [Azure Flow Logs](https://docs.streamsec.io/docs/integrations-cloud-azure-flowlogs.md): Configure azure flow logs
+- [Azure Storage, Files & Key Vault Audit Logs Integration](https://docs.streamsec.io/docs/azure-storage-files-audit-logs-integration.md)
+- [GCP - Google Cloud Platform](https://docs.streamsec.io/docs/integrations-cloud-gcp.md): Gain unified visibility across your cloud environments by integrating cloud configuration, activity, and asset data into Stream Security.
+- [GCP Flow Logs](https://docs.streamsec.io/docs/integration-cloud-gcp-flowlogs.md)
+- [GCP Integration via Terraform](https://docs.streamsec.io/docs/integrations-cloud-gcp-terraform.md): This guide walks you through connecting your Google Cloud organization to Stream Security using Terraform. The integration gives Stream Security real-time visibility into your GCP environment by collecting Cloud Audit Logs, GKE audit logs, and VPC Flow Logs — and optionally enables automated remediation workflows.
+- [GCP Automated Deployment – Advanced Setup](https://docs.streamsec.io/docs/integrations-cloud-gcp-automated.md)
+- [GCP Script Based Deployment](https://docs.streamsec.io/docs/gcp-integration-script-based-deployment.md)
+- [OCI - Oracle Cloud Infrastructure](https://docs.streamsec.io/docs/oracle-cloud-infrastructure-oci.md)
+- [EDR - Endpoint Detection and Response](https://docs.streamsec.io/docs/integrations-edr.md)
+- [CrowdStrike EDR](https://docs.streamsec.io/docs/integrations-edr-crowdstrike.md): Enrich investigations with workload detection
+- [SentinelOne EDR](https://docs.streamsec.io/docs/integrations-edr-sentinelone.md): Enrich investigations with workload detection
+- [Cortex XDR / XSIAM EDR](https://docs.streamsec.io/docs/integrations-edr-cortex.md): Enrich investigations with workload detection
+- [Vulnerability Scanners](https://docs.streamsec.io/docs/integrations-vulnerability.md): Contextual Risk-Based CVE Prioritization
+- [AWS Inspector](https://docs.streamsec.io/docs/integrations-vulnerability-awsinspector.md): Identify and prioritize vulnerabilities across your environments
+- [Microsoft Azure Defender](https://docs.streamsec.io/docs/integrations-vulnerability-azuredefender.md): Identify and prioritize vulnerabilities across your environments
+- [Wiz](https://docs.streamsec.io/docs/integration-vulnerability-wiz.md): The Wiz integration enables Stream Security to collect and correlate vulnerability findings from your Wiz environment. It provides continuous visibility into risks across workloads and cloud resources, helping teams prioritize remediation based on exposure and potential attack paths.
+- [Qualys VMDR](https://docs.streamsec.io/docs/integrations-vulnerability-qualys.md): Identify and prioritize vulnerabilities across your environments
+- [Tenable Nessus](https://docs.streamsec.io/docs/integration-vulnerability-tenablenessus.md): Identify and prioritize vulnerabilities across your environments
+- [Rapid7 Insight VM](https://docs.streamsec.io/docs/integrations-vulnerability-rapid7.md): Identify and prioritize vulnerabilities across your environments
+- [Rapid7 Insight VM Cloud](https://docs.streamsec.io/docs/integrations-vulnerability-rapid7cloud.md): Identify and prioritize vulnerabilities across your environments
+- [Snyk Container](https://docs.streamsec.io/docs/integrations-vulnerability-snyk.md): Identify and prioritize vulnerabilities across your environments
+- [CrowdStrike Spotlight](https://docs.streamsec.io/docs/integrations-vulnerability-crowdstrike-spotlight.md): Identify and prioritize vulnerabilities across your environments
+- [NeuVector (SUSE)](https://docs.streamsec.io/docs/integrations-vulnerability-neuvector.md): Identify and prioritize vulnerabilities across your environments
+- [Aikido](https://docs.streamsec.io/docs/integration-vulnerability-aikido.md): Identify and prioritize vulnerabilities across your environments
+- [Prisma Cloud](https://docs.streamsec.io/docs/integration-vulnerability-prisma.md): Identify and prioritize vulnerabilities across your environments
+- [Oligo](https://docs.streamsec.io/docs/integrations-vulnerability-oligo.md): Identify and prioritize vulnerabilities across your environments
+- [Identity Providers](https://docs.streamsec.io/docs/integrations-identity.md)
+- [Okta](https://docs.streamsec.io/docs/integrations-identity-okta.md): Gain visibility into identity activity, authentication behavior, and access risks across your cloud environment
+- [Auth0 Audit Logs](https://docs.streamsec.io/docs/auth0-audit-logs.md)
+- [PingOne Audit Logs](https://docs.streamsec.io/docs/integrations-saas-pingone.md)
+- [Google Workspace](https://docs.streamsec.io/docs/integrations-identity-gworkspace.md): Gain visibility into identity activity, authentication behavior, and access risks across your cloud environment
+- [Firewalls](https://docs.streamsec.io/docs/integrations-firewalls.md)
+- [Palo Alto NGFW](https://docs.streamsec.io/docs/integrations-firewalls-pan.md): Enhance network visibility and attack path analysis by integrating firewall telemetry from your cloud environments
+- [Fortinet NGFW](https://docs.streamsec.io/docs/integrations-firewalls-fortinet.md): Enhance network visibility and attack path analysis by integrating firewall telemetry from your cloud environments
+- [Data Security Posture Management](https://docs.streamsec.io/docs/integrations-dspm.md)
+- [Cyera](https://docs.streamsec.io/docs/integrations-dspm-cyera.md): Enhance visibility into sensitive data exposure by integrating data classification and posture insights across your cloud environments.
+- [Sentra](https://docs.streamsec.io/docs/integrations-dspm-sentra.md): Enhance visibility into sensitive data exposure by integrating data classification and posture insights across your cloud environments.
+- [SaaS](https://docs.streamsec.io/docs/integrations-saas.md)
+- [GitHub Audit Logs](https://docs.streamsec.io/docs/integrations-saas-github.md): Enhance visibility into sensitive data exposure by integrating data classification and posture insights across your cloud environments.
+- [GitLab Audit Logs](https://docs.streamsec.io/docs/integrations-saas-gitlab.md): Enhance visibility into sensitive data exposure by integrating data classification and posture insights across your cloud environments.
+- [Salesforce Audit Logs](https://docs.streamsec.io/docs/integrations-saas-salesforce.md): Enhance visibility into sensitive data exposure by integrating data classification and posture insights across your cloud environments.
+- [Snowflake Audit Logs](https://docs.streamsec.io/docs/integrations-saas-snowflake.md): Enhance visibility into sensitive data exposure by integrating data classification and posture insights across your cloud environments.
+- [Microsoft 365 Audit Logs](https://docs.streamsec.io/docs/integrations-saas-m365.md): Enhance visibility into sensitive data exposure by integrating data classification and posture insights across your cloud environments.
+- [MongoDB Atlas Audit Logs](https://docs.streamsec.io/docs/integrations-saas-mongodb.md)
+- [OpenAI Audit Logs](https://docs.streamsec.io/docs/openai-audit-logs.md)
+- [Databricks Audit Logs](https://docs.streamsec.io/docs/databricks-audit-logs.md): Connect your Databricks account to Stream Security to ingest audit logs for threat detection and investigation across workspaces, clusters, jobs, and permissions.
+- [Forwarding Audit Logs via API (GitHub & Okta)](https://docs.streamsec.io/docs/forwarding-audit-logs-via-api-github-okta.md)
+- [Alerts](https://docs.streamsec.io/docs/integrations-alerts.md)
+- [Splunk](https://docs.streamsec.io/docs/integrations-alerts-splunk.md): Receive real-time alerts and notifications by integrating Stream Security with your preferred incident management and monitoring tools
+- [Slack](https://docs.streamsec.io/docs/integrations-alerts-slack.md): Receive real-time alerts and notifications by integrating Stream Security with your preferred incident management and monitoring tools
+- [Google Cards](https://docs.streamsec.io/docs/integrations-alerts-gcards.md): Receive real-time alerts and notifications by integrating Stream Security with your preferred incident management and monitoring tools
+- [Microsoft Teams](https://docs.streamsec.io/docs/integrations-alerts-teams.md): Receive real-time alerts and notifications by integrating Stream Security with your preferred incident management and monitoring tools
+- [PagerDuty](https://docs.streamsec.io/docs/integrations-alerts-pagerduty.md): Receive real-time alerts and notifications by integrating Stream Security with your preferred incident management and monitoring tools
+- [Logz.io](https://docs.streamsec.io/docs/integrations-alerts-logzio.md): Receive real-time alerts and notifications by integrating Stream Security with your preferred incident management and monitoring tools
+- [Opsgenie](https://docs.streamsec.io/docs/integrations-alerts-opsgenie.md): Receive real-time alerts and notifications by integrating Stream Security with your preferred incident management and monitoring tools
+- [Cortex](https://docs.streamsec.io/docs/integrations-alerts-cortex.md): Receive real-time alerts and notifications by integrating Stream Security with your preferred incident management and monitoring tools
+- [Torq](https://docs.streamsec.io/docs/integrations-alerts-torq.md): Receive real-time alerts and notifications by integrating Stream Security with your preferred incident management and monitoring tools
+- [Custom Webhook](https://docs.streamsec.io/docs/integrations-alerts-webhook.md): Receive real-time alerts and notifications by integrating Stream Security with your preferred incident management and monitoring tools
+- [Azure Boards Logic App Setup - Custom Webhook](https://docs.streamsec.io/docs/azure-boards-logic-app-setup.md): This guide walks you through creating an Azure Logic App that receives Stream Security alerts and automatically creates Azure DevOps Boards work items.
+- [Google SecOps](https://docs.streamsec.io/docs/integrations-alerts-gsecops.md): Receive real-time alerts and notifications by integrating Stream Security with your preferred incident management and monitoring tools
+- [Google Chronicle SIEM](https://docs.streamsec.io/docs/integrations-alerts-chronicle.md): Receive real-time alerts and notifications by integrating Stream Security with your preferred incident management and monitoring tools
+- [QRadar](https://docs.streamsec.io/docs/integrations-alerts-qradar.md): Receive real-time alerts and notifications by integrating Stream Security with your preferred incident management and monitoring tools
+- [Tickets](https://docs.streamsec.io/docs/integrations-tickets.md): Streamline incident management by automatically creating and syncing tickets from Stream Security detections to your preferred ticketing systems.
+- [Jira](https://docs.streamsec.io/docs/integrations-tickets-jira.md): Streamline incident management by automatically creating and syncing tickets from Stream Security detections to your preferred ticketing systems
+- [Azure Boards](https://docs.streamsec.io/docs/integrations-tickets-aboards.md): Streamline incident management by automatically creating and syncing tickets from Stream Security detections to your preferred ticketing systems
+- [JetBrains YouTrack](https://docs.streamsec.io/docs/integrations-tickets-youtrack.md): Streamline incident management by automatically creating and syncing tickets from Stream Security detections to your preferred ticketing systems
+- [ServiceNow](https://docs.streamsec.io/docs/integrations-tickets-servicenow.md): Streamline incident management by automatically creating and syncing tickets from Stream Security detections to your preferred ticketing systems
+- [K8s Audit Logs](https://docs.streamsec.io/docs/integrations-k8s.md)
+- [EKS Audit Logs](https://docs.streamsec.io/docs/integrations-k8s-eks.md): Ingest control-plane and API activity to monitor access and detect suspicious cluster operations
+- [AKS Audit Logs](https://docs.streamsec.io/docs/integrations-k8s-aks.md): Ingest control-plane and API activity to monitor access and detect suspicious cluster operations
+- [GKE Audit Logs](https://docs.streamsec.io/docs/integrations-k8s-gke.md): Ingest control-plane and API activity to monitor access and detect suspicious cluster operations
+- [GKE Audit Logs (Terraform Module Guide)](https://docs.streamsec.io/docs/gke-audit-logs-terraform-module-guide.md)
+- [Stream Agentless Scanner](https://docs.streamsec.io/docs/agentless-scanner.md)
+- [Deploy on AWS](https://docs.streamsec.io/docs/agentless-scanner-aws.md)
+- [Deploy on Azure](https://docs.streamsec.io/docs/agentless-scanner-azure.md)
+- [Deploy on GCP](https://docs.streamsec.io/docs/agentless-scanner-gcp.md)
+- [Scanner Status and Troubleshooting](https://docs.streamsec.io/docs/agentless-scanner-status.md)
+- [Cloud Threat Detection](https://docs.streamsec.io/docs/cloud-detection-capabilities.md)
+- [Threat Detections View](https://docs.streamsec.io/docs/threat-detections.md)
+- [Investigator - Threat Triage and Investigation](https://docs.streamsec.io/docs/investigator.md)
+- [User Defined Detection Rules](https://docs.streamsec.io/docs/user-defined-detection-rules.md)
+- [Canaries](https://docs.streamsec.io/docs/canaries.md)
+- [Stream Traps Deployment Playbook - S3 Object](https://docs.streamsec.io/docs/canary-s3-object.md)
+- [StreamForce](https://docs.streamsec.io/docs/streamforce.md)
+- [Stream Security MCP Server](https://docs.streamsec.io/docs/stream-security-mcp-server-preview.md)
+- [Vulnerabilities Investigator](https://docs.streamsec.io/docs/cve-viewer.md): Contextual Risk-Based CVE Prioritization
+- [Crown Jewels](https://docs.streamsec.io/docs/set-resource-as-a-crown-jewel.md)
+- [Notification Management](https://docs.streamsec.io/docs/notification-management.md)
+- [Integrations](https://docs.streamsec.io/docs/simulation-integrations.md)
+- [Cloud Detection and Response GOAT](https://docs.streamsec.io/docs/stream-cdr-goat.md)
+- [Contact StreamSecurity Support](https://docs.streamsec.io/docs/contact-streamsecurity-support.md)
+
+## API Reference
+- [Getting Started with Stream API](https://docs.streamsec.io/reference/getting-started-with-stream-api.md)
+- [Attack Paths](https://docs.streamsec.io/reference/attack-paths.md)
+- [Get Attack Paths](https://docs.streamsec.io/reference/attackpaths-list.md): Retrieves all attack paths discovered within a workspace. Attack path is a condition in which an asset is both externally exploitable and has a cloud blast radius that allows it to potentially interact with or compromise internal resources.  Each response entry includes the attack path ID, severity, associated finding types, and violations count.  Use this endpoint to review all known attack paths, track exposed resources, and prioritize remediation efforts across the environment.
+- [Get Attack Path Violations](https://docs.streamsec.io/reference/attackpaths-violations.md): Retrieves all resources that are violating security posture rules and, as a result, create an attack path condition.  An attack path occurs when an asset is both externally exploitable and has a cloud blast radius that allows it to potentially interact with or compromise internal resources.  The response includes the resource IDs along with the timestamps indicating when each resource began violating the rule.
+- [Get Resource Attack Path Details](https://docs.streamsec.io/reference/attackpaths-details.md): Retrieves the complete attack path for a specified resource, showing the sequence of network and security components an attacker could traverse to reach it.  The response returns one or more ordered paths, starting from the origin (e.g., Internet) and listing each intermediate element such as gateways, ACLs, security groups, load balancers, or other relevant resources.  Parameters include the unique resource_id (required) and the optional workspace context.  Use this endpoint to visualize potential exposure, assess lateral movement risk, and prioritize remediation actions.
+- [Canaries](https://docs.streamsec.io/reference/canaries.md)
+- [Get Canaries](https://docs.streamsec.io/reference/canaries-list.md): Retrieves a list of all deployed and configured canary resources across monitored accounts.  A canary resource is a controlled, decoy asset - such as an S3 bucket - used to detect unauthorized activity by triggering alerts when predefined detection actions occur.  This endpoint supports filtering by account ID, region, resource type, status, creator, and other attributes. Optional parameters allow inclusion of related activity logs for each canary.  Returned objects include canary metadata, deployment status, detection settings, exclusion rules, and recent activity indicators.
+- [Config Changes](https://docs.streamsec.io/reference/config-changes.md)
+- [Get Configuration Changes](https://docs.streamsec.io/reference/configchanges-list.md): Retrieves recent configuration changes -write audit events analyzed for security impact, such as internet exposure, privilege escalation, or new database access.  The response includes what was changed, its severity and time, affected resources, related user and network details, along with any linked events and raw data.  Use this endpoint to investigate recent changes to understand their security implications and identify potential risks.
+- [Get Configuration Change Details](https://docs.streamsec.io/reference/configchanges-details.md): Retrieves the full details of a specific configuration change by its unique ID, including associated violations and attack paths.  Configuration changes are write audit events analyzed for security impact, such as internet exposure, privilege escalation, or new database access.  Use this endpoint to investigate the change, assess its risk, and understand potential exploitation paths.
+- [Inventory](https://docs.streamsec.io/reference/inventory.md)
+- [Get Resources](https://docs.streamsec.io/reference/inventory-list.md): Retrieves cloud and platform resources across monitored environments, returning normalized metadata such as resource ID, type, display name, account ID, region, cloud provider, parent lineage, public accessibility status, and end timestamp.  This endpoint is useful for building an inventory, performing lookups, and pivoting between related assets.
+- [Get Resource Details](https://docs.streamsec.io/reference/inventory-details.md): Retrieves detailed metadata and configuration for a specific resource, including its type, display name, cloud provider, account, region, accessibility status, tags, and associated network interfaces.  The response also includes translated and enriched data such as cluster or namespace context, container specifications, environment variables, volume mounts, owner references, conditions, and node selectors. Depending on the resource type, additional attributes like security settings, probes, and connected services may be included.  Use this endpoint to obtain a comprehensive view of a resource’s identity, configuration, and operational state for inventory, compliance, or investigation purposes.
+- [Get Resource Inventory Summary](https://docs.streamsec.io/reference/inventory-type.md): Returns a summary of resources grouped by type, including the count of each resource type across the environment.  Use this endpoint to quickly assess resource distribution and identify concentration areas across your environment.
+- [Get Crown Jewels](https://docs.streamsec.io/reference/inventory-crownjewels.md): Validates whether the specified resources are marked as  as crown jewels — high-value or business-critical assets.  If none of the provided resources are marked as crown jewels, the response will be empty.  Use this endpoint to programmatically verify the crown jewel status of specific resources across your environment.
+- [Get Resource Configuration](https://docs.streamsec.io/reference/inventory-configuration.md): Retrieves the translated configuration data for a specific resource by its ID.  The translated data contains enriched and normalized resource attributes, which vary depending on the resource type and cloud provider. This may include identity details, networking, tags, hierarchical context, and provider-specific settings.  Use this endpoint to obtain a resource’s processed configuration for inventory browsing, compliance review, or investigation purposes.
+- [Threat Detection](https://docs.streamsec.io/reference/threat-detection.md)
+- [Get Detections](https://docs.streamsec.io/reference/detections-list.md): Retrieves detections from monitored environments, including metadata such as detection ID, timestamp, severity, account, resource details, source, MITRE categories, signal types, and any related anomalous actions.  You can filter results by detection ID, resource ID, or workspace, and use pagination to control the number of alerts returned. This endpoint is designed for retrieving detection listings - use the investigation endpoint to view full detection details for triage and investigation.
+- [Get Detection AI Summary](https://docs.streamsec.io/reference/detections-summary.md): Retrieves an AI-generated summary for a specific detection, providing a concise verdict, confidence score, and contextual explanation of the activity. This includes relevant behaviors, potential risks, and whether further investigation is recommended.  Use this endpoint to quickly understand the nature and severity of a detection before deciding on next steps.
+- [Update Detection Status](https://docs.streamsec.io/reference/detections-setstatus.md): Updates the status of a detection to reflect its current investigation state, such as open, in progress, or closed.
+- [Add Detection Comment](https://docs.streamsec.io/reference/detections-comment-create.md): Adds a comment to a detection to capture analyst notes, investigation context, findings, or additional observations for collaboration between analysts.
+- [Network & Identity Logs](https://docs.streamsec.io/reference/network-identity-logs.md)
+- [Get Network Traffic Logs](https://docs.streamsec.io/reference/network-trafficlogs.md): Retrieves comprehensive network traffic logs from monitored environments, including connection metadata, source and destination details, protocol information, and traffic flow data.  Supports filtering by source/destination IP addresses, ports, protocols, connection states, traffic volumes, geographic regions, and time ranges.  Use this endpoint to analyze network communication patterns, identify suspicious traffic flows, and investigate connectivity issues across your infrastructure.
+- [Get Kubernetes Audit Logs](https://docs.streamsec.io/reference/network-k8sauditlogs.md): Retrieves detailed Kubernetes audit logs from monitored clusters, including API server events, resource access patterns, security policy violations, and administrative actions.  Supports filtering by namespace, resource type, verb actions, user identities, service accounts, admission controller decisions, and cluster-specific metadata.  Use this endpoint to monitor Kubernetes security posture, track privileged operations, investigate policy violations, and ensure compliance with cluster governance requirements.
+- [Get IAM Identity Activity Logs](https://docs.streamsec.io/reference/network-identitylogs.md): Retrieves identity-related activity logs from monitored environments, including event metadata, principal and destination details, network information, and the raw event payload.  Supports filtering by account, action, identity, principal attributes, destination attributes, error details, region, timestamp, user agent, and other session context.  Use this endpoint to review identity activity and correlate actions with other security detections.
+- [Posture Security](https://docs.streamsec.io/reference/posture-security.md)
+- [Get Posture Rules](https://docs.streamsec.io/reference/rules-list.md): Retrieves posture rules that define security, compliance, or configuration requirements for monitored environments. Each rule includes metadata such as name, description, severity, category, compliance mappings, status, state, finding type, remediation guidance, and associated labels.  Use this endpoint to review and manage the set of posture rules applied across your environment, identify active requirements, and assess compliance coverage.
+- [Get Rule Violations](https://docs.streamsec.io/reference/rules-ruleviolations.md): Retrieves all violations triggered by a specific detection or compliance rule.  Each violation represents a resource that has failed the rule’s evaluation, indicating a misconfiguration, security risk, or policy non-compliance.
+- [Get Resource Violations](https://docs.streamsec.io/reference/rules-resourceviolations.md): Retrieves all policy violations and security findings associated with a specific resource.  A violation represents a misconfiguration, excessive permission, or risky exposure detected on the asset, including:  * Security misconfigurations (e.g., public access, weak authentication, missing encryption)  * Resources that can be accessed from this asset — such as databases, storage buckets, crown-jewel systems, AI models, or accounts with administrative or high-level privileges  * Privilege escalation risks and excessive permissions  Each result includes the violation’s category, severity, rule name, finding type, and the discovery timestamp (when the issue was first detected).
+- [Vulnerabilities](https://docs.streamsec.io/reference/vulnerabilities.md)
+- [List CVEs with filtering, sorting, and pagination](https://docs.streamsec.io/reference/cve-listcves.md): Retrieves a list of detected vulnerabilities (CVEs) across monitored environments, with details such as severity, CVSS score, exploit and fix availability, affected packages, impacted resources, and remediation guidance.  Supports filtering by CVE ID, account, resource, resource type, package name, severity, exploit availability, fix availability, internet exposure, and region. Results can be sorted by CVE ID, severity, CVSS score, discovery time, or published date.  Use this endpoint to review and prioritize vulnerabilities for remediation based on severity, exploitability, and exposure context.
+- [Get a single CVE by ID](https://docs.streamsec.io/reference/cve-getcve.md): Retrieves detailed information about a specific CVE by its ID.
+- [List resources affected by CVE(s)](https://docs.streamsec.io/reference/cve-listcveresources.md): Retrieves a list of resources affected by specified CVE(s) with filtering and pagination.  Array filters accept comma-separated values (e.g., cve_ids=CVE-2021-44228,CVE-2021-45046).  For complex filters like tags, use the POST /cve/resources/query endpoint instead.
+- [Workspaces](https://docs.streamsec.io/reference/workspaces.md)
+- [Get workspaces](https://docs.streamsec.io/reference/workspaces-list.md)
+- [Get Integrated K8s Clusters](https://docs.streamsec.io/reference/integrations-kubernetes-list.md): Retrieves a list of Kubernetes clusters integrated with the platform, along with their connection status, agent types, runtime agent reporting metrics, version, and last seen timestamp.  Each cluster entry includes its display name, cloud provider, account, connection state, number of reporting runtime agents, and platform version.  Use this endpoint to monitor the health and status of all integrated Kubernetes clusters across environments.  Supports pagination with skip and limit parameters.
+- [Get Integrated ECS Clusters](https://docs.streamsec.io/reference/integrations-ecs-list.md): Retrieves a list of ECS clusters integrated with the platform, along with their connection status, agent types, runtime agent reporting metrics, version, and last seen timestamp.  Each cluster entry includes its display name, cloud provider, account, connection state, number of reporting runtime agents, and platform version.  Use this endpoint to monitor the health and status of all integrated ECS clusters across environments.
+- [Get Detection Rules](https://docs.streamsec.io/reference/detectionrules-list.md): Retrieves all detection rules in the system. A detection rule specifies the conditions that trigger a security event.  The response includes each rule’s name, severity, creation and update timestamps, status (enabled or disabled), labels, detection type, and owner.  Use this endpoint to review existing rules, assess detection coverage, and manage configurations.
+- [Get Detection Rule Details](https://docs.streamsec.io/reference/detectionrules-details.md): Retrieves the full definition and configuration of a detection rule by its unique ID.  The response includes the rule’s name, severity, description, classification labels, notification channels, triggering conditions,  any exclusion criteria, creation date and status.  Use this endpoint to review or validate a rule’s configuration, troubleshoot false positives, and audit detection coverage.
+- [List Notification Rules](https://docs.streamsec.io/reference/notifications-list.md): Retrieves notification rules with optional filtering and pagination.  Notification rules define when and how users are notified about security events.  Results are returned in descending order by creation date.
+- [Create Notification Rule](https://docs.streamsec.io/reference/notifications-create.md): Creates a new notification rule with the specified configuration.  The rule will trigger alerts to configured destinations when matching events occur.
+- [Get Notification Rule](https://docs.streamsec.io/reference/notifications-get.md): Retrieves a single notification rule by ID.  Returns the complete notification configuration including channels, conditions, and settings.
+- [Update Notification Rule](https://docs.streamsec.io/reference/notifications-update.md): Updates an existing notification rule.  Supports partial updates - only provided fields will be modified.
+- [Delete Notification Rule](https://docs.streamsec.io/reference/notifications-delete.md): Permanently deletes a notification rule.  This action cannot be undone.

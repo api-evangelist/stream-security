@@ -1,0 +1,83 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the Stream Security API
+  version: 1.0.0
+x-generated: '2026-08-29'
+x-method: generated
+x-extends: openapi/stream-security-api-openapi.json
+x-source: >-
+  Enhancements derived by API Evangelist from the provider's own published documentation
+  (docs.streamsec.io) and live probes on 2026-08-29. This overlay is additive and never mutates the
+  captured spec. IMPORTANT - the base document was assembled from the provider's per-operation
+  OpenAPI fragments published at https://docs.streamsec.io/reference/*.md; the servers[] block
+  below is added ONLY as a variables declaration for the {app} template the provider already
+  publishes, never as a replacement host.
+actions:
+- target: $.info
+  description: Record provenance and the documentation entry points on the spec itself.
+  update:
+    contact:
+      name: Stream Security
+      url: https://www.stream.security/contact-us
+    termsOfService: https://www.stream.security/terms
+    x-documentation: https://docs.streamsec.io/
+    x-api-reference: https://docs.streamsec.io/reference
+    x-getting-started: https://docs.streamsec.io/reference/getting-started-with-stream-api
+    x-llms-txt: https://docs.streamsec.io/llms.txt
+    x-provider-former-name: Lightlytics
+- target: $.servers[0]
+  description: >-
+    Declare the {app} server variable the provider's own server URL already references but never
+    defines. The default is the documented tenant host from the MCP configuration example
+    (https://app.streamsec.io); the host itself is NOT changed.
+  update:
+    variables:
+      app:
+        default: app
+        description: >-
+          Tenant subdomain of the Stream Security application host. The documentation's MCP
+          configuration example uses https://app.streamsec.io as "YOUR STREAM SECURITY DOMAIN URL".
+- target: $.components.securitySchemes.BearerAuth
+  description: Attach token provisioning, expiry and revocation facts published in the docs.
+  update:
+    description: >-
+      API token minted in the Stream UI under Organization/Workspace Settings -> API Token
+      Management. Permission is Read & Write or Read Only; scope is organization-wide or selected
+      workspaces. Expiry is chosen at creation (1/7/30/90 days, 1 year, or never). Revocation is
+      immediate; revoked tokens stay visible for 90 days. Tokens are auto-revoked when the creating
+      user is deactivated or downgraded.
+    x-docs: https://docs.streamsec.io/docs/token-management
+- target: $
+  description: >-
+    Record cross-cutting runtime semantics that the base spec does not state, each cross-linked to
+    the artifact that carries the evidence.
+  update:
+    x-conventions: conventions/stream-security-conventions.yml
+    x-error-catalog: errors/stream-security-problem-types.yml
+    x-data-model: data-model/stream-security-data-model.yml
+    x-webhooks: asyncapi/stream-security-notifications-webhooks.yml
+    x-mcp-server: https://app.streamsec.io/mcp
+    x-tenancy-header: workspace
+    x-idempotency: none
+    x-rate-limits: undocumented
+    x-error-format: 'custom-json {code,message,issues[]} - not RFC 9457'
+    x-domain-standards: [cve, cvss, mitre-attack]
+- target: $.paths['/notifications/{id}'].delete
+  description: >-
+    Surface the irreversibility the provider states in prose so an agent reading the contract alone
+    can see it before acting.
+  update:
+    x-reversible: false
+    x-reversal-window: null
+    x-safer-alternative: >-
+      PATCH /notifications/{id} with enabled:false disables the rule without destroying it.
+    x-provider-statement: >-
+      "Permanently deletes a notification rule. This action cannot be undone."
+- target: $.paths['/detections/comment'].post
+  description: Record that this write has no reversal operation anywhere in the API.
+  update:
+    x-reversible: false
+    x-reversal-window: null
+    x-note: >-
+      No delete-comment or edit-comment operation exists in the spec; a comment posted by an agent
+      cannot be retracted through the API.

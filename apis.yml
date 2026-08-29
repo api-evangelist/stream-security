@@ -1,23 +1,141 @@
 aid: stream-security
 name: Stream.Security
-description: 'Stream.Security is a company surfaced via the API Evangelist harvest backlog (source: secondary-market)
-  and added to the network as a stub for full-pipeline profiling.'
+description: >-
+  Stream.Security (formerly Lightlytics) is a cloud detection and response (CDR) and real-time CNAPP
+  vendor that builds a live model of a customer's cloud - its "CloudTwin" - by continuously ingesting
+  configuration state and activity from AWS, Azure, GCP, Kubernetes, ECS and VMware vSphere, then
+  correlating posture drift against runtime behaviour to expose exploitable attack paths, excessive
+  privilege, external exposure and active threats. The platform combines cloud-native log ingestion
+  (CloudTrail, VPC Flow Logs, Route53 DNS, ELB/ALB, WAF, Entra ID audit) with eBPF runtime agents on
+  Kubernetes, ECS and standalone VMs, adds canary/trap decoy resources and auto-remediation, and
+  exposes it all through a public REST API and an MCP server so security teams and agents can query
+  inventory, detections, vulnerabilities, attack paths and posture violations programmatically.
 url: https://raw.githubusercontent.com/api-evangelist/stream-security/refs/heads/main/apis.yml
+image: https://cdn.prod.website-files.com/5f05d585ae7f3b0c47bc77a4/67166fa0d1d0600f5c5d67e8_page-preview.png
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
 specificationVersion: '0.20'
 created: '2026-08-29'
 modified: '2026-08-29'
 tags:
 - Company
-apis: []
+- Security
+- Cloud Security
+- Cloud Detection and Response
+- CNAPP
+- Threat Detection
+- Vulnerability Management
+- Kubernetes
+- Observability
+- DevSecOps
+- Artificial Intelligence
+x-enrichment:
+  date: '2026-08-29'
+  status: enriched
+  artifacts_added: 21
+  pass: local-v1
+
+apis:
+- name: Stream Security API
+  description: >-
+    REST API over the Stream Security CloudTwin. 34 operations across twelve resource groups -
+    inventory, attack paths, config changes, threat detections, detection rules, posture security
+    rules and violations, vulnerabilities (CVE), network and identity logs, Kubernetes/ECS agent
+    integrations, notification rules, canaries and workspaces. Bearer (JWT) API token auth, with an
+    optional `workspace` header to target a specific workspace.
+  humanURL: https://docs.streamsec.io/reference/getting-started-with-stream-api
+  baseURL: https://{app}.streamsec.io/openapi
+  tags:
+  - Security
+  - Cloud Security
+  - Threat Detection
+  - Vulnerability Management
+  - Inventory
+  properties:
+  - type: OpenAPI
+    url: openapi/stream-security-api-openapi.json
+  - type: Documentation
+    url: https://docs.streamsec.io/
+  - type: APIReference
+    url: https://docs.streamsec.io/reference
+  - type: GettingStarted
+    url: https://docs.streamsec.io/reference/getting-started-with-stream-api
+  - type: Authentication
+    url: authentication/stream-security-authentication.yml
+  - type: ErrorCatalog
+    url: errors/stream-security-problem-types.yml
+  - type: Conventions
+    url: conventions/stream-security-conventions.yml
+  - type: DataModel
+    url: data-model/stream-security-data-model.yml
+  - type: Overlay
+    url: overlays/stream-security-api-overlay.yaml
+  - type: Webhooks
+    url: asyncapi/stream-security-notifications-webhooks.yml
+  - type: RateLimits
+    url: rate-limits/stream-security-rate-limits.yml
+- name: Stream Security MCP Server
+  description: >-
+    Hosted remote MCP server that lets an agent query the Stream Security CloudTwin in natural
+    language - resource metadata, configuration changes, misconfigurations, external exposures,
+    excessive privileges, and threat-detection triage against identity, network and Kubernetes audit
+    logs. Documented as a preview; tool schemas are auth-gated behind a Stream Security API token.
+  humanURL: https://docs.streamsec.io/docs/stream-security-mcp-server-preview
+  baseURL: https://app.streamsec.io/mcp
+  tags:
+  - Model Context Protocol
+  - Artificial Intelligence
+  - Security
+  properties:
+  - type: MCPServer
+    url: mcp/stream-security-mcp.yml
+  - type: ToolCrosswalk
+    url: mcp/stream-security-tool-crosswalk.yml
+  - type: Documentation
+    url: https://docs.streamsec.io/docs/stream-security-mcp-server-preview
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: DomainSecurity
+  url: security/stream-security-domain-security.yml
 - type: Website
-  url: https://www.hiive.com/securities/stream-security-stock
+  url: https://www.stream.security/
+- type: DeveloperPortal
+  url: https://docs.streamsec.io/
+- type: Documentation
+  url: https://docs.streamsec.io/
+- type: APIReference
+  url: https://docs.streamsec.io/reference
+- type: GettingStarted
+  url: https://docs.streamsec.io/docs/onboarding
+- type: Blog
+  url: https://www.stream.security/blog
+- type: GitHubOrganization
+  url: https://github.com/lightlytics
+- type: SignUp
+  url: https://app.streamsec.io/
+- type: Support
+  url: https://www.stream.security/contact-us
+- type: TermsOfService
+  url: https://www.stream.security/terms
+- type: PrivacyPolicy
+  url: https://www.stream.security/privacy-policy
+- type: LLMsTxt
+  url: llms/stream-security-llms.txt
+- type: Packages
+  url: packages/stream-security-packages.yml
+- type: Conformance
+  url: conformance/stream-security-conformance.yml
+- type: Compliance
+  url: conformance/stream-security-conformance.yml
+- type: Lifecycle
+  url: lifecycle/stream-security-lifecycle.yml
+- type: Plans
+  url: plans/stream-security-plans-pricing.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: Authentication
+  url: authentication/stream-security-authentication.yml

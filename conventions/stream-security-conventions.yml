@@ -1,0 +1,175 @@
+generated: '2026-08-29'
+method: derived
+source: >-
+  openapi/stream-security-api-openapi.json plus https://docs.streamsec.io/reference/getting-started-with-stream-api
+  and https://docs.streamsec.io/docs/token-management, read 2026-08-29.
+authentication:
+  style: bearer-token
+  scheme: 'Authorization: Bearer <API token>'
+  format: JWT
+  scope_model: >-
+    Permission level (Read & Write / Read Only - Read Only documented as "supported soon") plus a
+    scope of either the whole organization or selected workspaces. No OAuth scopes.
+  expiration: 1 day, 7 days, 30 days, 90 days, 1 year, or never (chosen at token creation)
+  revocation: >-
+    Admins can revoke any token they can see; revocation is immediate and the record remains
+    visible for 90 days. Tokens are auto-revoked when the creating user is deactivated, and any
+    token exceeding a user's new role is auto-revoked on downgrade.
+  docs: https://docs.streamsec.io/docs/token-management
+  see: authentication/stream-security-authentication.yml
+tenancy:
+  header: workspace
+  required: false
+  behaviour: >-
+    Requests run against the workspace linked to the API token by default. A token with access to
+    multiple workspaces targets one explicitly by sending its ID. Declared as an optional header
+    parameter on the operations, described as "Workspace ID".
+  discovery: GET /workspaces (workspaces-list) returns the workspaces a token can reach.
+  docs: https://docs.streamsec.io/docs/how-to-get-your-workspace-id
+  note: >-
+    The MCP server uses a DIFFERENT header for the same concept - `customer` rather than
+    `workspace` - and is limited to one workspace per token.
+pagination:
+  style: offset-with-some-cursor
+  params:
+  - name: skip
+    used_by: 11 operations
+    description: Number of records to skip.
+  - name: limit
+    used_by: 13 operations
+    description: Maximum records to return.
+  - name: cursor
+    used_by: 2 operations
+    description: Opaque continuation token on the log-style endpoints.
+  response_fields: null
+  note: >-
+    Inconsistent - most collections are offset-paginated with skip/limit while two use a cursor,
+    and the spec declares no standard envelope field naming the total count or the next cursor
+    position. There is no published pagination convention page; the behaviour must be read
+    per-operation from the spec.
+filtering:
+  style: query-parameter
+  note: >-
+    Rich per-resource query filters (account, region, resource type, severity, exploit/fix
+    availability, internet exposure, time ranges, CVE IDs, MITRE categories). Array filters accept
+    comma-separated values. Where a filter is too complex for a query string the docs direct
+    callers to a POST query variant (documented for cve resources).
+  sorting: >-
+    CVE listing supports sorting by CVE ID, severity, CVSS score, discovery time or published date.
+field_expansion:
+  supported: false
+  note: No expand/include or sparse-fieldset parameter appears in the spec.
+metadata:
+  supported: partial
+  note: >-
+    Resources carry cloud provider tags, and notification-rule filters can match on a tag key/value
+    pair, but there is no user-writable metadata bag on Stream Security's own objects.
+request_id_tracing:
+  supported: false
+  note: >-
+    No request-id or correlation-id header is documented in the spec or the docs, and none is
+    declared on any response. An agent has no published handle to quote back to support.
+versioning:
+  scheme: none-in-path
+  current_version: 1.0.0
+  evidence: >-
+    info.version is "1.0.0". The server URL https://{app}.streamsec.io/openapi carries no version
+    segment and no version header is documented, so there is no client-visible versioning mechanism.
+  see: lifecycle/stream-security-lifecycle.yml
+error_envelope:
+  content_type: application/json
+  shape: '{code, message, issues[]}'
+  rfc9457: false
+  statuses: [400, 401, 403, 404, 500]
+  see: errors/stream-security-problem-types.yml
+rate_limit_signaling:
+  documented: false
+  headers: []
+  status_on_exhaustion: null
+  note: >-
+    No rate-limit headers are declared on any response, no 429 appears in the spec, and no limits
+    are published in the docs. See rate-limits/stream-security-rate-limits.yml.
+idempotency:
+  supported: false
+  grade: na-not-supported
+  header: null
+  retention: null
+  note: >-
+    No Idempotency-Key header, no idempotency parameter, and no idempotency language in the spec or
+    docs. Of the five write operations, POST /detections/comment is the one that would visibly
+    double-fire on a retry (duplicate analyst comments); PUT /detections/status and
+    PATCH /notifications/{id} are naturally idempotent by virtue of being full-state setters, and
+    DELETE /notifications/{id} is idempotent after the first success. This is a genuine gap for an
+    agent that must retry safely, not a case where the API has no write surface.
+dry_run_mode:
+  supported: false
+  note: >-
+    No dry-run, preview, validate-only or simulate parameter on any write operation. NOTE - the
+    product has a separate "TF Simulation (AWS)" feature that predicts the impact of a Terraform
+    change, and the notification event_type enum includes `simulation_event`, but neither is exposed
+    as a dry-run mode on these API operations.
+reversibility:
+  grade: documented
+  applicable: true
+  note: >-
+    The API has a real but narrow write surface - five operations. Reversal exists for the
+    state-setting operations because they are settable back, but Stream.Security publishes NO
+    reversal WINDOW anywhere, and for the one destructive operation it publishes the opposite: an
+    explicit statement that the action is permanent. Grade is `documented` rather than `verified`
+    because no window is stated. NO WINDOW IS ASSERTED HERE THAT THE DOCS DO NOT STATE.
+  write_operations:
+  - operation: PUT /detections/status
+    operationId: detections-setStatus
+    reversal: PUT /detections/status
+    reversal_type: re-set
+    window: null
+    evidence: >-
+      "Updates the status of a detection to reflect its current investigation state, such as open,
+      in progress, or closed." A status set in error is undone by setting it again; the docs state
+      no window and no restriction on transitions.
+    docs: https://docs.streamsec.io/reference/detections-setstatus
+  - operation: POST /detections/comment
+    operationId: detections-comment-create
+    reversal: null
+    reversal_type: none
+    window: null
+    evidence: >-
+      "Adds a comment to a detection." No delete-comment or edit-comment operation exists anywhere
+      in the 34-operation spec, so an analyst comment posted by an agent cannot be retracted
+      through the API.
+    docs: https://docs.streamsec.io/reference/detections-comment-create
+  - operation: POST /notifications
+    operationId: notifications-create
+    reversal: DELETE /notifications/{id}
+    reversal_type: delete
+    window: null
+    evidence: >-
+      A created notification rule can be removed with DELETE /notifications/{id}. Rules can also be
+      neutralised without deletion by PATCH-ing `enabled: false`, which is the safer reversal.
+    docs: https://docs.streamsec.io/reference/notifications-create
+  - operation: PATCH /notifications/{id}
+    operationId: notifications-update
+    reversal: PATCH /notifications/{id}
+    reversal_type: re-set
+    window: null
+    evidence: >-
+      "Supports partial updates - only provided fields will be modified." Reversible only if the
+      caller captured the prior state first - there is no version history, no revision endpoint and
+      no undo operation, so an agent must GET /notifications/{id} before it PATCHes.
+    docs: https://docs.streamsec.io/reference/notifications-update
+  - operation: DELETE /notifications/{id}
+    operationId: notifications-delete
+    reversal: null
+    reversal_type: none
+    window: null
+    evidence: >-
+      IRREVERSIBLE, and the provider says so in the operation description itself: "Permanently
+      deletes a notification rule. This action cannot be undone." There is no restore endpoint and
+      no soft-delete/retention period. An agent should prefer PATCH enabled:false over DELETE.
+    docs: https://docs.streamsec.io/reference/notifications-delete
+  adjacent_reversibility:
+  - subject: API tokens
+    note: >-
+      Token revocation is immediate and the revoked token stays visible for 90 days - a stated
+      retention window, but for a console action, not for an API write operation.
+    docs: https://docs.streamsec.io/docs/token-management

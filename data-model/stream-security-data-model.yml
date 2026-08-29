@@ -1,0 +1,222 @@
+generated: '2026-08-29'
+method: derived
+source: >-
+  openapi/stream-security-api-openapi.json - path parameters, query filters and inline response
+  property names across all 34 operations. Derived 2026-08-29.
+note: >-
+  The spec declares only five reusable components.schemas entries, and all five are error
+  envelopes - every domain object is inlined into its operation. The graph below is therefore
+  derived from id-reference FIELD NAMES and path parameters rather than from $ref links. Relations
+  are asserted only where an operation actually addresses or filters by that identifier;
+  co-occurrence of two id fields in one payload is not treated as a relationship. `resource` is the
+  hub: eight of the twelve resource groups either key on resource_id or filter by it.
+entities:
+- name: workspace
+  key: workspace (header) / id
+  operations: [workspaces-list]
+  description: >-
+    Top-level tenancy boundary. Every other entity is scoped to exactly one workspace, selected by
+    the `workspace` request header or defaulted from the API token.
+- name: resource
+  key: resource_id
+  operations: [inventory-list, inventory-details, inventory-configuration, inventory-type, inventory-crownJewels]
+  description: >-
+    A discovered cloud or platform asset - the hub entity. Carries type, display name, account_id,
+    region, cloud provider, parent lineage, public accessibility and tags. Enriched forms add
+    cluster/namespace context, container specs, env vars, volume mounts, owner references and node
+    selectors.
+- name: account
+  key: account_id / cloud_account_id
+  operations: [inventory-list, canaries-list, cve-listCves, network-identityLogs]
+  description: Cloud account or subscription. A filter dimension on most collections, not separately addressable.
+- name: attack_path
+  key: id (+ resource_id for details)
+  operations: [attackPaths-list, attackPaths-details, attackPaths-violations]
+  description: >-
+    A condition in which a resource is externally exploitable and has a blast radius reaching
+    internal resources. Details are addressed BY RESOURCE, not by attack-path id.
+- name: config_change
+  key: id
+  operations: [configChanges-list, configChanges-details]
+  description: >-
+    A write audit event analysed for security impact. Links out to affected resources, the acting
+    user, network details, and any resulting violations and attack paths.
+- name: detection
+  key: detection_id
+  operations: [detections-list, detections-summary, detections-setStatus, detections-comment-create]
+  description: >-
+    A threat detection. Carries severity, account, resource details, source, MITRE categories,
+    signal types and anomalous actions. Has an AI summary sub-resource and a mutable status.
+- name: detection_rule
+  key: detection_id
+  operations: [detectionRules-list, detectionRules-details]
+  description: >-
+    Conditions that trigger a security event. Carries severity, labels, detection type, owner,
+    notification channels, triggering conditions and exclusion criteria.
+- name: posture_rule
+  key: rule_id
+  operations: [rules-list, rules-ruleViolations]
+  description: >-
+    A security, compliance or configuration requirement. Carries severity, category, compliance
+    mappings, finding type, remediation guidance and labels.
+- name: violation
+  key: composite (rule_id + resource_id)
+  operations: [rules-ruleViolations, rules-resourceViolations, attackPaths-violations]
+  description: >-
+    A join entity - one resource failing one rule, with the timestamp it started failing. Addressable
+    from either side.
+- name: cve
+  key: cve_id
+  operations: [cve-listCves, cve-getCve, cve-listCveResources]
+  description: >-
+    A vulnerability keyed on the public CVE identifier. Carries severity, CVSS score/vector/version,
+    exploit and fix availability, affected packages and remediation guidance.
+- name: canary
+  key: id
+  operations: [canaries-list]
+  description: >-
+    A decoy resource (for example an S3 bucket) that raises an alert when a predefined detection
+    action occurs. Carries deployment status, detection settings, exclusion rules and activity.
+- name: notification_rule
+  key: id
+  operations: [notifications-list, notifications-get, notifications-create, notifications-update, notifications-delete]
+  description: >-
+    Defines when and how users are notified. Carries event_type, channels[], and a nested boolean
+    filter condition tree. The only fully CRUD-able entity in the API.
+- name: cluster_integration
+  key: cluster_id
+  operations: [integrations-kubernetes-list, integrations-ecs-list]
+  description: >-
+    A Kubernetes or ECS cluster integration with connection status, agent types, reporting runtime
+    agent counts, version and last-seen timestamp.
+- name: log_event
+  key: cursor-paged, no stable id
+  operations: [network-trafficLogs, network-k8sAuditLogs, network-identityLogs]
+  description: >-
+    Network traffic, Kubernetes audit and IAM identity activity events. Cursor-paged streams
+    correlated to resources and accounts by id fields rather than addressable by their own key.
+relationships:
+- from: workspace
+  to: resource
+  type: has_many
+  via: workspace (header)
+- from: workspace
+  to: notification_rule
+  type: has_many
+  via: workspace (header)
+- from: account
+  to: resource
+  type: has_many
+  via: account_id
+- from: resource
+  to: attack_path
+  type: has_many
+  via: resource_id
+  evidence: GET /attack_paths/details/{resource_id}
+- from: resource
+  to: violation
+  type: has_many
+  via: resource_id
+  evidence: GET /rules/resource/{resource_id}/violations
+- from: posture_rule
+  to: violation
+  type: has_many
+  via: rule_id
+  evidence: GET /rules/rule/{rule_id}/violations
+- from: violation
+  to: resource
+  type: belongs_to
+  via: resource_id
+- from: violation
+  to: posture_rule
+  type: belongs_to
+  via: rule_id
+- from: cve
+  to: resource
+  type: has_many
+  via: cve_ids -> resource_ids
+  evidence: GET /cve/resources
+- from: resource
+  to: cve
+  type: has_many
+  via: resource_id filter on GET /cve
+- from: detection
+  to: resource
+  type: belongs_to
+  via: resource_id
+- from: detection
+  to: account
+  type: belongs_to
+  via: account_id
+- from: detection
+  to: detection_rule
+  type: belongs_to
+  via: detection rule that triggered it
+  confidence: medium
+  note: >-
+    Both entities key on `detection_id` in their own path parameters; the docs describe rules as
+    "conditions that trigger a security event" but no operation joins one to the other explicitly.
+- from: config_change
+  to: resource
+  type: has_many
+  via: affected resources in the change payload
+- from: config_change
+  to: violation
+  type: has_many
+  via: linked violations in configchanges-details
+- from: config_change
+  to: attack_path
+  type: has_many
+  via: linked attack paths in configchanges-details
+- from: cluster_integration
+  to: resource
+  type: has_many
+  via: cluster_id / namespace_id on container resources
+- from: canary
+  to: account
+  type: belongs_to
+  via: account_id
+- from: notification_rule
+  to: detection
+  type: references
+  via: 'event_type: detection'
+- from: log_event
+  to: resource
+  type: references
+  via: resource_id / container_id / vpc_id
+id_fields_observed:
+- _id
+- account_id
+- account_ids
+- aks_resource_id
+- associated_resource_ids
+- cloud_account_id
+- cluster_id
+- container_id
+- controller_id
+- customer_id
+- cve_id
+- deployment_id
+- detection_id
+- detections_ids
+- display_id
+- external_id
+- external_ids
+- gke_resource_id
+- id
+- image_registry_id
+- image_repository_id
+- inserted_activity_id
+- namespace_id
+- private_endpoint_ids
+- resource_id
+- resource_ids
+- rule_id
+- subject_id
+- vpc_id
+id_prefixes:
+  published: false
+  note: >-
+    Stream.Security does not publish typed/prefixed identifiers (no `res_`, `det_` style scheme).
+    Cloud-native identifiers (ARNs, Azure resource IDs, Kubernetes UIDs) are passed through, so id
+    format varies by cloud provider and resource type rather than by Stream Security object type.

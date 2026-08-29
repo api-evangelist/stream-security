@@ -1,0 +1,100 @@
+generated: '2026-08-29'
+method: probed
+source: >-
+  Direct anonymous GETs on 2026-08-29 against the marketing host, the application/API host and the
+  documentation host. No pointer is emitted from this file: nothing returned a real document.
+note: >-
+  ZERO well-known documents are served. www.stream.security and docs.streamsec.io return honest
+  404s on every path. app.streamsec.io is the dangerous case: it answers HTTP 200 to EVERY
+  /.well-known/* path with the same 928-byte Angular single-page-app shell
+  ('<!DOCTYPE html><html lang="en"><head>...<base href="/" />'), including
+  /.well-known/agent-card.json and /.well-known/agent.json. That is an SPA catch-all, not a
+  document — every one of those 200s is recorded below as a miss. Consequently NO `WellKnown`,
+  NO `SecurityTxt` and NO `AgentCard` pointer is written for this provider.
+hosts:
+- host: www.stream.security
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+    file: null
+  - path: /.well-known/openid-configuration
+    status: 404
+    file: null
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+    file: null
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+    file: null
+  - path: /.well-known/api-catalog
+    status: 404
+    file: null
+  - path: /.well-known/ai-plugin.json
+    status: 404
+    file: null
+  - path: /.well-known/agent-card.json
+    status: 404
+    file: null
+  - path: /.well-known/agent.json
+    status: 404
+    file: null
+- host: app.streamsec.io
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    file: null
+    note: HTML SPA shell (928 bytes), not a document - counted as a miss
+  - path: /.well-known/openid-configuration
+    status: 200
+    file: null
+    note: HTML SPA shell (928 bytes), not a document - counted as a miss
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    file: null
+    note: HTML SPA shell (928 bytes), not a document - counted as a miss
+  - path: /.well-known/oauth-protected-resource
+    status: 200
+    file: null
+    note: HTML SPA shell (928 bytes), not a document - counted as a miss
+  - path: /.well-known/api-catalog
+    status: 200
+    file: null
+    note: HTML SPA shell (928 bytes), not a document - counted as a miss
+  - path: /.well-known/ai-plugin.json
+    status: 200
+    file: null
+    note: HTML SPA shell (928 bytes), not a document - counted as a miss
+  - path: /.well-known/agent-card.json
+    status: 200
+    file: null
+    note: HTML SPA shell (928 bytes), not an A2A AgentCard - counted as a miss
+  - path: /.well-known/agent.json
+    status: 200
+    file: null
+    note: HTML SPA shell (928 bytes), not an A2A AgentCard - counted as a miss
+- host: docs.streamsec.io
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+    file: null
+  - path: /.well-known/openid-configuration
+    status: 404
+    file: null
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+    file: null
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+    file: null
+  - path: /.well-known/api-catalog
+    status: 404
+    file: null
+  - path: /.well-known/ai-plugin.json
+    status: 404
+    file: null
+  - path: /.well-known/agent-card.json
+    status: 404
+    file: null
+  - path: /.well-known/agent.json
+    status: 404
+    file: null

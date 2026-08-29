@@ -1,0 +1,128 @@
+generated: '2026-08-29'
+method: derived
+source: >-
+  openapi/stream-security-api-openapi.json plus the Stream.Security documentation and public
+  compliance pages, read 2026-08-29.
+note: >-
+  Two different things are kept apart here. `standards[]` records what the CONTRACT does or does
+  not conform to. `product_compliance_frameworks[]` records the regulatory and benchmark frameworks
+  Stream.Security's PRODUCT assesses its customers' clouds against - these are a feature of the
+  platform, NOT certifications the company itself holds, and must never be read as such.
+  `organizational_certifications[]` is the short, separate list of what the company itself
+  publishes about its own posture.
+standards:
+- id: oauth2
+  conforms: false
+  evidence: >-
+    The only securityScheme in the spec is `BearerAuth` (http/bearer, bearerFormat JWT). There is
+    no oauth2 or openIdConnect scheme, no authorization/token URL, and no scopes. Tokens are
+    long-lived, human-minted API tokens created in the UI, not OAuth grants. All three hosts return
+    404 (or an SPA shell) for /.well-known/oauth-authorization-server.
+- id: oidc
+  conforms: false
+  evidence: >-
+    No openIdConnect securityScheme; /.well-known/openid-configuration is absent on
+    www.stream.security and docs.streamsec.io (404) and an HTML SPA shell on app.streamsec.io.
+    NOTE - Stream.Security consumes SAML SSO for end-user login (Okta, Azure AD/Entra, Google
+    Workspace, AWS documented as IdPs), but that is user sign-in to the console, not API auth.
+- id: rfc9457
+  conforms: false
+  evidence: >-
+    Errors are `application/json` with a code/message/issues envelope; no `application/problem+json`
+    media type appears anywhere in the spec. See errors/stream-security-problem-types.yml.
+- id: pagination
+  conforms: true
+  evidence: >-
+    Offset pagination via `skip` (11 operations) and `limit` (13 operations), plus `cursor` on 2
+    operations. Documented per-operation in the spec; no single published pagination convention page.
+- id: idempotency
+  conforms: false
+  evidence: >-
+    No Idempotency-Key header, no idempotency parameter and no idempotency language appears in the
+    spec or the documentation. The five write operations (POST /detections/comment,
+    PUT /detections/status, POST /notifications, PATCH /notifications/{id},
+    DELETE /notifications/{id}) offer no replay protection.
+- id: json-schema
+  conforms: true
+  evidence: >-
+    OpenAPI 3.1.0, which uses JSON Schema 2020-12 for all parameter and body schemas.
+- id: bearer-jwt
+  conforms: true
+  evidence: 'components.securitySchemes.BearerAuth: {type: http, scheme: bearer, bearerFormat: JWT}'
+- id: scim
+  conforms: false
+  evidence: >-
+    No SCIM schema URN and no /Users or /Groups provisioning endpoints. User provisioning is done
+    through SAML assertions and Entra group mapping, not SCIM.
+- id: graphql
+  conforms: partial
+  evidence: >-
+    An Apollo GraphQL server runs at https://app.streamsec.io/graphql - probed 2026-08-29, it
+    rejected an introspection query with INTROSPECTION_DISABLED (HTTP 400), which confirms the
+    server exists and that introspection is deliberately turned off. It is undocumented and is not
+    presented as a developer surface, so no SDL exists to conform against. Recorded as a finding,
+    not as a published contract.
+- id: odata
+  conforms: false
+  evidence: No $metadata surface and no OData query parameters.
+domain_standards:
+- id: cve
+  name: CVE (Common Vulnerabilities and Exposures) identifier scheme
+  conforms: true
+  evidence: >-
+    The Vulnerabilities resource group is built on the CVE identifier scheme as a first-class key,
+    not as a free-text field. GET /cve/{cve_id} addresses a vulnerability by its CVE ID;
+    GET /cve/resources takes `cve_ids` as a comma-separated CVE list (documented example
+    `cve_ids=CVE-2021-44228,CVE-2021-45046`); GET /cve filters on `cve_id`. Spec location -
+    openapi/stream-security-api-openapi.json paths./cve, ./cve/{cve_id}, ./cve/resources.
+- id: cvss
+  name: CVSS (Common Vulnerability Scoring System)
+  conforms: true
+  evidence: >-
+    The CVE operations expose CVSS as structured, versioned fields rather than a single opaque
+    number - `cvss_score`, `cvss_score_operator`, `cvss_scoring_vector` and `cvss_version` appear
+    across the vulnerability endpoints, so a consumer that already speaks CVSS can filter and sort
+    on severity without a bespoke mapping. Spec location - openapi/stream-security-api-openapi.json
+    paths./cve and ./cve/resources parameters.
+- id: mitre-attack
+  name: MITRE ATT&CK
+  conforms: true
+  evidence: >-
+    Threat detections carry `mitre_categories` as a structured field on the detection object, so
+    detections arrive pre-mapped to the ATT&CK taxonomy an existing SOC already uses. Spec location -
+    openapi/stream-security-api-openapi.json paths./detections (GET) response schema; also described
+    in the docs summary for detections-list ("MITRE categories").
+organizational_certifications:
+- name: SOC 2 Type II
+  status: announced
+  source: https://www.stream.security/press/soc-2
+  evidence: >-
+    Company press release announcing SOC 2 Type II certification, dated 2021-05-01 from Tel Aviv,
+    under the company's former name Lightlytics. A SOC 2 badge in the site footer links to this
+    page. No trust center, no certification portal and no dated audit report are published; the
+    2021 announcement is the only public artifact, so currency cannot be verified.
+product_compliance_frameworks:
+  note: >-
+    Frameworks the PRODUCT maps its posture rules to, each with a published landing page under
+    https://www.stream.security/compliance/. These describe what Stream.Security assesses FOR
+    customers. They are NOT Stream.Security certifications.
+  frameworks:
+  - APRA
+  - AWS Foundational Security Best Practices
+  - AWS Well-Architected Framework
+  - CCPA
+  - CIS
+  - CIS 8
+  - CIS EKS
+  - CSA CCM
+  - FedRAMP
+  - AWS FTR
+  - GDPR
+  - HIPAA
+  - HITRUST
+  - ISO 27001
+  - ISO 27701
+  - MAS
+  - NIST 800-53
+  - PCI
+  - SOC 2

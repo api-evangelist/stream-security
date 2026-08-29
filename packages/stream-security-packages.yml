@@ -1,0 +1,91 @@
+generated: '2026-08-29'
+method: searched
+source: >-
+  Probed npm (registry.npmjs.org search "streamsec" / "stream.security" -> 0 results),
+  PyPI (streamsec, stream-security, lightlytics -> 404), the Terraform Registry
+  (registry.terraform.io modules + providers for lightlytics/streamsecurity/stream-security -> empty/404),
+  and the first-party GitHub organization https://github.com/lightlytics (Stream.Security's pre-rename
+  identity; still the org that carries their public distribution). Helm chart versions and dates read
+  from the live chart index https://lightlytics.github.io/helm-charts/index.yaml (HTTP 200).
+note: >-
+  Stream.Security publishes NO API client SDK in any language package registry. Everything it
+  distributes is deployment/collection tooling for its own agents (Helm charts, eBPF collector,
+  cloud templates), not a library for calling the Stream Security REST API. The one first-party
+  API client that exists — terraform-provider-lightlytics — was last pushed 2023-10-10, still
+  carries the pre-rename Lightlytics name, and is NOT published to the Terraform Registry
+  (registry.terraform.io/v1/providers/lightlytics/lightlytics -> 404), so it can only be built
+  from source. Because no client library is published, NO `SDKs` pointer is emitted for this
+  provider; a `Packages` pointer records the distribution surface that does exist.
+packages:
+- language: helm
+  registry: helm
+  name: streamsec-agent
+  url: https://github.com/lightlytics/helm-charts
+  install: helm repo add lightlytics https://lightlytics.github.io/helm-charts && helm install streamsec-agent lightlytics/streamsec-agent
+  official: true
+  version: 1.2.9
+  published: '2026-08-25'
+  note: >-
+    Stream Security Kubernetes agent (app version 1.1.4). 86 chart versions in the index; the
+    actively maintained distribution — repo pushed 2026-08-25.
+- language: helm
+  registry: helm
+  name: lightlytics
+  url: https://github.com/lightlytics/helm-charts
+  install: helm repo add lightlytics https://lightlytics.github.io/helm-charts && helm install lightlytics lightlytics/lightlytics
+  official: true
+  version: 0.1.23
+  published: '2025-01-26'
+  note: >-
+    Legacy pre-rename Kubernetes agent chart (23 versions, app version 1.23.0). Superseded by
+    streamsec-agent; retained in the index but not advanced since 2025-01-26.
+- language: go
+  registry: github
+  name: terraform-provider-lightlytics
+  url: https://github.com/lightlytics/terraform-provider-lightlytics
+  install: build from source (not published to the Terraform Registry)
+  official: true
+  version: null
+  published: null
+  note: >-
+    Checked, nothing to record — the repository has no registry entry to query. The Terraform
+    Registry returns 404 for lightlytics/lightlytics and lists no providers under the namespace,
+    and the GitHub releases/tags API was rate-limited (HTTP 403) during this pass, so no version
+    or release date could be read. Repository last pushed 2023-10-10 (from the org repo listing),
+    which predates the Stream Security rename and the current 2026 API — the strongest
+    abandonment signal available for this provider.
+- language: python
+  registry: github
+  name: automation-tools
+  url: https://github.com/lightlytics/automation-tools
+  install: git clone https://github.com/lightlytics/automation-tools
+  official: true
+  version: null
+  published: null
+  note: >-
+    "Automation tools for easier Lightlytics Integration" — onboarding/integration scripts, not a
+    client library. Source-only distribution with no registry entry; repo pushed 2026-08-20.
+- language: c
+  registry: github
+  name: k8s-ebpf-collector
+  url: https://github.com/lightlytics/k8s-ebpf-collector
+  install: deployed via the streamsec-agent Helm chart
+  official: true
+  version: null
+  published: null
+  note: >-
+    eBPF-based security observability and runtime enforcement collector. Source-only, no registry
+    entry; repo pushed 2024-10-21. Shipped to customers through the Helm chart above.
+registries_probed:
+- registry: npm
+  query: streamsec / stream.security
+  result: 0 packages
+- registry: pypi
+  query: streamsec / stream-security / lightlytics
+  result: 404
+- registry: terraform
+  query: lightlytics / streamsecurity / stream-security (modules + providers)
+  result: empty / 404
+- registry: helm
+  query: https://lightlytics.github.io/helm-charts/index.yaml
+  result: 200 - 2 charts, 109 versions

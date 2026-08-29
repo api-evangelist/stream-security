@@ -1,0 +1,59 @@
+generated: '2026-08-29'
+method: generated
+source: >-
+  Authored by API Evangelist against openapi/stream-security-api-openapi.json. Every operationId
+  referenced in every skill was verified present in the spec before the skill was written; no
+  operation names are invented. Stream.Security publishes no skills, AGENTS.md or agent
+  instructions of its own - probed docs.streamsec.io (216-page llms.txt index) and
+  www.stream.security (1,049-URL sitemap) on 2026-08-29, no such document exists.
+api: Stream Security API
+skills:
+- name: stream-security-triage-detection
+  file: stream-security-triage-detection.md
+  description: >-
+    Triage a threat detection end to end - list, read the AI summary, expand to the resource, its
+    violations and its attack paths, then set status and comment.
+  operations:
+  - detections-list
+  - detections-summary
+  - inventory-details
+  - rules-resourceViolations
+  - attackPaths-details
+  - detections-setStatus
+  - detections-comment-create
+  writes: true
+- name: stream-security-prioritize-vulnerabilities
+  file: stream-security-prioritize-vulnerabilities.md
+  description: >-
+    Rank CVE remediation by exploitability, fix availability, internet exposure and crown-jewel
+    status rather than by raw CVSS.
+  operations:
+  - cve-listCves
+  - cve-getCve
+  - cve-listCveResources
+  - inventory-crownJewels
+  - attackPaths-details
+  - inventory-details
+  writes: false
+- name: stream-security-manage-notification-rules
+  file: stream-security-manage-notification-rules.md
+  description: >-
+    Create, inspect, amend and safely retire notification rules - the API's entire event/webhook
+    surface. Includes the irreversible-delete warning.
+  operations:
+  - notifications-list
+  - notifications-get
+  - notifications-create
+  - notifications-update
+  - notifications-delete
+  writes: true
+cross_cutting_rules:
+  auth: 'Authorization: Bearer <API token>'
+  tenancy: optional `workspace` header; discover with GET /workspaces
+  errors: '{code, message, issues[]} JSON - NOT RFC 9457; statuses 400/401/403/404/500'
+  idempotency: none - no Idempotency-Key on any write
+  rate_limits: undocumented - no 429 declared, no RateLimit-* headers
+  see:
+  - conventions/stream-security-conventions.yml
+  - errors/stream-security-problem-types.yml
+  - authentication/stream-security-authentication.yml

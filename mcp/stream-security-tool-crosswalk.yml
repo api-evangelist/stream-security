@@ -1,0 +1,118 @@
+generated: '2026-08-29'
+method: derived
+source: >-
+  openapi/stream-security-api-openapi.json (34 operations) crossed against the MCP server at
+  https://app.streamsec.io/mcp, probed 2026-08-29.
+note: >-
+  THE MCP SIDE OF THIS CROSSWALK IS EMPTY ON PURPOSE. Stream.Security runs a real MCP server -
+  tools/list answered with a well-formed JSON-RPC error requiring a Bearer token - but the tool
+  names and inputSchemas are auth-gated and the provider publishes NO tool list anywhere: not in
+  the MCP documentation page, not in llms.txt. Rather than invent tool names from the prose
+  capability descriptions and bind them to operationIds by guesswork, every REST operation is
+  recorded in rest_only[] and crosswalk[] is left empty. This is an honest "not yet mappable",
+  not an absence of an MCP surface. Re-run with an authenticated tools/list to complete it.
+surfaces:
+  openapi:
+    path: openapi/stream-security-api-openapi.json
+    server: https://{app}.streamsec.io/openapi
+    operations: 34
+    gated: false
+    note: Spec is public; calling it requires a Bearer API token.
+  graphql:
+    endpoint: https://app.streamsec.io/graphql
+    gated: true
+    introspection: disabled
+    documented: false
+    note: >-
+      A REAL GraphQL server exists at https://app.streamsec.io/graphql and it is NOT documented
+      anywhere in Stream.Security's public docs. Probed 2026-08-29 with
+      POST {"query":"{__schema{queryType{name}}}"} - it answered HTTP 400 with an Apollo Server
+      error: "GraphQL introspection is not allowed by Apollo Server, but the query contained
+      __schema or __type" (extensions.validationErrorCode INTROSPECTION_DISABLED). That response
+      proves an Apollo GraphQL server is running and deliberately locked down. NO SDL can be
+      obtained and none is fabricated here. This appears to be the console's own backing API rather
+      than a published developer surface, so it is recorded as a finding and NOT wired as a
+      GraphQL contract in apis.yml.
+  mcp:
+    url: https://app.streamsec.io/mcp
+    gated: true
+    note: Live JSON-RPC endpoint; tools/list requires a valid Bearer token.
+coverage:
+  rest_operations: 34
+  mcp_tools: null
+  mapped: 0
+  mcp_only: null
+  graphql_fields: null
+  rest_only: 34
+  note: mcp_tools is null (unknown, gated) rather than 0 (none exist) - the server demonstrably exists.
+crosswalk: []
+mcp_only: []
+rest_only:
+- operationId: attackPaths-list
+  rest: GET /attack_paths
+- operationId: attackPaths-details
+  rest: GET /attack_paths/details/{resource_id}
+- operationId: attackPaths-violations
+  rest: GET /attack_paths/violations
+- operationId: canaries-list
+  rest: GET /canaries
+- operationId: configChanges-list
+  rest: GET /config-changes
+- operationId: configChanges-details
+  rest: GET /config-changes/{id}
+- operationId: cve-listCves
+  rest: GET /cve
+- operationId: cve-listCveResources
+  rest: GET /cve/resources
+- operationId: cve-getCve
+  rest: GET /cve/{cve_id}
+- operationId: detectionRules-list
+  rest: GET /detection_rules
+- operationId: detectionRules-details
+  rest: GET /detection_rules/{detection_id}
+- operationId: detections-list
+  rest: GET /detections
+- operationId: detections-comment-create
+  rest: POST /detections/comment
+- operationId: detections-setStatus
+  rest: PUT /detections/status
+- operationId: detections-summary
+  rest: GET /detections/{detection_id}/ai_summary
+- operationId: integrations-ecs-list
+  rest: GET /integrations/ecs
+- operationId: integrations-kubernetes-list
+  rest: GET /integrations/kubernetes
+- operationId: inventory-list
+  rest: GET /inventory
+- operationId: inventory-crownJewels
+  rest: GET /inventory/crown_jewels
+- operationId: inventory-details
+  rest: GET /inventory/resource
+- operationId: inventory-configuration
+  rest: GET /inventory/resource/configuration
+- operationId: inventory-type
+  rest: GET /inventory/types
+- operationId: network-identityLogs
+  rest: GET /network/identity-logs
+- operationId: network-k8sAuditLogs
+  rest: GET /network/k8s-audit-logs
+- operationId: network-trafficLogs
+  rest: GET /network/traffic-logs
+- operationId: notifications-create
+  rest: POST /notifications
+- operationId: notifications-list
+  rest: GET /notifications
+- operationId: notifications-delete
+  rest: DELETE /notifications/{id}
+- operationId: notifications-get
+  rest: GET /notifications/{id}
+- operationId: notifications-update
+  rest: PATCH /notifications/{id}
+- operationId: rules-list
+  rest: GET /rules
+- operationId: rules-resourceViolations
+  rest: GET /rules/resource/{resource_id}/violations
+- operationId: rules-ruleViolations
+  rest: GET /rules/rule/{rule_id}/violations
+- operationId: workspaces-list
+  rest: GET /workspaces

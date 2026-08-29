@@ -1,0 +1,62 @@
+generated: '2026-08-29'
+method: probed
+source: https://docs.streamsec.io/docs/stream-security-mcp-server-preview
+status: published
+name: Stream Security MCP Server
+description: >-
+  Lets an agent interact with Stream Security data in natural language - retrieving resource
+  metadata, configuration changes, misconfigurations, external exposures, excessive privileges and
+  access to critical data, and triaging or investigating threat detections against identity,
+  network and Kubernetes audit logs. Documented as a preview.
+deployment:
+  mode: remote
+  endpoint: https://app.streamsec.io/mcp
+  auth: api-key
+  verified: probed
+  note: >-
+    mode is `remote`, not local-stdio. The provider's own configuration block runs
+    `npx -y mcp-remote https://app.streamsec.io/mcp` - mcp-remote is a generic third-party stdio
+    BRIDGE, not a Stream Security package, and the thing an MCP client actually talks to is the
+    https endpoint. Stream.Security publishes no MCP server package of its own to npm or PyPI
+    (both probed, 0 results), so there is no local-stdio product here.
+x-evidence:
+  fetched: '2026-08-29'
+  url: https://app.streamsec.io/mcp
+  method: POST
+  request: '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'
+  http_status: 200
+  content_type: application/json+stream; charset=utf-8
+  response: '{"jsonrpc":"2.0","id":1,"error":{"code":-32603,"message":"Valid Bearer token required for MCP access"}}'
+  interpretation: >-
+    The endpoint is LIVE and is a real MCP JSON-RPC server - it parsed the tools/list envelope and
+    answered with a well-formed JSON-RPC error rather than an HTML 404. The tool schemas are
+    auth-gated behind a Stream Security API token.
+authentication:
+  type: api-key
+  transport: Authorization header, carried through by mcp-remote --header "Authorization:$STREAMSEC_AUTH"
+  workspace_header: 'customer: <WORKSPACE_ID>'
+  token_source: Organization/Workspace Settings -> API Token Management -> Create API Token
+  docs: https://docs.streamsec.io/docs/token-management
+  note: >-
+    One workspace per API token. Multiple workspaces require a separately configured MCP server
+    entry per workspace, each with its own token and `customer` header.
+tools:
+  status: gated
+  count: null
+  note: >-
+    NOT ENUMERATED. tools/list requires a Bearer token, and the provider does not publish a tool
+    list in its documentation or in llms.txt - the MCP page describes capabilities in prose only.
+    No tool names are recorded here because none are published; inventing them would fabricate an
+    agent surface. Authenticated introspection is required to obtain the real names and
+    inputSchemas.
+documented_capabilities:
+- Retrieve environment insights - resource metadata, configuration changes, misconfigurations,
+  external exposures, excessive privileges, access to critical data
+- Threat investigation - triage and investigate detections using investigation data combined with
+  identity, network and Kubernetes audit logs
+clients_documented:
+- Claude Desktop
+- Cursor IDE
+requirements:
+- Node.js installed (for the mcp-remote bridge)
+- A Stream Security API token

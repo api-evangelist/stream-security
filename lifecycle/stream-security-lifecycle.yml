@@ -1,0 +1,66 @@
+generated: '2026-08-29'
+method: searched
+source: >-
+  https://docs.streamsec.io/ (full page index via llms.txt), the merged OpenAPI, and probes of
+  status.stream.security / status.streamsec.io / trust.stream.security on 2026-08-29.
+versioning:
+  scheme: none-client-visible
+  current_version: 1.0.0
+  in_path: false
+  in_header: false
+  evidence: >-
+    info.version is "1.0.0" and the server URL https://{app}.streamsec.io/openapi has no version
+    segment. No version header is documented. A consumer has no way to pin a version.
+deprecation:
+  policy_published: false
+  sunset_header: false
+  deprecation_header: false
+  rfc8594: false
+  deprecated_operations: []
+  evidence: >-
+    No deprecation or sunset policy page exists in the documentation index (llms.txt lists 216
+    pages; none covers deprecation, sunset, versioning or breaking changes). No operation in the
+    spec carries `deprecated: true`, and no Sunset or Deprecation response header is declared.
+    NOTE - the API does carry visible legacy: the Terraform provider and the older Helm chart still
+    ship under the pre-rename "lightlytics" name, and one documented capability is labelled in the
+    docs as "(Read Only permission will be supported soon)", which is a forward-looking note rather
+    than a deprecation.
+changelog:
+  published: false
+  url: null
+  evidence: >-
+    No changelog, release-notes or what's-new page appears in the documentation index or the
+    marketing sitemap (1,049 URLs). Product news is announced only as press releases under
+    https://www.stream.security/press/, which are not versioned release notes.
+status_page:
+  published: false
+  url: null
+  evidence: >-
+    status.stream.security, status.streamsec.io and trust.stream.security all fail to resolve
+    (DNS NXDOMAIN, curl exit 6). No status page is linked from the docs or the marketing site.
+    NO StatusPage POINTER IS EMITTED.
+sla:
+  published: false
+  evidence: >-
+    No SLA or uptime commitment is published on the public site; commercial terms are behind
+    https://www.stream.security/terms and a sales conversation.
+support:
+  channels:
+  - type: contact-form
+    url: https://www.stream.security/contact-us
+  - type: docs
+    url: https://docs.streamsec.io/
+  note: >-
+    The documentation index lists a "Support" section, but https://docs.streamsec.io/docs/support.md
+    returns 404 - the section header exists without a reachable page at that slug.
+operational_notes:
+- subject: SaaS IP ranges
+  url: https://docs.streamsec.io/docs/onboarding-iprange.md
+  note: >-
+    Stream.Security publishes its SaaS egress IP ranges for customer allow-listing - a real
+    operational-transparency artifact even though no status page exists.
+- subject: Agent currency
+  note: >-
+    The streamsec-agent Helm chart is released frequently (86 versions; 1.2.9 published
+    2026-08-25), so the deployed-agent side of the product is actively versioned even though the
+    REST API is not.

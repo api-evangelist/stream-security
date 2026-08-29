@@ -1,0 +1,23 @@
+generated: '2026-08-29'
+method: searched
+source: >-
+  https://www.stream.security/sitemap.xml (1,049 URLs, fetched 2026-08-29) and a direct probe of
+  https://www.stream.security/pricing
+plan_count: 0
+pricing_model: contact-sales
+note: >-
+  Stream.Security publishes NO pricing. https://www.stream.security/pricing returns 404, and the
+  full sitemap contains no pricing, plans, packaging or tiers page of any kind. The only
+  commercial entry points are https://www.stream.security/book-demo and
+  https://www.stream.security/contact-us. There is also no self-service sign-up - app.streamsec.io
+  is a login for provisioned tenants, not a free-tier registration. This is an enterprise
+  contact-us motion, so an agent or a buyer cannot determine cost, quota or overage from any
+  public surface. Recorded as an honest zero, not omitted.
+plans: []
+evidence:
+- url: https://www.stream.security/pricing
+  status: 404
+- url: https://www.stream.security/book-demo
+  status: 200
+- url: https://www.stream.security/contact-us
+  status: 200

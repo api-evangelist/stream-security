@@ -1,0 +1,86 @@
+generated: '2026-08-29'
+method: derived
+source: >-
+  openapi/stream-security-api-openapi.json - components.schemas.error.* and the response blocks of
+  all 34 operations, assembled from the provider-published per-operation OpenAPI fragments at
+  https://docs.streamsec.io/reference/*.md
+format: custom-json
+rfc9457: false
+note: >-
+  NOT RFC 9457. Every error response is declared as `application/json`, never
+  `application/problem+json`, and the envelope uses `code`/`message`/`issues` rather than
+  type/title/status/detail/instance. The catalogue is unusually uniform: all 34 operations declare
+  exactly the same five statuses, and 32 of 34 declare 404 (the two exceptions are the collection
+  endpoints GET /inventory/types and GET /workspaces, which have no addressable resource to miss).
+  No 409, 422, 429 or 503 is declared anywhere in the spec - notably there is no documented
+  rate-limit error, which matches the absence of any published rate-limit policy.
+envelope:
+  content_type: application/json
+  fields:
+  - name: code
+    type: string
+    description: Machine-readable error code, equal to the uppercased status name.
+  - name: message
+    type: string
+    description: Human-readable error message.
+  - name: issues
+    type: array
+    description: Per-field validation issues; empty array when there are none.
+  example:
+    code: BAD_REQUEST
+    message: Invalid input data
+    issues: []
+problem_types:
+- code: BAD_REQUEST
+  status: 400
+  title: Invalid input data
+  schema: '#/components/schemas/error.BAD_REQUEST'
+  occurrences: 34
+  remediation: >-
+    Validate query, path and body parameters against the operation schema. Inspect `issues[]` for
+    the specific fields that failed validation.
+- code: UNAUTHORIZED
+  status: 401
+  title: Authorization not provided
+  schema: '#/components/schemas/error.UNAUTHORIZED'
+  occurrences: 34
+  remediation: >-
+    Send `Authorization: Bearer <token>`. Create or rotate the token in the Stream UI under
+    Organization/Workspace Settings -> API Token Management. Tokens expire on the interval chosen
+    at creation (1/7/30/90 days, 1 year, or never) and are revoked automatically when the creating
+    user is deactivated or downgraded.
+  docs: https://docs.streamsec.io/docs/token-management
+- code: FORBIDDEN
+  status: 403
+  title: Insufficient access
+  schema: '#/components/schemas/error.FORBIDDEN'
+  occurrences: 34
+  remediation: >-
+    The token authenticated but lacks permission. Check the token's permission level (Read & Write
+    vs Read Only) and its workspace scope; a token scoped to selected workspaces cannot reach
+    another workspace even with the `workspace` header set.
+- code: NOT_FOUND
+  status: 404
+  title: Not found
+  schema: '#/components/schemas/error.NOT_FOUND'
+  occurrences: 32
+  remediation: >-
+    The addressed resource, detection, rule, CVE or notification does not exist in the targeted
+    workspace. Confirm the identifier and that the `workspace` header points at the right workspace.
+- code: INTERNAL_SERVER_ERROR
+  status: 500
+  title: Internal server error
+  schema: '#/components/schemas/error.INTERNAL_SERVER_ERROR'
+  occurrences: 34
+  remediation: Retry with backoff; contact Stream Security support if it persists.
+not_declared:
+- status: 409
+  note: No conflict semantics declared on any write operation.
+- status: 422
+  note: Validation failures are folded into 400 with `issues[]`.
+- status: 429
+  note: >-
+    No rate-limit error is declared, and no rate-limit policy is published. An agent cannot tell
+    from the contract what happens when it calls too fast.
+- status: 503
+  note: No maintenance/unavailable status declared; no public status page exists.

@@ -1,0 +1,23 @@
+generated: '2026-08-29'
+method: searched
+source: >-
+  https://docs.streamsec.io/llms.txt (full 216-page documentation index) and
+  openapi/stream-security-api-openapi.json, read 2026-08-29.
+limit_count: 0
+note: >-
+  Stream.Security publishes NO rate limits. Nothing in the 216-page documentation index mentions
+  rate limiting, throttling or quotas; no operation in the 34-operation spec declares a 429
+  response; and no RateLimit-*, X-RateLimit-* or Retry-After header is declared on any response.
+  This is a real gap for an agent, which has no published runtime signal telling it when to back
+  off and no documented status to recognise when it has been throttled. Recorded as an honest zero.
+limits: []
+response_headers: []
+status_on_exhaustion: null
+evidence:
+- source: https://docs.streamsec.io/llms.txt
+  status: 200
+  finding: No rate-limit, throttling or quota page in the documentation index.
+- source: openapi/stream-security-api-openapi.json
+  finding: >-
+    Declared statuses across all 34 operations are 400/401/403/404/500 only. No 429, and no
+    rate-limit response headers.
