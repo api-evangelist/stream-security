@@ -83,6 +83,10 @@ apis:
   humanURL: https://docs.streamsec.io/docs/stream-security-mcp-server-preview
   baseURL: https://app.streamsec.io/mcp
   tags:
+  - MCP
+  - Artificial Intelligence
+  - Security
+  tags_raw:
   - Model Context Protocol
   - Artificial Intelligence
   - Security
