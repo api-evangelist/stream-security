@@ -11,6 +11,20 @@ description: >-
   exposes it all through a public REST API and an MCP server so security teams and agents can query
   inventory, detections, vulnerabilities, attack paths and posture violations programmatically.
 url: https://raw.githubusercontent.com/api-evangelist/stream-security/refs/heads/main/apis.yml
+accessModel:
+  pricing: unknown
+  onboarding: unknown
+  trial: false
+  try_now: false
+  public: false
+  label: Unknown
+  confidence: low
+  source:
+  - authentication
+  - rate-limits
+  - security
+  generated: '2026-09-03'
+  method: derived
 image: https://cdn.prod.website-files.com/5f05d585ae7f3b0c47bc77a4/67166fa0d1d0600f5c5d67e8_page-preview.png
 x-type: company
 x-source: harvest:secondary-market
