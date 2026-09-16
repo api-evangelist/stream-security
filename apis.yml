@@ -50,50 +50,12 @@ x-enrichment:
   pass: local-v1
 
 apis:
-- name: Stream Security API
-  description: >-
-    REST API over the Stream Security CloudTwin. 34 operations across twelve resource groups -
-    inventory, attack paths, config changes, threat detections, detection rules, posture security
-    rules and violations, vulnerabilities (CVE), network and identity logs, Kubernetes/ECS agent
-    integrations, notification rules, canaries and workspaces. Bearer (JWT) API token auth, with an
-    optional `workspace` header to target a specific workspace.
-  humanURL: https://docs.streamsec.io/reference/getting-started-with-stream-api
-  baseURL: https://{app}.streamsec.io/openapi
-  tags:
-  - Security
-  - Cloud Security
-  - Threat Detection
-  - Vulnerability Management
-  - Inventory
-  properties:
-  - type: OpenAPI
-    url: openapi/stream-security-api-openapi.json
-  - type: Documentation
-    url: https://docs.streamsec.io/
-  - type: APIReference
-    url: https://docs.streamsec.io/reference
-  - type: GettingStarted
-    url: https://docs.streamsec.io/reference/getting-started-with-stream-api
-  - type: Authentication
-    url: authentication/stream-security-authentication.yml
-  - type: ErrorCatalog
-    url: errors/stream-security-problem-types.yml
-  - type: Conventions
-    url: conventions/stream-security-conventions.yml
-  - type: DataModel
-    url: data-model/stream-security-data-model.yml
-  - type: Overlay
-    url: overlays/stream-security-api-overlay.yaml
-  - type: Webhooks
-    url: asyncapi/stream-security-notifications-webhooks.yml
-  - type: RateLimits
-    url: rate-limits/stream-security-rate-limits.yml
 - name: Stream Security MCP Server
   description: >-
-    Hosted remote MCP server that lets an agent query the Stream Security CloudTwin in natural
-    language - resource metadata, configuration changes, misconfigurations, external exposures,
-    excessive privileges, and threat-detection triage against identity, network and Kubernetes audit
-    logs. Documented as a preview; tool schemas are auth-gated behind a Stream Security API token.
+    Hosted remote MCP server that lets an agent query the Stream Security CloudTwin in natural language
+    - resource metadata, configuration changes, misconfigurations, external exposures, excessive privileges,
+    and threat-detection triage against identity, network and Kubernetes audit logs. Documented as a preview;
+    tool schemas are auth-gated behind a Stream Security API token.
   humanURL: https://docs.streamsec.io/docs/stream-security-mcp-server-preview
   baseURL: https://app.streamsec.io/mcp
   tags:
@@ -111,12 +73,351 @@ apis:
     url: mcp/stream-security-tool-crosswalk.yml
   - type: Documentation
     url: https://docs.streamsec.io/docs/stream-security-mcp-server-preview
+- aid: stream-security:stream-security-attack-paths-api
+  name: Stream.Security Attack Paths API
+  description: The Attack Paths API from Stream.Security — 3 operation(s) for attack paths.
+  humanURL: https://docs.streamsec.io/reference/getting-started-with-stream-api
+  baseURL: https://{app}.streamsec.io/openapi
+  tags:
+  - Attack Paths
+  properties:
+  - type: OpenAPI
+    url: openapi/stream-security-attack-paths-api-openapi.yml
+  - type: Documentation
+    url: https://docs.streamsec.io/
+  - type: APIReference
+    url: https://docs.streamsec.io/reference
+  - type: GettingStarted
+    url: https://docs.streamsec.io/reference/getting-started-with-stream-api
+  - type: Authentication
+    url: authentication/stream-security-authentication.yml
+  - type: ErrorCatalog
+    url: errors/stream-security-problem-types.yml
+  - type: Conventions
+    url: conventions/stream-security-conventions.yml
+  - type: DataModel
+    url: data-model/stream-security-data-model.yml
+  - type: Webhooks
+    url: asyncapi/stream-security-notifications-webhooks.yml
+  - type: RateLimits
+    url: rate-limits/stream-security-rate-limits.yml
+- aid: stream-security:stream-security-canaries-api
+  name: Stream.Security Canaries API
+  description: The Canaries API from Stream.Security — 1 operation(s) for canaries.
+  humanURL: https://docs.streamsec.io/reference/getting-started-with-stream-api
+  baseURL: https://{app}.streamsec.io/openapi
+  tags:
+  - Canaries
+  properties:
+  - type: OpenAPI
+    url: openapi/stream-security-canaries-api-openapi.yml
+  - type: Documentation
+    url: https://docs.streamsec.io/
+  - type: APIReference
+    url: https://docs.streamsec.io/reference
+  - type: GettingStarted
+    url: https://docs.streamsec.io/reference/getting-started-with-stream-api
+  - type: Authentication
+    url: authentication/stream-security-authentication.yml
+  - type: ErrorCatalog
+    url: errors/stream-security-problem-types.yml
+  - type: Conventions
+    url: conventions/stream-security-conventions.yml
+  - type: DataModel
+    url: data-model/stream-security-data-model.yml
+  - type: Webhooks
+    url: asyncapi/stream-security-notifications-webhooks.yml
+  - type: RateLimits
+    url: rate-limits/stream-security-rate-limits.yml
+- aid: stream-security:stream-security-config-changes-api
+  name: Stream.Security Config Changes API
+  description: The Config Changes API from Stream.Security — 2 operation(s) for config changes.
+  humanURL: https://docs.streamsec.io/reference/getting-started-with-stream-api
+  baseURL: https://{app}.streamsec.io/openapi
+  tags:
+  - Config Changes
+  properties:
+  - type: OpenAPI
+    url: openapi/stream-security-config-changes-api-openapi.yml
+  - type: Documentation
+    url: https://docs.streamsec.io/
+  - type: APIReference
+    url: https://docs.streamsec.io/reference
+  - type: GettingStarted
+    url: https://docs.streamsec.io/reference/getting-started-with-stream-api
+  - type: Authentication
+    url: authentication/stream-security-authentication.yml
+  - type: ErrorCatalog
+    url: errors/stream-security-problem-types.yml
+  - type: Conventions
+    url: conventions/stream-security-conventions.yml
+  - type: DataModel
+    url: data-model/stream-security-data-model.yml
+  - type: Webhooks
+    url: asyncapi/stream-security-notifications-webhooks.yml
+  - type: RateLimits
+    url: rate-limits/stream-security-rate-limits.yml
+- aid: stream-security:stream-security-detection-rules-api
+  name: Stream.Security Detection Rules API
+  description: The Detection Rules API from Stream.Security — 2 operation(s) for detection rules.
+  humanURL: https://docs.streamsec.io/reference/getting-started-with-stream-api
+  baseURL: https://{app}.streamsec.io/openapi
+  tags:
+  - Detection Rules
+  properties:
+  - type: OpenAPI
+    url: openapi/stream-security-detection-rules-api-openapi.yml
+  - type: Documentation
+    url: https://docs.streamsec.io/
+  - type: APIReference
+    url: https://docs.streamsec.io/reference
+  - type: GettingStarted
+    url: https://docs.streamsec.io/reference/getting-started-with-stream-api
+  - type: Authentication
+    url: authentication/stream-security-authentication.yml
+  - type: ErrorCatalog
+    url: errors/stream-security-problem-types.yml
+  - type: Conventions
+    url: conventions/stream-security-conventions.yml
+  - type: DataModel
+    url: data-model/stream-security-data-model.yml
+  - type: Webhooks
+    url: asyncapi/stream-security-notifications-webhooks.yml
+  - type: RateLimits
+    url: rate-limits/stream-security-rate-limits.yml
+- aid: stream-security:stream-security-integrations-api
+  name: Stream.Security Integrations API
+  description: The Integrations API from Stream.Security — 2 operation(s) for integrations.
+  humanURL: https://docs.streamsec.io/reference/getting-started-with-stream-api
+  baseURL: https://{app}.streamsec.io/openapi
+  tags:
+  - Integrations
+  properties:
+  - type: OpenAPI
+    url: openapi/stream-security-integrations-api-openapi.yml
+  - type: Documentation
+    url: https://docs.streamsec.io/
+  - type: APIReference
+    url: https://docs.streamsec.io/reference
+  - type: GettingStarted
+    url: https://docs.streamsec.io/reference/getting-started-with-stream-api
+  - type: Authentication
+    url: authentication/stream-security-authentication.yml
+  - type: ErrorCatalog
+    url: errors/stream-security-problem-types.yml
+  - type: Conventions
+    url: conventions/stream-security-conventions.yml
+  - type: DataModel
+    url: data-model/stream-security-data-model.yml
+  - type: Webhooks
+    url: asyncapi/stream-security-notifications-webhooks.yml
+  - type: RateLimits
+    url: rate-limits/stream-security-rate-limits.yml
+- aid: stream-security:stream-security-inventory-api
+  name: Stream.Security Inventory API
+  description: The Inventory API from Stream.Security — 5 operation(s) for inventory.
+  humanURL: https://docs.streamsec.io/reference/getting-started-with-stream-api
+  baseURL: https://{app}.streamsec.io/openapi
+  tags:
+  - Inventory
+  properties:
+  - type: OpenAPI
+    url: openapi/stream-security-inventory-api-openapi.yml
+  - type: Documentation
+    url: https://docs.streamsec.io/
+  - type: APIReference
+    url: https://docs.streamsec.io/reference
+  - type: GettingStarted
+    url: https://docs.streamsec.io/reference/getting-started-with-stream-api
+  - type: Authentication
+    url: authentication/stream-security-authentication.yml
+  - type: ErrorCatalog
+    url: errors/stream-security-problem-types.yml
+  - type: Conventions
+    url: conventions/stream-security-conventions.yml
+  - type: DataModel
+    url: data-model/stream-security-data-model.yml
+  - type: Webhooks
+    url: asyncapi/stream-security-notifications-webhooks.yml
+  - type: RateLimits
+    url: rate-limits/stream-security-rate-limits.yml
+- aid: stream-security:stream-security-network-identity-logs-api
+  name: Stream.Security Network & Identity Logs API
+  description: >-
+    The Network & Identity Logs API from Stream.Security — 3 operation(s) for network & identity logs.
+  humanURL: https://docs.streamsec.io/reference/getting-started-with-stream-api
+  baseURL: https://{app}.streamsec.io/openapi
+  tags:
+  - Network & Identity Logs
+  properties:
+  - type: OpenAPI
+    url: openapi/stream-security-network-identity-logs-api-openapi.yml
+  - type: Documentation
+    url: https://docs.streamsec.io/
+  - type: APIReference
+    url: https://docs.streamsec.io/reference
+  - type: GettingStarted
+    url: https://docs.streamsec.io/reference/getting-started-with-stream-api
+  - type: Authentication
+    url: authentication/stream-security-authentication.yml
+  - type: ErrorCatalog
+    url: errors/stream-security-problem-types.yml
+  - type: Conventions
+    url: conventions/stream-security-conventions.yml
+  - type: DataModel
+    url: data-model/stream-security-data-model.yml
+  - type: Webhooks
+    url: asyncapi/stream-security-notifications-webhooks.yml
+  - type: RateLimits
+    url: rate-limits/stream-security-rate-limits.yml
+- aid: stream-security:stream-security-notifications-api
+  name: Stream.Security Notifications API
+  description: The Notifications API from Stream.Security — 2 operation(s) for notifications.
+  humanURL: https://docs.streamsec.io/reference/getting-started-with-stream-api
+  baseURL: https://{app}.streamsec.io/openapi
+  tags:
+  - Notifications
+  properties:
+  - type: OpenAPI
+    url: openapi/stream-security-notifications-api-openapi.yml
+  - type: Documentation
+    url: https://docs.streamsec.io/
+  - type: APIReference
+    url: https://docs.streamsec.io/reference
+  - type: GettingStarted
+    url: https://docs.streamsec.io/reference/getting-started-with-stream-api
+  - type: Authentication
+    url: authentication/stream-security-authentication.yml
+  - type: ErrorCatalog
+    url: errors/stream-security-problem-types.yml
+  - type: Conventions
+    url: conventions/stream-security-conventions.yml
+  - type: DataModel
+    url: data-model/stream-security-data-model.yml
+  - type: Webhooks
+    url: asyncapi/stream-security-notifications-webhooks.yml
+  - type: RateLimits
+    url: rate-limits/stream-security-rate-limits.yml
+- aid: stream-security:stream-security-posture-security-api
+  name: Stream.Security Posture Security API
+  description: The Posture Security API from Stream.Security — 3 operation(s) for posture security.
+  humanURL: https://docs.streamsec.io/reference/getting-started-with-stream-api
+  baseURL: https://{app}.streamsec.io/openapi
+  tags:
+  - Posture Security
+  properties:
+  - type: OpenAPI
+    url: openapi/stream-security-posture-security-api-openapi.yml
+  - type: Documentation
+    url: https://docs.streamsec.io/
+  - type: APIReference
+    url: https://docs.streamsec.io/reference
+  - type: GettingStarted
+    url: https://docs.streamsec.io/reference/getting-started-with-stream-api
+  - type: Authentication
+    url: authentication/stream-security-authentication.yml
+  - type: ErrorCatalog
+    url: errors/stream-security-problem-types.yml
+  - type: Conventions
+    url: conventions/stream-security-conventions.yml
+  - type: DataModel
+    url: data-model/stream-security-data-model.yml
+  - type: Webhooks
+    url: asyncapi/stream-security-notifications-webhooks.yml
+  - type: RateLimits
+    url: rate-limits/stream-security-rate-limits.yml
+- aid: stream-security:stream-security-threat-detection-api
+  name: Stream.Security Threat Detection API
+  description: The Threat Detection API from Stream.Security — 4 operation(s) for threat detection.
+  humanURL: https://docs.streamsec.io/reference/getting-started-with-stream-api
+  baseURL: https://{app}.streamsec.io/openapi
+  tags:
+  - Threat Detection
+  properties:
+  - type: OpenAPI
+    url: openapi/stream-security-threat-detection-api-openapi.yml
+  - type: Documentation
+    url: https://docs.streamsec.io/
+  - type: APIReference
+    url: https://docs.streamsec.io/reference
+  - type: GettingStarted
+    url: https://docs.streamsec.io/reference/getting-started-with-stream-api
+  - type: Authentication
+    url: authentication/stream-security-authentication.yml
+  - type: ErrorCatalog
+    url: errors/stream-security-problem-types.yml
+  - type: Conventions
+    url: conventions/stream-security-conventions.yml
+  - type: DataModel
+    url: data-model/stream-security-data-model.yml
+  - type: Webhooks
+    url: asyncapi/stream-security-notifications-webhooks.yml
+  - type: RateLimits
+    url: rate-limits/stream-security-rate-limits.yml
+- aid: stream-security:stream-security-vulnerabilities-api
+  name: Stream.Security Vulnerabilities API
+  description: The Vulnerabilities API from Stream.Security — 3 operation(s) for vulnerabilities.
+  humanURL: https://docs.streamsec.io/reference/getting-started-with-stream-api
+  baseURL: https://{app}.streamsec.io/openapi
+  tags:
+  - Vulnerabilities
+  properties:
+  - type: OpenAPI
+    url: openapi/stream-security-vulnerabilities-api-openapi.yml
+  - type: Documentation
+    url: https://docs.streamsec.io/
+  - type: APIReference
+    url: https://docs.streamsec.io/reference
+  - type: GettingStarted
+    url: https://docs.streamsec.io/reference/getting-started-with-stream-api
+  - type: Authentication
+    url: authentication/stream-security-authentication.yml
+  - type: ErrorCatalog
+    url: errors/stream-security-problem-types.yml
+  - type: Conventions
+    url: conventions/stream-security-conventions.yml
+  - type: DataModel
+    url: data-model/stream-security-data-model.yml
+  - type: Webhooks
+    url: asyncapi/stream-security-notifications-webhooks.yml
+  - type: RateLimits
+    url: rate-limits/stream-security-rate-limits.yml
+- aid: stream-security:stream-security-workspaces-api
+  name: Stream.Security Workspaces API
+  description: The Workspaces API from Stream.Security — 1 operation(s) for workspaces.
+  humanURL: https://docs.streamsec.io/reference/getting-started-with-stream-api
+  baseURL: https://{app}.streamsec.io/openapi
+  tags:
+  - Workspaces
+  properties:
+  - type: OpenAPI
+    url: openapi/stream-security-workspaces-api-openapi.yml
+  - type: Documentation
+    url: https://docs.streamsec.io/
+  - type: APIReference
+    url: https://docs.streamsec.io/reference
+  - type: GettingStarted
+    url: https://docs.streamsec.io/reference/getting-started-with-stream-api
+  - type: Authentication
+    url: authentication/stream-security-authentication.yml
+  - type: ErrorCatalog
+    url: errors/stream-security-problem-types.yml
+  - type: Conventions
+    url: conventions/stream-security-conventions.yml
+  - type: DataModel
+    url: data-model/stream-security-data-model.yml
+  - type: Webhooks
+    url: asyncapi/stream-security-notifications-webhooks.yml
+  - type: RateLimits
+    url: rate-limits/stream-security-rate-limits.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: Overlay
+  url: overlays/stream-security-api-overlay.yaml
 - type: DomainSecurity
   url: security/stream-security-domain-security.yml
 - type: Website
