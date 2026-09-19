@@ -191,6 +191,8 @@ apis:
   humanURL: https://docs.streamsec.io/reference/getting-started-with-stream-api
   baseURL: https://{app}.streamsec.io/openapi
   tags:
+  - Integration
+  tags_raw:
   - Integrations
   properties:
   - type: OpenAPI
@@ -276,6 +278,8 @@ apis:
   humanURL: https://docs.streamsec.io/reference/getting-started-with-stream-api
   baseURL: https://{app}.streamsec.io/openapi
   tags:
+  - Notification
+  tags_raw:
   - Notifications
   properties:
   - type: OpenAPI
@@ -388,6 +392,8 @@ apis:
   humanURL: https://docs.streamsec.io/reference/getting-started-with-stream-api
   baseURL: https://{app}.streamsec.io/openapi
   tags:
+  - Workspace
+  tags_raw:
   - Workspaces
   properties:
   - type: OpenAPI
