@@ -1,0 +1,757 @@
+openapi: 3.2.0
+info:
+  title: Stream Security Inventory API
+  description: Stream Security API for managing security rules, integrations, AI interactions, and more.
+  version: 1.0.0
+servers:
+- url: https://{app}.streamsec.io/openapi
+tags:
+- name: Inventory
+paths:
+  /inventory/resource/configuration:
+    get:
+      operationId: inventory-configuration
+      summary: Get Resource Configuration
+      description: 'Retrieves the translated configuration data for a specific resource by its ID.
+
+
+        The translated data contains enriched and normalized resource attributes, which vary depending on the resource type and cloud provider. This may include identity details, networking, tags, hierarchical context, and provider-specific settings.
+
+
+        Use this endpoint to obtain a resource’s processed configuration for inventory browsing, compliance review, or investigation purposes.'
+      tags:
+      - Inventory
+      security:
+      - BearerAuth: []
+      parameters:
+      - in: header
+        name: workspace
+        schema:
+          description: Workspace ID
+          type: string
+        description: Workspace ID
+      - in: query
+        name: resource_id
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema: {}
+        '400':
+          description: Invalid input data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.BAD_REQUEST'
+        '401':
+          description: Authorization not provided
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.UNAUTHORIZED'
+        '403':
+          description: Insufficient access
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.FORBIDDEN'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.NOT_FOUND'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.INTERNAL_SERVER_ERROR'
+  /inventory/crown_jewels:
+    get:
+      operationId: inventory-crownJewels
+      summary: Get Crown Jewels
+      description: 'Validates whether the specified resources are marked as as crown jewels — high-value or business-critical assets.
+
+
+        If none of the provided resources are marked as crown jewels, the response will be empty.
+
+
+        Use this endpoint to programmatically verify the crown jewel status of specific resources across your environment.'
+      tags:
+      - Inventory
+      security:
+      - BearerAuth: []
+      parameters:
+      - in: header
+        name: workspace
+        schema:
+          description: Workspace ID
+          type: string
+        description: Workspace ID
+      - in: query
+        name: resource_ids
+        schema:
+          type: array
+          items:
+            type: string
+        required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    resource_id:
+                      type: string
+                    description:
+                      type: string
+                    resource_type:
+                      type: string
+                  required:
+                  - resource_id
+                  - description
+                  - resource_type
+                  additionalProperties: false
+        '400':
+          description: Invalid input data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.BAD_REQUEST'
+        '401':
+          description: Authorization not provided
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.UNAUTHORIZED'
+        '403':
+          description: Insufficient access
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.FORBIDDEN'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.NOT_FOUND'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.INTERNAL_SERVER_ERROR'
+  /inventory/resource:
+    get:
+      operationId: inventory-details
+      summary: Get Resource Details
+      description: 'Retrieves detailed metadata and configuration for a specific resource, including its type, display name, cloud provider, account, region, accessibility status, tags, and associated network interfaces.
+
+
+        The response also includes translated and enriched data such as cluster or namespace context, container specifications, environment variables, volume mounts, owner references, conditions, and node selectors. Depending on the resource type, additional attributes like security settings, probes, and connected services may be included.
+
+
+        Use this endpoint to obtain a comprehensive view of a resource’s identity, configuration, and operational state for inventory, compliance, or investigation purposes.'
+      tags:
+      - Inventory
+      security:
+      - BearerAuth: []
+      parameters:
+      - in: header
+        name: workspace
+        schema:
+          description: Workspace ID
+          type: string
+        description: Workspace ID
+      - in: query
+        name: resource_id
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  resource_id:
+                    type: string
+                  resource_type:
+                    type: string
+                  display_name:
+                    type: string
+                  display_id:
+                    type: string
+                  instance_type:
+                    type: string
+                  availability_zones:
+                    type: array
+                    items:
+                      type: string
+                  comment:
+                    type: string
+                  action:
+                    type: string
+                  end_action:
+                    type: string
+                  cloud:
+                    type: string
+                  provider:
+                    type: string
+                  parent:
+                    type: array
+                    items:
+                      type: string
+                  parent_type:
+                    type: string
+                  account_id:
+                    type: string
+                  EksId:
+                    type: string
+                  raw: {}
+                  region:
+                    type: string
+                  vpc_id:
+                    type: string
+                  auto_scaling_group:
+                    anyOf:
+                    - type: string
+                    - type: array
+                      items:
+                        type: string
+                  controller_id:
+                    type: string
+                  controller_kind:
+                    type: string
+                  cluster_id:
+                    type: string
+                  cluster_type:
+                    type: string
+                  namespace_id:
+                    type: string
+                  deployment_id:
+                    type: string
+                  container_id:
+                    type: string
+                  external_ids:
+                    type: array
+                    items:
+                      type: string
+                  image_repository_id:
+                    type: string
+                  image_registry_id:
+                    type: string
+                  image_type:
+                    type: string
+                  container_images:
+                    type: array
+                    items:
+                      type: string
+                  start_timestamp:
+                    type: number
+                  end_timestamp:
+                    type: number
+                  publicly_accessible:
+                    type: boolean
+                  public_address:
+                    type: string
+                  addresses:
+                    type: array
+                    items:
+                      type: string
+                  role_arn_list:
+                    type: array
+                    items:
+                      type: string
+                  associated_resource_ids:
+                    type: array
+                    items:
+                      type: string
+                  tags:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        Key:
+                          type: string
+                        Value:
+                          type: string
+                      additionalProperties: false
+                  cloud_tags:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        Key:
+                          type: string
+                        Value:
+                          type: string
+                      additionalProperties: false
+                  deleted:
+                    type: boolean
+                  is_network_endpoint:
+                    type: boolean
+                  endpoint_types:
+                    type: array
+                    items:
+                      type: string
+                  private_endpoint_ids:
+                    type: array
+                    items:
+                      type: string
+                  reachable_vpc_list:
+                    type: array
+                    items:
+                      type: string
+                  predicted_monthly_cost:
+                    type: number
+                  ownerless:
+                    type: boolean
+                  translated: {}
+                additionalProperties: false
+        '400':
+          description: Invalid input data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.BAD_REQUEST'
+        '401':
+          description: Authorization not provided
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.UNAUTHORIZED'
+        '403':
+          description: Insufficient access
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.FORBIDDEN'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.NOT_FOUND'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.INTERNAL_SERVER_ERROR'
+  /inventory:
+    get:
+      operationId: inventory-list
+      summary: Get Resources
+      description: 'Retrieves cloud and platform resources across monitored environments, returning normalized metadata such as resource ID, type, display name, account ID, region, cloud provider, parent lineage, public accessibility status, and end timestamp.
+
+
+        This endpoint is useful for building an inventory, performing lookups, and pivoting between related assets.'
+      tags:
+      - Inventory
+      security:
+      - BearerAuth: []
+      parameters:
+      - in: header
+        name: workspace
+        schema:
+          description: Workspace ID
+          type: string
+        description: Workspace ID
+      - in: query
+        name: phrase
+        schema:
+          description: Search resources by IDs, IPs or display names
+          type: string
+      - in: query
+        name: skip
+        schema:
+          default: 0
+          type: number
+      - in: query
+        name: limit
+        schema:
+          default: 10
+          type: number
+      - in: query
+        name: tags
+        schema:
+          description: List of Key:Value pairs delimited by ":"
+          type: array
+          items:
+            type: string
+            pattern: ^[^:]+:[^:]+$
+      - in: query
+        name: resource_id
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: associated_resource_id
+        schema:
+          type: string
+      - in: query
+        name: resource_type
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: account_id
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: region
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        resource_id:
+                          type: string
+                        resource_type:
+                          type: string
+                        parent:
+                          type: array
+                          items:
+                            type: string
+                        display_name:
+                          type: string
+                        account_id:
+                          type: string
+                        region:
+                          type: string
+                        vpc_id:
+                          type: string
+                        publicly_accessible:
+                          type: boolean
+                        cloud:
+                          type: string
+                        cloud_tags:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              Key:
+                                type: string
+                              Value:
+                                type: string
+                            required:
+                            - Key
+                            - Value
+                            additionalProperties: false
+                      additionalProperties: false
+                  total_count:
+                    type: number
+                  error:
+                    type: string
+                required:
+                - results
+                - total_count
+                additionalProperties: false
+        '400':
+          description: Invalid input data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.BAD_REQUEST'
+        '401':
+          description: Authorization not provided
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.UNAUTHORIZED'
+        '403':
+          description: Insufficient access
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.FORBIDDEN'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.NOT_FOUND'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.INTERNAL_SERVER_ERROR'
+  /inventory/types:
+    get:
+      operationId: inventory-type
+      summary: Get Resource Inventory Summary
+      description: 'Returns a summary of resources grouped by type, including the count of each resource type across the environment.
+
+
+        Use this endpoint to quickly assess resource distribution and identify concentration areas across your environment.'
+      tags:
+      - Inventory
+      security:
+      - BearerAuth: []
+      parameters:
+      - in: header
+        name: workspace
+        schema:
+          description: Workspace ID
+          type: string
+        description: Workspace ID
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    resource_type:
+                      type: string
+                    count:
+                      type: number
+                  required:
+                  - resource_type
+                  - count
+                  additionalProperties: false
+        '400':
+          description: Invalid input data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.BAD_REQUEST'
+        '401':
+          description: Authorization not provided
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.UNAUTHORIZED'
+        '403':
+          description: Insufficient access
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.FORBIDDEN'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.NOT_FOUND'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.INTERNAL_SERVER_ERROR'
+components:
+  schemas:
+    error.UNAUTHORIZED:
+      title: Authorization not provided error (401)
+      description: The error information
+      example:
+        code: UNAUTHORIZED
+        message: Authorization not provided
+        issues: []
+      type: object
+      properties:
+        message:
+          description: The error message
+          example: Authorization not provided
+          type: string
+        code:
+          description: The error code
+          example: UNAUTHORIZED
+          type: string
+        issues:
+          description: An array of issues that were responsible for the error
+          example: []
+          type: array
+          items:
+            type: object
+            properties:
+              message:
+                type: string
+            required:
+            - message
+            additionalProperties: false
+      required:
+      - message
+      - code
+      additionalProperties: false
+    error.INTERNAL_SERVER_ERROR:
+      title: Internal server error error (500)
+      description: The error information
+      example:
+        code: INTERNAL_SERVER_ERROR
+        message: Internal server error
+        issues: []
+      type: object
+      properties:
+        message:
+          description: The error message
+          example: Internal server error
+          type: string
+        code:
+          description: The error code
+          example: INTERNAL_SERVER_ERROR
+          type: string
+        issues:
+          description: An array of issues that were responsible for the error
+          example: []
+          type: array
+          items:
+            type: object
+            properties:
+              message:
+                type: string
+            required:
+            - message
+            additionalProperties: false
+      required:
+      - message
+      - code
+      additionalProperties: false
+    error.BAD_REQUEST:
+      title: Invalid input data error (400)
+      description: The error information
+      example:
+        code: BAD_REQUEST
+        message: Invalid input data
+        issues: []
+      type: object
+      properties:
+        message:
+          description: The error message
+          example: Invalid input data
+          type: string
+        code:
+          description: The error code
+          example: BAD_REQUEST
+          type: string
+        issues:
+          description: An array of issues that were responsible for the error
+          example: []
+          type: array
+          items:
+            type: object
+            properties:
+              message:
+                type: string
+            required:
+            - message
+            additionalProperties: false
+      required:
+      - message
+      - code
+      additionalProperties: false
+    error.NOT_FOUND:
+      title: Not found error (404)
+      description: The error information
+      example:
+        code: NOT_FOUND
+        message: Not found
+        issues: []
+      type: object
+      properties:
+        message:
+          description: The error message
+          example: Not found
+          type: string
+        code:
+          description: The error code
+          example: NOT_FOUND
+          type: string
+        issues:
+          description: An array of issues that were responsible for the error
+          example: []
+          type: array
+          items:
+            type: object
+            properties:
+              message:
+                type: string
+            required:
+            - message
+            additionalProperties: false
+      required:
+      - message
+      - code
+      additionalProperties: false
+    error.FORBIDDEN:
+      title: Insufficient access error (403)
+      description: The error information
+      example:
+        code: FORBIDDEN
+        message: Insufficient access
+        issues: []
+      type: object
+      properties:
+        message:
+          description: The error message
+          example: Insufficient access
+          type: string
+        code:
+          description: The error code
+          example: FORBIDDEN
+          type: string
+        issues:
+          description: An array of issues that were responsible for the error
+          example: []
+          type: array
+          items:
+            type: object
+            properties:
+              message:
+                type: string
+            required:
+            - message
+            additionalProperties: false
+      required:
+      - message
+      - code
+      additionalProperties: false
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+x-apis-io-provenance:
+  assembled: true
+  date: '2026-08-29'
+  method: searched
+  note: 'NOT a single verbatim download. Stream.Security publishes its OpenAPI as PER-OPERATION fragments embedded in its ReadMe-hosted reference pages: each https://docs.streamsec.io/reference/<operationId>.md carries a ''# OpenAPI definition'' block containing a complete OpenAPI 3.1.0 document for that one operation. 44 reference pages were fetched (all HTTP 200) on 2026-08-29; 34 contained an OpenAPI fragment and were merged on paths and components. Every path, operation, parameter, schema and response below is the provider''s own published text, unmodified. Only the union is ours. The consolidated spec is not downloadable from ReadMe as one file - /openapi.json, /openapi.yaml and the /branches/1.0/apis/*.json paths return 404 or 429.'
+  sources:
+  - https://docs.streamsec.io/reference/
+  - https://docs.streamsec.io/llms.txt
+  fragments_merged: 34
+  ownership_check: Confirmed. info.title 'Stream Security API'; servers[] https://{app}.streamsec.io/openapi. streamsec.io is Stream.Security's own operational domain - app.streamsec.io is the product console named as 'YOUR STREAM SECURITY DOMAIN URL' in the provider's MCP setup docs, and docs.streamsec.io is the documentation host. The streamsec.io domain, rather than stream.security, is the pre-rename Lightlytics-era infrastructure the company still runs its product on.

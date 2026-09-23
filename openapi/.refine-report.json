@@ -1,0 +1,42 @@
+{
+  "provider": "stream-security",
+  "sources": [
+    "_original/stream-security-api-openapi.json"
+  ],
+  "outputs": [
+    "stream-security-attack-paths-api-openapi.yml",
+    "stream-security-canaries-api-openapi.yml",
+    "stream-security-config-changes-api-openapi.yml",
+    "stream-security-detection-rules-api-openapi.yml",
+    "stream-security-integrations-api-openapi.yml",
+    "stream-security-inventory-api-openapi.yml",
+    "stream-security-network-identity-logs-api-openapi.yml",
+    "stream-security-notifications-api-openapi.yml",
+    "stream-security-posture-security-api-openapi.yml",
+    "stream-security-threat-detection-api-openapi.yml",
+    "stream-security-vulnerabilities-api-openapi.yml",
+    "stream-security-workspaces-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "stream-security-api-openapi.json: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "stream-security-attack-paths-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "stream-security-canaries-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "stream-security-config-changes-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "stream-security-detection-rules-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "stream-security-integrations-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "stream-security-inventory-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "stream-security-network-identity-logs-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "stream-security-notifications-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "stream-security-posture-security-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "stream-security-threat-detection-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "stream-security-vulnerabilities-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "stream-security-workspaces-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
+}

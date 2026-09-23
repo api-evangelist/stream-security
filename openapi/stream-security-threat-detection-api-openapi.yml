@@ -1,0 +1,764 @@
+openapi: 3.2.0
+info:
+  title: Stream Security Threat Detection API
+  description: Stream Security API for managing security rules, integrations, AI interactions, and more.
+  version: 1.0.0
+servers:
+- url: https://{app}.streamsec.io/openapi
+tags:
+- name: Threat Detection
+paths:
+  /detections/comment:
+    post:
+      operationId: detections-comment-create
+      summary: Add Detection Comment
+      description: Adds a comment to a detection to capture analyst notes, investigation context, findings, or additional observations for collaboration between analysts.
+      tags:
+      - Threat Detection
+      security:
+      - BearerAuth: []
+      parameters:
+      - in: header
+        name: workspace
+        schema:
+          description: Workspace ID
+          type: string
+        description: Workspace ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                detection_id:
+                  type: string
+                comment:
+                  type: string
+                  minLength: 1
+                  maxLength: 2000
+              required:
+              - detection_id
+              - comment
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      inserted_activity_id:
+                        type: string
+                    required:
+                    - inserted_activity_id
+                    additionalProperties: false
+                required:
+                - data
+                additionalProperties: false
+        '400':
+          description: Invalid input data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.BAD_REQUEST'
+        '401':
+          description: Authorization not provided
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.UNAUTHORIZED'
+        '403':
+          description: Insufficient access
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.FORBIDDEN'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.INTERNAL_SERVER_ERROR'
+  /detections:
+    get:
+      operationId: detections-list
+      summary: Get Detections
+      description: 'Retrieves detections from monitored environments, including metadata such as detection ID, timestamp, severity, account, resource details, source, MITRE categories, signal types, and any related anomalous actions.
+
+
+        You can filter results by detection ID, resource ID, or workspace, and use pagination to control the number of alerts returned. This endpoint is designed for retrieving detection listings - use the investigation endpoint to view full detection details for triage and investigation.'
+      tags:
+      - Threat Detection
+      security:
+      - BearerAuth: []
+      parameters:
+      - in: header
+        name: workspace
+        schema:
+          description: Workspace ID
+          type: string
+        description: Workspace ID
+      - in: query
+        name: _id
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: resource_id
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: anomaly_severity
+        schema:
+          type: array
+          items:
+            type: number
+            minimum: 1
+            maximum: 4
+      - in: query
+        name: from_timestamp
+        schema:
+          type: string
+          format: date-time
+          pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
+      - in: query
+        name: to_timestamp
+        schema:
+          type: string
+          format: date-time
+          pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
+      - in: query
+        name: account_id
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: activity_type
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - suspicious_identity_activity
+            - anomalous_network_traffic
+            - suspicious_kubernetes_activity
+            - anomalous_activity
+            - cost_anomaly
+            - detection_rule_activity
+            - third_party_activity
+            - suspicious_canary_activity
+            - anomalous_process_activity
+            - anomalous_files_activity
+      - in: query
+        name: source
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - azure_defender
+            - azure_identity_protection
+            - stream_runtime
+            - stream
+            - crowd_strike
+            - guard_duty
+            - sentinel_one
+            - cortex
+            - security_command_center
+      - in: query
+        name: cluster
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: region
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: resource_type
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: vpc_id
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: tags
+        schema:
+          description: List of Key:Value pairs delimited by ":"
+          type: array
+          items:
+            type: string
+            pattern: ^[^:]+:[^:]+$
+      - in: query
+        name: mitre_categories
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: signal_types
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: rule_id
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: skip
+        schema:
+          default: 0
+          type: number
+      - in: query
+        name: limit
+        schema:
+          default: 50
+          type: number
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        _id:
+                          type: string
+                        timestamp:
+                          type: string
+                        activity_type:
+                          type: string
+                        account_id:
+                          type: array
+                          items:
+                            type: string
+                        anomaly_severity:
+                          type: number
+                          minimum: 1
+                          maximum: 4
+                        cluster:
+                          type: string
+                        container_name:
+                          type: string
+                        process_name:
+                          type: string
+                        source:
+                          type: string
+                        namespace:
+                          type: string
+                        resource_id:
+                          type: string
+                        resource_type:
+                          type: string
+                        resource_cluster:
+                          type: string
+                        resource_deployment:
+                          type: string
+                        resource_namespace:
+                          type: string
+                        resource_controller:
+                          type: string
+                        service:
+                          type: string
+                        mitre_categories:
+                          type: array
+                          items:
+                            type: string
+                        signal_types:
+                          type: array
+                          items:
+                            type: string
+                        session_list:
+                          anyOf:
+                          - type: object
+                            properties:
+                              ip_addresses:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    Ip:
+                                      type: string
+                                    CountryCode:
+                                      type: string
+                                  required:
+                                  - Ip
+                                  - CountryCode
+                                  additionalProperties: false
+                              access_keys:
+                                type: array
+                                items:
+                                  type: string
+                              user_agents:
+                                type: array
+                                items:
+                                  type: string
+                              src_resource_type:
+                                type: array
+                                items:
+                                  type: string
+                            additionalProperties: false
+                          - type: array
+                            items:
+                              type: object
+                              properties:
+                                ip_address:
+                                  type: string
+                                access_key:
+                                  type: string
+                                user_agent:
+                                  type: string
+                                country_code_iso:
+                                  type: string
+                                mfa:
+                                  type: boolean
+                              additionalProperties: false
+                        external_id:
+                          type: string
+                        external_url:
+                          type: string
+                        json_data:
+                          type: string
+                        status:
+                          type: string
+                          enum:
+                          - open
+                          - in_progress
+                          - closed
+                        suspicious_identity_activity_signals:
+                          type: object
+                          propertyNames: {}
+                          additionalProperties: {}
+                        anomalous_network_traffic_signals:
+                          type: object
+                          propertyNames: {}
+                          additionalProperties: {}
+                        suspicious_kubernetes_signals:
+                          type: object
+                          propertyNames: {}
+                          additionalProperties: {}
+                        unusual_activity_signals:
+                          type: object
+                          propertyNames: {}
+                          additionalProperties: {}
+                        cost_anomaly_signals:
+                          type: object
+                          propertyNames: {}
+                          additionalProperties: {}
+                        detection_rule_activity_signals:
+                          type: object
+                          propertyNames: {}
+                          additionalProperties: {}
+                        third_party_signals:
+                          type: object
+                          propertyNames: {}
+                          additionalProperties: {}
+                        triage_summary:
+                          type: string
+                        triage_reasoning:
+                          type: string
+                        triage_timestamp:
+                          type: string
+                        triage_confidence:
+                          type: string
+                          enum:
+                          - Low
+                          - Medium
+                          - High
+                        triage_recommended_verdict:
+                          type: string
+                          enum:
+                          - Benign
+                          - Suspicious
+                          - Malicious
+                      required:
+                      - _id
+                      additionalProperties: false
+                required:
+                - results
+                additionalProperties: false
+        '400':
+          description: Invalid input data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.BAD_REQUEST'
+        '401':
+          description: Authorization not provided
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.UNAUTHORIZED'
+        '403':
+          description: Insufficient access
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.FORBIDDEN'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.NOT_FOUND'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.INTERNAL_SERVER_ERROR'
+  /detections/status:
+    put:
+      operationId: detections-setStatus
+      summary: Update Detection Status
+      description: Updates the status of a detection to reflect its current investigation state, such as open, in progress, or closed.
+      tags:
+      - Threat Detection
+      security:
+      - BearerAuth: []
+      parameters:
+      - in: header
+        name: workspace
+        schema:
+          description: Workspace ID
+          type: string
+        description: Workspace ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                detections_ids:
+                  type: array
+                  items:
+                    type: string
+                new_status:
+                  type: string
+                  enum:
+                  - open
+                  - in_progress
+                  - closed
+                comment:
+                  type: string
+                  maxLength: 100
+              required:
+              - detections_ids
+              - new_status
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  updated_count:
+                    type: number
+                required:
+                - updated_count
+                additionalProperties: false
+        '400':
+          description: Invalid input data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.BAD_REQUEST'
+        '401':
+          description: Authorization not provided
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.UNAUTHORIZED'
+        '403':
+          description: Insufficient access
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.FORBIDDEN'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.NOT_FOUND'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.INTERNAL_SERVER_ERROR'
+  /detections/{detection_id}/ai_summary:
+    get:
+      operationId: detections-summary
+      summary: Get Detection AI Summary
+      description: 'Retrieves an AI-generated summary for a specific detection, providing a concise verdict, confidence score, and contextual explanation of the activity. This includes relevant behaviors, potential risks, and whether further investigation is recommended.
+
+
+        Use this endpoint to quickly understand the nature and severity of a detection before deciding on next steps.'
+      tags:
+      - Threat Detection
+      security:
+      - BearerAuth: []
+      parameters:
+      - in: header
+        name: workspace
+        schema:
+          description: Workspace ID
+          type: string
+        description: Workspace ID
+      - in: path
+        name: detection_id
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  summary:
+                    type: string
+                required:
+                - summary
+                additionalProperties: false
+        '400':
+          description: Invalid input data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.BAD_REQUEST'
+        '401':
+          description: Authorization not provided
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.UNAUTHORIZED'
+        '403':
+          description: Insufficient access
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.FORBIDDEN'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.NOT_FOUND'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.INTERNAL_SERVER_ERROR'
+components:
+  schemas:
+    error.UNAUTHORIZED:
+      title: Authorization not provided error (401)
+      description: The error information
+      example:
+        code: UNAUTHORIZED
+        message: Authorization not provided
+        issues: []
+      type: object
+      properties:
+        message:
+          description: The error message
+          example: Authorization not provided
+          type: string
+        code:
+          description: The error code
+          example: UNAUTHORIZED
+          type: string
+        issues:
+          description: An array of issues that were responsible for the error
+          example: []
+          type: array
+          items:
+            type: object
+            properties:
+              message:
+                type: string
+            required:
+            - message
+            additionalProperties: false
+      required:
+      - message
+      - code
+      additionalProperties: false
+    error.INTERNAL_SERVER_ERROR:
+      title: Internal server error error (500)
+      description: The error information
+      example:
+        code: INTERNAL_SERVER_ERROR
+        message: Internal server error
+        issues: []
+      type: object
+      properties:
+        message:
+          description: The error message
+          example: Internal server error
+          type: string
+        code:
+          description: The error code
+          example: INTERNAL_SERVER_ERROR
+          type: string
+        issues:
+          description: An array of issues that were responsible for the error
+          example: []
+          type: array
+          items:
+            type: object
+            properties:
+              message:
+                type: string
+            required:
+            - message
+            additionalProperties: false
+      required:
+      - message
+      - code
+      additionalProperties: false
+    error.BAD_REQUEST:
+      title: Invalid input data error (400)
+      description: The error information
+      example:
+        code: BAD_REQUEST
+        message: Invalid input data
+        issues: []
+      type: object
+      properties:
+        message:
+          description: The error message
+          example: Invalid input data
+          type: string
+        code:
+          description: The error code
+          example: BAD_REQUEST
+          type: string
+        issues:
+          description: An array of issues that were responsible for the error
+          example: []
+          type: array
+          items:
+            type: object
+            properties:
+              message:
+                type: string
+            required:
+            - message
+            additionalProperties: false
+      required:
+      - message
+      - code
+      additionalProperties: false
+    error.NOT_FOUND:
+      title: Not found error (404)
+      description: The error information
+      example:
+        code: NOT_FOUND
+        message: Not found
+        issues: []
+      type: object
+      properties:
+        message:
+          description: The error message
+          example: Not found
+          type: string
+        code:
+          description: The error code
+          example: NOT_FOUND
+          type: string
+        issues:
+          description: An array of issues that were responsible for the error
+          example: []
+          type: array
+          items:
+            type: object
+            properties:
+              message:
+                type: string
+            required:
+            - message
+            additionalProperties: false
+      required:
+      - message
+      - code
+      additionalProperties: false
+    error.FORBIDDEN:
+      title: Insufficient access error (403)
+      description: The error information
+      example:
+        code: FORBIDDEN
+        message: Insufficient access
+        issues: []
+      type: object
+      properties:
+        message:
+          description: The error message
+          example: Insufficient access
+          type: string
+        code:
+          description: The error code
+          example: FORBIDDEN
+          type: string
+        issues:
+          description: An array of issues that were responsible for the error
+          example: []
+          type: array
+          items:
+            type: object
+            properties:
+              message:
+                type: string
+            required:
+            - message
+            additionalProperties: false
+      required:
+      - message
+      - code
+      additionalProperties: false
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+x-apis-io-provenance:
+  assembled: true
+  date: '2026-08-29'
+  method: searched
+  note: 'NOT a single verbatim download. Stream.Security publishes its OpenAPI as PER-OPERATION fragments embedded in its ReadMe-hosted reference pages: each https://docs.streamsec.io/reference/<operationId>.md carries a ''# OpenAPI definition'' block containing a complete OpenAPI 3.1.0 document for that one operation. 44 reference pages were fetched (all HTTP 200) on 2026-08-29; 34 contained an OpenAPI fragment and were merged on paths and components. Every path, operation, parameter, schema and response below is the provider''s own published text, unmodified. Only the union is ours. The consolidated spec is not downloadable from ReadMe as one file - /openapi.json, /openapi.yaml and the /branches/1.0/apis/*.json paths return 404 or 429.'
+  sources:
+  - https://docs.streamsec.io/reference/
+  - https://docs.streamsec.io/llms.txt
+  fragments_merged: 34
+  ownership_check: Confirmed. info.title 'Stream Security API'; servers[] https://{app}.streamsec.io/openapi. streamsec.io is Stream.Security's own operational domain - app.streamsec.io is the product console named as 'YOUR STREAM SECURITY DOMAIN URL' in the provider's MCP setup docs, and docs.streamsec.io is the documentation host. The streamsec.io domain, rather than stream.security, is the pre-rename Lightlytics-era infrastructure the company still runs its product on.

@@ -1,0 +1,1605 @@
+openapi: 3.2.0
+info:
+  title: Stream Security Notifications API
+  description: Stream Security API for managing security rules, integrations, AI interactions, and more.
+  version: 1.0.0
+servers:
+- url: https://{app}.streamsec.io/openapi
+tags:
+- name: Notifications
+paths:
+  /notifications:
+    post:
+      operationId: notifications-create
+      summary: Create Notification Rule
+      description: 'Creates a new notification rule with the specified configuration.
+
+
+        The rule will trigger alerts to configured destinations when matching events occur.'
+      tags:
+      - Notifications
+      security:
+      - BearerAuth: []
+      parameters:
+      - in: header
+        name: workspace
+        schema:
+          description: Workspace ID
+          type: string
+        description: Workspace ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  minLength: 1
+                  maxLength: 100
+                description:
+                  type: string
+                  maxLength: 250
+                enabled:
+                  default: true
+                  type: boolean
+                event_type:
+                  type: string
+                  enum:
+                  - cloud_event
+                  - detection
+                  - simulation_event
+                channels:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      type:
+                        anyOf:
+                        - type: string
+                          enum:
+                          - webhook
+                          - splunk
+                          - pagerduty
+                          - microsoftteams
+                          - opsgenie
+                          - logzio
+                          - googlecards
+                          - paloaltocortexxsiam
+                          - torq
+                        - type: string
+                          const: slack
+                      subtype:
+                        anyOf:
+                        - type: string
+                          enum:
+                          - webhook
+                          - splunk
+                          - pagerduty
+                          - microsoftteams
+                          - opsgenie
+                          - logzio
+                          - googlecards
+                          - paloaltocortexxsiam
+                          - torq
+                        - type: string
+                          const: slack
+                      id:
+                        type: string
+                    required:
+                    - type
+                    - id
+                condition:
+                  type: object
+                  properties:
+                    main_filter:
+                      type: object
+                      properties:
+                        operand:
+                          type: string
+                          enum:
+                          - and
+                          - or
+                        filters:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              field:
+                                type: string
+                              match_type:
+                                type: string
+                                enum:
+                                - is
+                                - is_not
+                                - contains
+                                - not_contains
+                                - regex
+                                - gte
+                                - lte
+                                - exists
+                                - not_exists
+                                - empty
+                                - not_empty
+                              value: {}
+                              tag:
+                                type: object
+                                properties:
+                                  key:
+                                    type: string
+                                  match_type:
+                                    type: string
+                                    enum:
+                                    - is
+                                    - is_not
+                                    - contains
+                                    - not_contains
+                                    - empty
+                                    - not_empty
+                                    - regex
+                                  value:
+                                    type: string
+                              operand:
+                                type: string
+                                enum:
+                                - and
+                                - or
+                              filters:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    field:
+                                      type: string
+                                    match_type:
+                                      type: string
+                                      enum:
+                                      - is
+                                      - is_not
+                                      - contains
+                                      - not_contains
+                                      - regex
+                                      - gte
+                                      - lte
+                                      - exists
+                                      - not_exists
+                                      - empty
+                                      - not_empty
+                                    value: {}
+                                    tag:
+                                      type: object
+                                      properties:
+                                        key:
+                                          type: string
+                                        match_type:
+                                          type: string
+                                          enum:
+                                          - is
+                                          - is_not
+                                          - contains
+                                          - not_contains
+                                          - empty
+                                          - not_empty
+                                          - regex
+                                        value:
+                                          type: string
+                      required:
+                      - operand
+              required:
+              - name
+              - event_type
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  description:
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                  enabled:
+                    type: boolean
+                  event_type:
+                    type: string
+                    enum:
+                    - cloud_event
+                    - detection
+                    - simulation_event
+                  channels:
+                    anyOf:
+                    - type: array
+                      items:
+                        type: object
+                        properties:
+                          type:
+                            anyOf:
+                            - type: string
+                              enum:
+                              - webhook
+                              - splunk
+                              - pagerduty
+                              - microsoftteams
+                              - opsgenie
+                              - logzio
+                              - googlecards
+                              - paloaltocortexxsiam
+                              - torq
+                            - type: string
+                              const: slack
+                          subtype:
+                            anyOf:
+                            - type: string
+                              enum:
+                              - webhook
+                              - splunk
+                              - pagerduty
+                              - microsoftteams
+                              - opsgenie
+                              - logzio
+                              - googlecards
+                              - paloaltocortexxsiam
+                              - torq
+                            - type: string
+                              const: slack
+                          id:
+                            type: string
+                        required:
+                        - type
+                        - id
+                        additionalProperties: false
+                    - type: 'null'
+                  condition:
+                    anyOf:
+                    - type: object
+                      properties:
+                        main_filter:
+                          type: object
+                          properties:
+                            operand:
+                              type: string
+                              enum:
+                              - and
+                              - or
+                            filters:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  field:
+                                    type: string
+                                  match_type:
+                                    type: string
+                                    enum:
+                                    - is
+                                    - is_not
+                                    - contains
+                                    - not_contains
+                                    - regex
+                                    - gte
+                                    - lte
+                                    - exists
+                                    - not_exists
+                                    - empty
+                                    - not_empty
+                                  value: {}
+                                  tag:
+                                    type: object
+                                    properties:
+                                      key:
+                                        type: string
+                                      match_type:
+                                        type: string
+                                        enum:
+                                        - is
+                                        - is_not
+                                        - contains
+                                        - not_contains
+                                        - empty
+                                        - not_empty
+                                        - regex
+                                      value:
+                                        type: string
+                                    additionalProperties: false
+                                  operand:
+                                    type: string
+                                    enum:
+                                    - and
+                                    - or
+                                  filters:
+                                    type: array
+                                    items:
+                                      type: object
+                                      properties:
+                                        field:
+                                          type: string
+                                        match_type:
+                                          type: string
+                                          enum:
+                                          - is
+                                          - is_not
+                                          - contains
+                                          - not_contains
+                                          - regex
+                                          - gte
+                                          - lte
+                                          - exists
+                                          - not_exists
+                                          - empty
+                                          - not_empty
+                                        value: {}
+                                        tag:
+                                          type: object
+                                          properties:
+                                            key:
+                                              type: string
+                                            match_type:
+                                              type: string
+                                              enum:
+                                              - is
+                                              - is_not
+                                              - contains
+                                              - not_contains
+                                              - empty
+                                              - not_empty
+                                              - regex
+                                            value:
+                                              type: string
+                                          additionalProperties: false
+                                      additionalProperties: false
+                                additionalProperties: false
+                          required:
+                          - operand
+                          additionalProperties: false
+                      additionalProperties: false
+                    - type: 'null'
+                  created_by:
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                  created_at:
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                  modified_at:
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                required:
+                - id
+                - name
+                - enabled
+                - event_type
+                additionalProperties: false
+        '400':
+          description: Invalid input data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.BAD_REQUEST'
+        '401':
+          description: Authorization not provided
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.UNAUTHORIZED'
+        '403':
+          description: Insufficient access
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.FORBIDDEN'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.INTERNAL_SERVER_ERROR'
+    get:
+      operationId: notifications-list
+      summary: List Notification Rules
+      description: 'Retrieves notification rules with optional filtering and pagination.
+
+
+        Notification rules define when and how users are notified about security events.
+
+
+        Results are returned in descending order by creation date.'
+      tags:
+      - Notifications
+      security:
+      - BearerAuth: []
+      parameters:
+      - in: header
+        name: workspace
+        schema:
+          description: Workspace ID
+          type: string
+        description: Workspace ID
+      - in: query
+        name: event_types
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - cloud_event
+            - detection
+            - simulation_event
+      - in: query
+        name: statuses
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - active
+            - inactive
+      - in: query
+        name: destinations
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: severities
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - low
+            - medium
+            - high
+            - critical
+      - in: query
+        name: search
+        schema:
+          type: string
+      - in: query
+        name: limit
+        schema:
+          default: 10
+          type: number
+          minimum: 1
+          maximum: 100
+      - in: query
+        name: cursor
+        schema:
+          type: number
+          minimum: 0
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                        description:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                        enabled:
+                          type: boolean
+                        event_type:
+                          type: string
+                          enum:
+                          - cloud_event
+                          - detection
+                          - simulation_event
+                        channels:
+                          anyOf:
+                          - type: array
+                            items:
+                              type: object
+                              properties:
+                                type:
+                                  anyOf:
+                                  - type: string
+                                    enum:
+                                    - webhook
+                                    - splunk
+                                    - pagerduty
+                                    - microsoftteams
+                                    - opsgenie
+                                    - logzio
+                                    - googlecards
+                                    - paloaltocortexxsiam
+                                    - torq
+                                  - type: string
+                                    const: slack
+                                subtype:
+                                  anyOf:
+                                  - type: string
+                                    enum:
+                                    - webhook
+                                    - splunk
+                                    - pagerduty
+                                    - microsoftteams
+                                    - opsgenie
+                                    - logzio
+                                    - googlecards
+                                    - paloaltocortexxsiam
+                                    - torq
+                                  - type: string
+                                    const: slack
+                                id:
+                                  type: string
+                              required:
+                              - type
+                              - id
+                              additionalProperties: false
+                          - type: 'null'
+                        condition:
+                          anyOf:
+                          - type: object
+                            properties:
+                              main_filter:
+                                type: object
+                                properties:
+                                  operand:
+                                    type: string
+                                    enum:
+                                    - and
+                                    - or
+                                  filters:
+                                    type: array
+                                    items:
+                                      type: object
+                                      properties:
+                                        field:
+                                          type: string
+                                        match_type:
+                                          type: string
+                                          enum:
+                                          - is
+                                          - is_not
+                                          - contains
+                                          - not_contains
+                                          - regex
+                                          - gte
+                                          - lte
+                                          - exists
+                                          - not_exists
+                                          - empty
+                                          - not_empty
+                                        value: {}
+                                        tag:
+                                          type: object
+                                          properties:
+                                            key:
+                                              type: string
+                                            match_type:
+                                              type: string
+                                              enum:
+                                              - is
+                                              - is_not
+                                              - contains
+                                              - not_contains
+                                              - empty
+                                              - not_empty
+                                              - regex
+                                            value:
+                                              type: string
+                                          additionalProperties: false
+                                        operand:
+                                          type: string
+                                          enum:
+                                          - and
+                                          - or
+                                        filters:
+                                          type: array
+                                          items:
+                                            type: object
+                                            properties:
+                                              field:
+                                                type: string
+                                              match_type:
+                                                type: string
+                                                enum:
+                                                - is
+                                                - is_not
+                                                - contains
+                                                - not_contains
+                                                - regex
+                                                - gte
+                                                - lte
+                                                - exists
+                                                - not_exists
+                                                - empty
+                                                - not_empty
+                                              value: {}
+                                              tag:
+                                                type: object
+                                                properties:
+                                                  key:
+                                                    type: string
+                                                  match_type:
+                                                    type: string
+                                                    enum:
+                                                    - is
+                                                    - is_not
+                                                    - contains
+                                                    - not_contains
+                                                    - empty
+                                                    - not_empty
+                                                    - regex
+                                                  value:
+                                                    type: string
+                                                additionalProperties: false
+                                            additionalProperties: false
+                                      additionalProperties: false
+                                required:
+                                - operand
+                                additionalProperties: false
+                            additionalProperties: false
+                          - type: 'null'
+                        created_by:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                        created_at:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                        modified_at:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                        customer_id:
+                          type: string
+                      required:
+                      - id
+                      - name
+                      - enabled
+                      - event_type
+                      additionalProperties: false
+                  total:
+                    type: number
+                  totalUnfiltered:
+                    type: number
+                required:
+                - items
+                - total
+                - totalUnfiltered
+                additionalProperties: false
+        '400':
+          description: Invalid input data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.BAD_REQUEST'
+        '401':
+          description: Authorization not provided
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.UNAUTHORIZED'
+        '403':
+          description: Insufficient access
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.FORBIDDEN'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.NOT_FOUND'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.INTERNAL_SERVER_ERROR'
+  /notifications/{id}:
+    delete:
+      operationId: notifications-delete
+      summary: Delete Notification Rule
+      description: 'Permanently deletes a notification rule.
+
+
+        This action cannot be undone.'
+      tags:
+      - Notifications
+      security:
+      - BearerAuth: []
+      parameters:
+      - in: header
+        name: workspace
+        schema:
+          description: Workspace ID
+          type: string
+        description: Workspace ID
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                required:
+                - success
+                additionalProperties: false
+        '400':
+          description: Invalid input data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.BAD_REQUEST'
+        '401':
+          description: Authorization not provided
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.UNAUTHORIZED'
+        '403':
+          description: Insufficient access
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.FORBIDDEN'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.NOT_FOUND'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.INTERNAL_SERVER_ERROR'
+    get:
+      operationId: notifications-get
+      summary: Get Notification Rule
+      description: 'Retrieves a single notification rule by ID.
+
+
+        Returns the complete notification configuration including channels, conditions, and settings.'
+      tags:
+      - Notifications
+      security:
+      - BearerAuth: []
+      parameters:
+      - in: header
+        name: workspace
+        schema:
+          description: Workspace ID
+          type: string
+        description: Workspace ID
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  description:
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                  enabled:
+                    type: boolean
+                  event_type:
+                    type: string
+                    enum:
+                    - cloud_event
+                    - detection
+                    - simulation_event
+                  channels:
+                    anyOf:
+                    - type: array
+                      items:
+                        type: object
+                        properties:
+                          type:
+                            anyOf:
+                            - type: string
+                              enum:
+                              - webhook
+                              - splunk
+                              - pagerduty
+                              - microsoftteams
+                              - opsgenie
+                              - logzio
+                              - googlecards
+                              - paloaltocortexxsiam
+                              - torq
+                            - type: string
+                              const: slack
+                          subtype:
+                            anyOf:
+                            - type: string
+                              enum:
+                              - webhook
+                              - splunk
+                              - pagerduty
+                              - microsoftteams
+                              - opsgenie
+                              - logzio
+                              - googlecards
+                              - paloaltocortexxsiam
+                              - torq
+                            - type: string
+                              const: slack
+                          id:
+                            type: string
+                        required:
+                        - type
+                        - id
+                        additionalProperties: false
+                    - type: 'null'
+                  condition:
+                    anyOf:
+                    - type: object
+                      properties:
+                        main_filter:
+                          type: object
+                          properties:
+                            operand:
+                              type: string
+                              enum:
+                              - and
+                              - or
+                            filters:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  field:
+                                    type: string
+                                  match_type:
+                                    type: string
+                                    enum:
+                                    - is
+                                    - is_not
+                                    - contains
+                                    - not_contains
+                                    - regex
+                                    - gte
+                                    - lte
+                                    - exists
+                                    - not_exists
+                                    - empty
+                                    - not_empty
+                                  value: {}
+                                  tag:
+                                    type: object
+                                    properties:
+                                      key:
+                                        type: string
+                                      match_type:
+                                        type: string
+                                        enum:
+                                        - is
+                                        - is_not
+                                        - contains
+                                        - not_contains
+                                        - empty
+                                        - not_empty
+                                        - regex
+                                      value:
+                                        type: string
+                                    additionalProperties: false
+                                  operand:
+                                    type: string
+                                    enum:
+                                    - and
+                                    - or
+                                  filters:
+                                    type: array
+                                    items:
+                                      type: object
+                                      properties:
+                                        field:
+                                          type: string
+                                        match_type:
+                                          type: string
+                                          enum:
+                                          - is
+                                          - is_not
+                                          - contains
+                                          - not_contains
+                                          - regex
+                                          - gte
+                                          - lte
+                                          - exists
+                                          - not_exists
+                                          - empty
+                                          - not_empty
+                                        value: {}
+                                        tag:
+                                          type: object
+                                          properties:
+                                            key:
+                                              type: string
+                                            match_type:
+                                              type: string
+                                              enum:
+                                              - is
+                                              - is_not
+                                              - contains
+                                              - not_contains
+                                              - empty
+                                              - not_empty
+                                              - regex
+                                            value:
+                                              type: string
+                                          additionalProperties: false
+                                      additionalProperties: false
+                                additionalProperties: false
+                          required:
+                          - operand
+                          additionalProperties: false
+                      additionalProperties: false
+                    - type: 'null'
+                  created_by:
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                  created_at:
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                  modified_at:
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                  customer_id:
+                    type: string
+                required:
+                - id
+                - name
+                - enabled
+                - event_type
+                additionalProperties: false
+        '400':
+          description: Invalid input data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.BAD_REQUEST'
+        '401':
+          description: Authorization not provided
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.UNAUTHORIZED'
+        '403':
+          description: Insufficient access
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.FORBIDDEN'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.NOT_FOUND'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.INTERNAL_SERVER_ERROR'
+    patch:
+      operationId: notifications-update
+      summary: Update Notification Rule
+      description: 'Updates an existing notification rule.
+
+
+        Supports partial updates - only provided fields will be modified.'
+      tags:
+      - Notifications
+      security:
+      - BearerAuth: []
+      parameters:
+      - in: header
+        name: workspace
+        schema:
+          description: Workspace ID
+          type: string
+        description: Workspace ID
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  minLength: 1
+                  maxLength: 100
+                description:
+                  type: string
+                  maxLength: 250
+                enabled:
+                  type: boolean
+                event_type:
+                  type: string
+                  enum:
+                  - cloud_event
+                  - detection
+                  - simulation_event
+                channels:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      type:
+                        anyOf:
+                        - type: string
+                          enum:
+                          - webhook
+                          - splunk
+                          - pagerduty
+                          - microsoftteams
+                          - opsgenie
+                          - logzio
+                          - googlecards
+                          - paloaltocortexxsiam
+                          - torq
+                        - type: string
+                          const: slack
+                      subtype:
+                        anyOf:
+                        - type: string
+                          enum:
+                          - webhook
+                          - splunk
+                          - pagerduty
+                          - microsoftteams
+                          - opsgenie
+                          - logzio
+                          - googlecards
+                          - paloaltocortexxsiam
+                          - torq
+                        - type: string
+                          const: slack
+                      id:
+                        type: string
+                    required:
+                    - type
+                    - id
+                condition:
+                  type: object
+                  properties:
+                    main_filter:
+                      type: object
+                      properties:
+                        operand:
+                          type: string
+                          enum:
+                          - and
+                          - or
+                        filters:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              field:
+                                type: string
+                              match_type:
+                                type: string
+                                enum:
+                                - is
+                                - is_not
+                                - contains
+                                - not_contains
+                                - regex
+                                - gte
+                                - lte
+                                - exists
+                                - not_exists
+                                - empty
+                                - not_empty
+                              value: {}
+                              tag:
+                                type: object
+                                properties:
+                                  key:
+                                    type: string
+                                  match_type:
+                                    type: string
+                                    enum:
+                                    - is
+                                    - is_not
+                                    - contains
+                                    - not_contains
+                                    - empty
+                                    - not_empty
+                                    - regex
+                                  value:
+                                    type: string
+                              operand:
+                                type: string
+                                enum:
+                                - and
+                                - or
+                              filters:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    field:
+                                      type: string
+                                    match_type:
+                                      type: string
+                                      enum:
+                                      - is
+                                      - is_not
+                                      - contains
+                                      - not_contains
+                                      - regex
+                                      - gte
+                                      - lte
+                                      - exists
+                                      - not_exists
+                                      - empty
+                                      - not_empty
+                                    value: {}
+                                    tag:
+                                      type: object
+                                      properties:
+                                        key:
+                                          type: string
+                                        match_type:
+                                          type: string
+                                          enum:
+                                          - is
+                                          - is_not
+                                          - contains
+                                          - not_contains
+                                          - empty
+                                          - not_empty
+                                          - regex
+                                        value:
+                                          type: string
+                      required:
+                      - operand
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  description:
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                  enabled:
+                    type: boolean
+                  event_type:
+                    type: string
+                    enum:
+                    - cloud_event
+                    - detection
+                    - simulation_event
+                  channels:
+                    anyOf:
+                    - type: array
+                      items:
+                        type: object
+                        properties:
+                          type:
+                            anyOf:
+                            - type: string
+                              enum:
+                              - webhook
+                              - splunk
+                              - pagerduty
+                              - microsoftteams
+                              - opsgenie
+                              - logzio
+                              - googlecards
+                              - paloaltocortexxsiam
+                              - torq
+                            - type: string
+                              const: slack
+                          subtype:
+                            anyOf:
+                            - type: string
+                              enum:
+                              - webhook
+                              - splunk
+                              - pagerduty
+                              - microsoftteams
+                              - opsgenie
+                              - logzio
+                              - googlecards
+                              - paloaltocortexxsiam
+                              - torq
+                            - type: string
+                              const: slack
+                          id:
+                            type: string
+                        required:
+                        - type
+                        - id
+                        additionalProperties: false
+                    - type: 'null'
+                  condition:
+                    anyOf:
+                    - type: object
+                      properties:
+                        main_filter:
+                          type: object
+                          properties:
+                            operand:
+                              type: string
+                              enum:
+                              - and
+                              - or
+                            filters:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  field:
+                                    type: string
+                                  match_type:
+                                    type: string
+                                    enum:
+                                    - is
+                                    - is_not
+                                    - contains
+                                    - not_contains
+                                    - regex
+                                    - gte
+                                    - lte
+                                    - exists
+                                    - not_exists
+                                    - empty
+                                    - not_empty
+                                  value: {}
+                                  tag:
+                                    type: object
+                                    properties:
+                                      key:
+                                        type: string
+                                      match_type:
+                                        type: string
+                                        enum:
+                                        - is
+                                        - is_not
+                                        - contains
+                                        - not_contains
+                                        - empty
+                                        - not_empty
+                                        - regex
+                                      value:
+                                        type: string
+                                    additionalProperties: false
+                                  operand:
+                                    type: string
+                                    enum:
+                                    - and
+                                    - or
+                                  filters:
+                                    type: array
+                                    items:
+                                      type: object
+                                      properties:
+                                        field:
+                                          type: string
+                                        match_type:
+                                          type: string
+                                          enum:
+                                          - is
+                                          - is_not
+                                          - contains
+                                          - not_contains
+                                          - regex
+                                          - gte
+                                          - lte
+                                          - exists
+                                          - not_exists
+                                          - empty
+                                          - not_empty
+                                        value: {}
+                                        tag:
+                                          type: object
+                                          properties:
+                                            key:
+                                              type: string
+                                            match_type:
+                                              type: string
+                                              enum:
+                                              - is
+                                              - is_not
+                                              - contains
+                                              - not_contains
+                                              - empty
+                                              - not_empty
+                                              - regex
+                                            value:
+                                              type: string
+                                          additionalProperties: false
+                                      additionalProperties: false
+                                additionalProperties: false
+                          required:
+                          - operand
+                          additionalProperties: false
+                      additionalProperties: false
+                    - type: 'null'
+                  created_by:
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                  created_at:
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                  modified_at:
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                required:
+                - id
+                - name
+                - enabled
+                - event_type
+                additionalProperties: false
+        '400':
+          description: Invalid input data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.BAD_REQUEST'
+        '401':
+          description: Authorization not provided
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.UNAUTHORIZED'
+        '403':
+          description: Insufficient access
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.FORBIDDEN'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.NOT_FOUND'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.INTERNAL_SERVER_ERROR'
+components:
+  schemas:
+    error.UNAUTHORIZED:
+      title: Authorization not provided error (401)
+      description: The error information
+      example:
+        code: UNAUTHORIZED
+        message: Authorization not provided
+        issues: []
+      type: object
+      properties:
+        message:
+          description: The error message
+          example: Authorization not provided
+          type: string
+        code:
+          description: The error code
+          example: UNAUTHORIZED
+          type: string
+        issues:
+          description: An array of issues that were responsible for the error
+          example: []
+          type: array
+          items:
+            type: object
+            properties:
+              message:
+                type: string
+            required:
+            - message
+            additionalProperties: false
+      required:
+      - message
+      - code
+      additionalProperties: false
+    error.INTERNAL_SERVER_ERROR:
+      title: Internal server error error (500)
+      description: The error information
+      example:
+        code: INTERNAL_SERVER_ERROR
+        message: Internal server error
+        issues: []
+      type: object
+      properties:
+        message:
+          description: The error message
+          example: Internal server error
+          type: string
+        code:
+          description: The error code
+          example: INTERNAL_SERVER_ERROR
+          type: string
+        issues:
+          description: An array of issues that were responsible for the error
+          example: []
+          type: array
+          items:
+            type: object
+            properties:
+              message:
+                type: string
+            required:
+            - message
+            additionalProperties: false
+      required:
+      - message
+      - code
+      additionalProperties: false
+    error.BAD_REQUEST:
+      title: Invalid input data error (400)
+      description: The error information
+      example:
+        code: BAD_REQUEST
+        message: Invalid input data
+        issues: []
+      type: object
+      properties:
+        message:
+          description: The error message
+          example: Invalid input data
+          type: string
+        code:
+          description: The error code
+          example: BAD_REQUEST
+          type: string
+        issues:
+          description: An array of issues that were responsible for the error
+          example: []
+          type: array
+          items:
+            type: object
+            properties:
+              message:
+                type: string
+            required:
+            - message
+            additionalProperties: false
+      required:
+      - message
+      - code
+      additionalProperties: false
+    error.NOT_FOUND:
+      title: Not found error (404)
+      description: The error information
+      example:
+        code: NOT_FOUND
+        message: Not found
+        issues: []
+      type: object
+      properties:
+        message:
+          description: The error message
+          example: Not found
+          type: string
+        code:
+          description: The error code
+          example: NOT_FOUND
+          type: string
+        issues:
+          description: An array of issues that were responsible for the error
+          example: []
+          type: array
+          items:
+            type: object
+            properties:
+              message:
+                type: string
+            required:
+            - message
+            additionalProperties: false
+      required:
+      - message
+      - code
+      additionalProperties: false
+    error.FORBIDDEN:
+      title: Insufficient access error (403)
+      description: The error information
+      example:
+        code: FORBIDDEN
+        message: Insufficient access
+        issues: []
+      type: object
+      properties:
+        message:
+          description: The error message
+          example: Insufficient access
+          type: string
+        code:
+          description: The error code
+          example: FORBIDDEN
+          type: string
+        issues:
+          description: An array of issues that were responsible for the error
+          example: []
+          type: array
+          items:
+            type: object
+            properties:
+              message:
+                type: string
+            required:
+            - message
+            additionalProperties: false
+      required:
+      - message
+      - code
+      additionalProperties: false
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+x-apis-io-provenance:
+  assembled: true
+  date: '2026-08-29'
+  method: searched
+  note: 'NOT a single verbatim download. Stream.Security publishes its OpenAPI as PER-OPERATION fragments embedded in its ReadMe-hosted reference pages: each https://docs.streamsec.io/reference/<operationId>.md carries a ''# OpenAPI definition'' block containing a complete OpenAPI 3.1.0 document for that one operation. 44 reference pages were fetched (all HTTP 200) on 2026-08-29; 34 contained an OpenAPI fragment and were merged on paths and components. Every path, operation, parameter, schema and response below is the provider''s own published text, unmodified. Only the union is ours. The consolidated spec is not downloadable from ReadMe as one file - /openapi.json, /openapi.yaml and the /branches/1.0/apis/*.json paths return 404 or 429.'
+  sources:
+  - https://docs.streamsec.io/reference/
+  - https://docs.streamsec.io/llms.txt
+  fragments_merged: 34
+  ownership_check: Confirmed. info.title 'Stream Security API'; servers[] https://{app}.streamsec.io/openapi. streamsec.io is Stream.Security's own operational domain - app.streamsec.io is the product console named as 'YOUR STREAM SECURITY DOMAIN URL' in the provider's MCP setup docs, and docs.streamsec.io is the documentation host. The streamsec.io domain, rather than stream.security, is the pre-rename Lightlytics-era infrastructure the company still runs its product on.

@@ -1,0 +1,669 @@
+openapi: 3.2.0
+info:
+  title: Stream Security Network & Identity Logs API
+  description: Stream Security API for managing security rules, integrations, AI interactions, and more.
+  version: 1.0.0
+servers:
+- url: https://{app}.streamsec.io/openapi
+tags:
+- name: Network & Identity Logs
+paths:
+  /network/identity-logs:
+    get:
+      operationId: network-identityLogs
+      summary: Get IAM Identity Activity Logs
+      description: 'Retrieves identity-related activity logs from monitored environments, including event metadata, principal and destination details, network information, and the raw event payload.
+
+
+        Supports filtering by account, action, identity, principal attributes, destination attributes, error details, region, timestamp, user agent, and other session context.
+
+
+        Use this endpoint to review identity activity and correlate actions with other security detections.'
+      tags:
+      - Network & Identity Logs
+      security:
+      - BearerAuth: []
+      parameters:
+      - in: header
+        name: workspace
+        schema:
+          description: Workspace ID
+          type: string
+        description: Workspace ID
+      - in: query
+        name: src_ip
+        schema:
+          type: string
+      - in: query
+        name: identity
+        schema:
+          type: string
+      - in: query
+        name: principal_type
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: cloud_type
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: action
+        schema:
+          type: string
+      - in: query
+        name: region
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: destination
+        schema:
+          type: string
+      - in: query
+        name: activity_resource_id
+        schema:
+          type: string
+      - in: query
+        name: user_agent
+        schema:
+          type: string
+      - in: query
+        name: error_message
+        schema:
+          type: string
+      - in: query
+        name: account_id
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: src_resource_id
+        schema:
+          type: string
+      - in: query
+        name: src_resource_type
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: src_geo_iso
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: src_display_name
+        schema:
+          type: string
+      - in: query
+        name: src_nic_id
+        schema:
+          type: string
+      - in: query
+        name: src_is_tor
+        schema:
+          type: boolean
+      - in: query
+        name: src_ip_score
+        schema:
+          type: array
+          items:
+            type: number
+      - in: query
+        name: dst_type
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - s3_bucket
+            - dynamodb_table
+            - iam_role
+      - in: query
+        name: aggregate_by
+        schema:
+          type: string
+          enum:
+          - default
+      - in: query
+        name: principal_id
+        schema:
+          type: string
+      - in: query
+        name: session_id
+        schema:
+          type: string
+      - in: query
+        name: new_session_id
+        schema:
+          type: string
+      - in: query
+        name: from_timesatmp
+        schema:
+          type: string
+      - in: query
+        name: to_timestamp
+        schema:
+          type: string
+      - in: query
+        name: skip
+        schema:
+          default: 0
+          type: number
+      - in: query
+        name: limit
+        schema:
+          default: 100
+          type: number
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items: {}
+                  totalCount:
+                    type: number
+                required:
+                - results
+                - totalCount
+                additionalProperties: false
+        '400':
+          description: Invalid input data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.BAD_REQUEST'
+        '401':
+          description: Authorization not provided
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.UNAUTHORIZED'
+        '403':
+          description: Insufficient access
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.FORBIDDEN'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.NOT_FOUND'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.INTERNAL_SERVER_ERROR'
+  /network/k8s-audit-logs:
+    get:
+      operationId: network-k8sAuditLogs
+      summary: Get Kubernetes Audit Logs
+      description: 'Retrieves detailed Kubernetes audit logs from monitored clusters, including API server events, resource access patterns, security policy violations, and administrative actions.
+
+
+        Supports filtering by namespace, resource type, verb actions, user identities, service accounts, admission controller decisions, and cluster-specific metadata.
+
+
+        Use this endpoint to monitor Kubernetes security posture, track privileged operations, investigate policy violations, and ensure compliance with cluster governance requirements.'
+      tags:
+      - Network & Identity Logs
+      security:
+      - BearerAuth: []
+      parameters:
+      - in: header
+        name: workspace
+        schema:
+          description: Workspace ID
+          type: string
+        description: Workspace ID
+      - in: query
+        name: skip
+        schema:
+          default: 0
+          type: number
+      - in: query
+        name: limit
+        schema:
+          default: 100
+          type: number
+      - in: query
+        name: cluster_id
+        schema:
+          type: string
+      - in: query
+        name: account_id
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: verb
+        schema:
+          type: string
+      - in: query
+        name: principal_id
+        schema:
+          type: string
+      - in: query
+        name: principal_type
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: resource_type
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: namespace
+        schema:
+          type: string
+      - in: query
+        name: from_timesatmp
+        schema:
+          type: string
+      - in: query
+        name: to_timestamp
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items: {}
+                  totalCount:
+                    type: number
+                required:
+                - results
+                - totalCount
+                additionalProperties: false
+        '400':
+          description: Invalid input data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.BAD_REQUEST'
+        '401':
+          description: Authorization not provided
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.UNAUTHORIZED'
+        '403':
+          description: Insufficient access
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.FORBIDDEN'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.NOT_FOUND'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.INTERNAL_SERVER_ERROR'
+  /network/traffic-logs:
+    get:
+      operationId: network-trafficLogs
+      summary: Get Network Traffic Logs
+      description: 'Retrieves comprehensive network traffic logs from monitored environments, including connection metadata, source and destination details, protocol information, and traffic flow data.
+
+
+        Supports filtering by source/destination IP addresses, ports, protocols, connection states, traffic volumes, geographic regions, and time ranges.
+
+
+        Use this endpoint to analyze network communication patterns, identify suspicious traffic flows, and investigate connectivity issues across your infrastructure.'
+      tags:
+      - Network & Identity Logs
+      security:
+      - BearerAuth: []
+      parameters:
+      - in: header
+        name: workspace
+        schema:
+          description: Workspace ID
+          type: string
+        description: Workspace ID
+      - in: query
+        name: skip
+        schema:
+          default: 0
+          type: number
+      - in: query
+        name: limit
+        schema:
+          default: 100
+          type: number
+      - in: query
+        name: src_ip
+        schema:
+          type: string
+      - in: query
+        name: dst_ip
+        schema:
+          type: string
+      - in: query
+        name: src_resource_id
+        schema:
+          type: string
+      - in: query
+        name: dst_resource_id
+        schema:
+          type: string
+      - in: query
+        name: protocol
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: src_geo_iso
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: dst_geo_iso
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: src_port_range
+        schema:
+          description: A number or a range of numbers (e.g. "5" or "5-10")
+          type: string
+          pattern: ^\d+(-\d+)?$
+      - in: query
+        name: dst_post_range
+        schema:
+          description: A number or a range of numbers (e.g. "5" or "5-10")
+          type: string
+          pattern: ^\d+(-\d+)?$
+      - in: query
+        name: action
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - ACCEPT
+            - REJECT
+            - UNKNOWN
+      - in: query
+        name: account_id
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: region
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: from_timestamp
+        schema:
+          type: string
+      - in: query
+        name: to_timestamp
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items: {}
+                  totalCount:
+                    type: number
+                required:
+                - results
+                - totalCount
+                additionalProperties: false
+        '400':
+          description: Invalid input data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.BAD_REQUEST'
+        '401':
+          description: Authorization not provided
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.UNAUTHORIZED'
+        '403':
+          description: Insufficient access
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.FORBIDDEN'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.NOT_FOUND'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.INTERNAL_SERVER_ERROR'
+components:
+  schemas:
+    error.UNAUTHORIZED:
+      title: Authorization not provided error (401)
+      description: The error information
+      example:
+        code: UNAUTHORIZED
+        message: Authorization not provided
+        issues: []
+      type: object
+      properties:
+        message:
+          description: The error message
+          example: Authorization not provided
+          type: string
+        code:
+          description: The error code
+          example: UNAUTHORIZED
+          type: string
+        issues:
+          description: An array of issues that were responsible for the error
+          example: []
+          type: array
+          items:
+            type: object
+            properties:
+              message:
+                type: string
+            required:
+            - message
+            additionalProperties: false
+      required:
+      - message
+      - code
+      additionalProperties: false
+    error.INTERNAL_SERVER_ERROR:
+      title: Internal server error error (500)
+      description: The error information
+      example:
+        code: INTERNAL_SERVER_ERROR
+        message: Internal server error
+        issues: []
+      type: object
+      properties:
+        message:
+          description: The error message
+          example: Internal server error
+          type: string
+        code:
+          description: The error code
+          example: INTERNAL_SERVER_ERROR
+          type: string
+        issues:
+          description: An array of issues that were responsible for the error
+          example: []
+          type: array
+          items:
+            type: object
+            properties:
+              message:
+                type: string
+            required:
+            - message
+            additionalProperties: false
+      required:
+      - message
+      - code
+      additionalProperties: false
+    error.BAD_REQUEST:
+      title: Invalid input data error (400)
+      description: The error information
+      example:
+        code: BAD_REQUEST
+        message: Invalid input data
+        issues: []
+      type: object
+      properties:
+        message:
+          description: The error message
+          example: Invalid input data
+          type: string
+        code:
+          description: The error code
+          example: BAD_REQUEST
+          type: string
+        issues:
+          description: An array of issues that were responsible for the error
+          example: []
+          type: array
+          items:
+            type: object
+            properties:
+              message:
+                type: string
+            required:
+            - message
+            additionalProperties: false
+      required:
+      - message
+      - code
+      additionalProperties: false
+    error.NOT_FOUND:
+      title: Not found error (404)
+      description: The error information
+      example:
+        code: NOT_FOUND
+        message: Not found
+        issues: []
+      type: object
+      properties:
+        message:
+          description: The error message
+          example: Not found
+          type: string
+        code:
+          description: The error code
+          example: NOT_FOUND
+          type: string
+        issues:
+          description: An array of issues that were responsible for the error
+          example: []
+          type: array
+          items:
+            type: object
+            properties:
+              message:
+                type: string
+            required:
+            - message
+            additionalProperties: false
+      required:
+      - message
+      - code
+      additionalProperties: false
+    error.FORBIDDEN:
+      title: Insufficient access error (403)
+      description: The error information
+      example:
+        code: FORBIDDEN
+        message: Insufficient access
+        issues: []
+      type: object
+      properties:
+        message:
+          description: The error message
+          example: Insufficient access
+          type: string
+        code:
+          description: The error code
+          example: FORBIDDEN
+          type: string
+        issues:
+          description: An array of issues that were responsible for the error
+          example: []
+          type: array
+          items:
+            type: object
+            properties:
+              message:
+                type: string
+            required:
+            - message
+            additionalProperties: false
+      required:
+      - message
+      - code
+      additionalProperties: false
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+x-apis-io-provenance:
+  assembled: true
+  date: '2026-08-29'
+  method: searched
+  note: 'NOT a single verbatim download. Stream.Security publishes its OpenAPI as PER-OPERATION fragments embedded in its ReadMe-hosted reference pages: each https://docs.streamsec.io/reference/<operationId>.md carries a ''# OpenAPI definition'' block containing a complete OpenAPI 3.1.0 document for that one operation. 44 reference pages were fetched (all HTTP 200) on 2026-08-29; 34 contained an OpenAPI fragment and were merged on paths and components. Every path, operation, parameter, schema and response below is the provider''s own published text, unmodified. Only the union is ours. The consolidated spec is not downloadable from ReadMe as one file - /openapi.json, /openapi.yaml and the /branches/1.0/apis/*.json paths return 404 or 429.'
+  sources:
+  - https://docs.streamsec.io/reference/
+  - https://docs.streamsec.io/llms.txt
+  fragments_merged: 34
+  ownership_check: Confirmed. info.title 'Stream Security API'; servers[] https://{app}.streamsec.io/openapi. streamsec.io is Stream.Security's own operational domain - app.streamsec.io is the product console named as 'YOUR STREAM SECURITY DOMAIN URL' in the provider's MCP setup docs, and docs.streamsec.io is the documentation host. The streamsec.io domain, rather than stream.security, is the pre-rename Lightlytics-era infrastructure the company still runs its product on.

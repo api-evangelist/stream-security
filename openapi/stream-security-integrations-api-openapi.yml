@@ -1,0 +1,665 @@
+openapi: 3.2.0
+info:
+  title: Stream Security Integrations API
+  description: Stream Security API for managing security rules, integrations, AI interactions, and more.
+  version: 1.0.0
+servers:
+- url: https://{app}.streamsec.io/openapi
+tags:
+- name: Integrations
+paths:
+  /integrations/ecs:
+    get:
+      operationId: integrations-ecs-list
+      summary: Get Integrated ECS Clusters
+      description: 'Retrieves a list of ECS clusters integrated with the platform, along with their connection status, agent types, runtime agent reporting metrics, version, and last seen timestamp.
+
+
+        Each cluster entry includes its display name, cloud provider, account, connection state, number of reporting runtime agents, and platform version.
+
+
+        Use this endpoint to monitor the health and status of all integrated ECS clusters across environments.'
+      tags:
+      - Integrations
+      security:
+      - BearerAuth: []
+      parameters:
+      - in: header
+        name: workspace
+        schema:
+          description: Workspace ID
+          type: string
+        description: Workspace ID
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    _id:
+                      type: string
+                    type:
+                      type: string
+                    created_by:
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                    display_name:
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                    aws_region:
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      - not: {}
+                    ecs_cluster_arn:
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      - not: {}
+                    collection_token:
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                    status:
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                    creation_date:
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                    full_scan_period:
+                      anyOf:
+                      - type: number
+                      - type: 'null'
+                    cloud_account_id:
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      - not: {}
+                    metrics_period:
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      - not: {}
+                    runtime_agent_enabled:
+                      anyOf:
+                      - type: boolean
+                      - type: 'null'
+                    tracing_policies:
+                      anyOf:
+                      - type: object
+                        properties:
+                          network:
+                            type: boolean
+                          process:
+                            type: boolean
+                          files:
+                            type: boolean
+                          api:
+                            default: false
+                            type: boolean
+                        required:
+                        - network
+                        - process
+                        - files
+                        - api
+                        additionalProperties: false
+                      - type: 'null'
+                    last_seen_at:
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      - not: {}
+                    last_metric_at:
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      - not: {}
+                    nodes_last_seen_at:
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      - not: {}
+                    runtime_agent_deployed:
+                      anyOf:
+                      - type: boolean
+                      - type: 'null'
+                    cluster_agent_version:
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      - not: {}
+                    is_latest_version:
+                      anyOf:
+                      - type: boolean
+                      - type: 'null'
+                    latest_cluster_agent_version:
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      - not: {}
+                    unhealthy_agents_count:
+                      anyOf:
+                      - type: number
+                      - type: 'null'
+                    connected_agents_count:
+                      anyOf:
+                      - type: number
+                      - type: 'null'
+                    disconnected_agents_count:
+                      anyOf:
+                      - type: number
+                      - type: 'null'
+                    non_deployed_agents_count:
+                      anyOf:
+                      - type: number
+                      - type: 'null'
+                    tasks_count:
+                      anyOf:
+                      - type: number
+                      - type: 'null'
+                    health_reason:
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      - not: {}
+                    inInventory:
+                      anyOf:
+                      - type: boolean
+                      - type: 'null'
+                    cluster_type:
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                  required:
+                  - _id
+                  - type
+                  additionalProperties: false
+        '400':
+          description: Invalid input data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.BAD_REQUEST'
+        '401':
+          description: Authorization not provided
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.UNAUTHORIZED'
+        '403':
+          description: Insufficient access
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.FORBIDDEN'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.NOT_FOUND'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.INTERNAL_SERVER_ERROR'
+  /integrations/kubernetes:
+    get:
+      operationId: integrations-kubernetes-list
+      summary: Get Integrated K8s Clusters
+      description: 'Retrieves a list of Kubernetes clusters integrated with the platform, along with their connection status, agent types, runtime agent reporting metrics, version, and last seen timestamp.
+
+
+        Each cluster entry includes its display name, cloud provider, account, connection state, number of reporting runtime agents, and platform version.
+
+
+        Use this endpoint to monitor the health and status of all integrated Kubernetes clusters across environments.
+
+
+        Supports pagination with skip and limit parameters.'
+      tags:
+      - Integrations
+      security:
+      - BearerAuth: []
+      parameters:
+      - in: header
+        name: workspace
+        schema:
+          description: Workspace ID
+          type: string
+        description: Workspace ID
+      - in: query
+        name: cursor
+        schema:
+          type: number
+      - in: query
+        name: limit
+        schema:
+          default: 50
+          type: number
+      - in: query
+        name: status
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - connected
+            - disconnected
+            - unhealthy
+            - not_deployed
+      - in: query
+        name: accounts
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: agent_type
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - cluster_only
+            - cluster_runtime
+      - in: query
+        name: cloud_provider
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - eks
+            - aks
+            - gcp_gke_cluster
+      - in: query
+        name: cluster_name
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: version
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    _id:
+                      type: string
+                    type:
+                      type: string
+                    created_by:
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                    display_name:
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                    aws_region:
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      - not: {}
+                    eks_arn:
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      - not: {}
+                    aks_resource_id:
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      - not: {}
+                    gke_resource_id:
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      - not: {}
+                    collection_token:
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                    status:
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                    creation_date:
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                    full_scan_period:
+                      anyOf:
+                      - type: number
+                      - type: 'null'
+                    cloud_account_id:
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      - not: {}
+                    metrics_period:
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      - not: {}
+                    runtime_agent_enabled:
+                      anyOf:
+                      - type: boolean
+                      - type: 'null'
+                    tracing_policies:
+                      anyOf:
+                      - type: object
+                        properties:
+                          network:
+                            type: boolean
+                          process:
+                            type: boolean
+                          files:
+                            type: boolean
+                          api:
+                            default: false
+                            type: boolean
+                        required:
+                        - network
+                        - process
+                        - files
+                        - api
+                        additionalProperties: false
+                      - type: 'null'
+                    last_seen_at:
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      - not: {}
+                    last_metric_at:
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      - not: {}
+                    runtime_agent_deployed:
+                      anyOf:
+                      - type: boolean
+                      - type: 'null'
+                    cluster_agent_version:
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      - not: {}
+                    is_latest_version:
+                      anyOf:
+                      - type: boolean
+                      - type: 'null'
+                    latest_cluster_agent_version:
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      - not: {}
+                    unhealthy_agents_count:
+                      anyOf:
+                      - type: number
+                      - type: 'null'
+                    connected_agents_count:
+                      anyOf:
+                      - type: number
+                      - type: 'null'
+                    disconnected_agents_count:
+                      anyOf:
+                      - type: number
+                      - type: 'null'
+                    non_deployed_agents_count:
+                      anyOf:
+                      - type: number
+                      - type: 'null'
+                    nodes_count:
+                      anyOf:
+                      - type: number
+                      - type: 'null'
+                    health_reason:
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      - not: {}
+                    inInventory:
+                      anyOf:
+                      - type: boolean
+                      - type: 'null'
+                    cluster_type:
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                  required:
+                  - _id
+                  - type
+                  additionalProperties: false
+        '400':
+          description: Invalid input data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.BAD_REQUEST'
+        '401':
+          description: Authorization not provided
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.UNAUTHORIZED'
+        '403':
+          description: Insufficient access
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.FORBIDDEN'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.NOT_FOUND'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.INTERNAL_SERVER_ERROR'
+components:
+  schemas:
+    error.UNAUTHORIZED:
+      title: Authorization not provided error (401)
+      description: The error information
+      example:
+        code: UNAUTHORIZED
+        message: Authorization not provided
+        issues: []
+      type: object
+      properties:
+        message:
+          description: The error message
+          example: Authorization not provided
+          type: string
+        code:
+          description: The error code
+          example: UNAUTHORIZED
+          type: string
+        issues:
+          description: An array of issues that were responsible for the error
+          example: []
+          type: array
+          items:
+            type: object
+            properties:
+              message:
+                type: string
+            required:
+            - message
+            additionalProperties: false
+      required:
+      - message
+      - code
+      additionalProperties: false
+    error.INTERNAL_SERVER_ERROR:
+      title: Internal server error error (500)
+      description: The error information
+      example:
+        code: INTERNAL_SERVER_ERROR
+        message: Internal server error
+        issues: []
+      type: object
+      properties:
+        message:
+          description: The error message
+          example: Internal server error
+          type: string
+        code:
+          description: The error code
+          example: INTERNAL_SERVER_ERROR
+          type: string
+        issues:
+          description: An array of issues that were responsible for the error
+          example: []
+          type: array
+          items:
+            type: object
+            properties:
+              message:
+                type: string
+            required:
+            - message
+            additionalProperties: false
+      required:
+      - message
+      - code
+      additionalProperties: false
+    error.BAD_REQUEST:
+      title: Invalid input data error (400)
+      description: The error information
+      example:
+        code: BAD_REQUEST
+        message: Invalid input data
+        issues: []
+      type: object
+      properties:
+        message:
+          description: The error message
+          example: Invalid input data
+          type: string
+        code:
+          description: The error code
+          example: BAD_REQUEST
+          type: string
+        issues:
+          description: An array of issues that were responsible for the error
+          example: []
+          type: array
+          items:
+            type: object
+            properties:
+              message:
+                type: string
+            required:
+            - message
+            additionalProperties: false
+      required:
+      - message
+      - code
+      additionalProperties: false
+    error.NOT_FOUND:
+      title: Not found error (404)
+      description: The error information
+      example:
+        code: NOT_FOUND
+        message: Not found
+        issues: []
+      type: object
+      properties:
+        message:
+          description: The error message
+          example: Not found
+          type: string
+        code:
+          description: The error code
+          example: NOT_FOUND
+          type: string
+        issues:
+          description: An array of issues that were responsible for the error
+          example: []
+          type: array
+          items:
+            type: object
+            properties:
+              message:
+                type: string
+            required:
+            - message
+            additionalProperties: false
+      required:
+      - message
+      - code
+      additionalProperties: false
+    error.FORBIDDEN:
+      title: Insufficient access error (403)
+      description: The error information
+      example:
+        code: FORBIDDEN
+        message: Insufficient access
+        issues: []
+      type: object
+      properties:
+        message:
+          description: The error message
+          example: Insufficient access
+          type: string
+        code:
+          description: The error code
+          example: FORBIDDEN
+          type: string
+        issues:
+          description: An array of issues that were responsible for the error
+          example: []
+          type: array
+          items:
+            type: object
+            properties:
+              message:
+                type: string
+            required:
+            - message
+            additionalProperties: false
+      required:
+      - message
+      - code
+      additionalProperties: false
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+x-apis-io-provenance:
+  assembled: true
+  date: '2026-08-29'
+  method: searched
+  note: 'NOT a single verbatim download. Stream.Security publishes its OpenAPI as PER-OPERATION fragments embedded in its ReadMe-hosted reference pages: each https://docs.streamsec.io/reference/<operationId>.md carries a ''# OpenAPI definition'' block containing a complete OpenAPI 3.1.0 document for that one operation. 44 reference pages were fetched (all HTTP 200) on 2026-08-29; 34 contained an OpenAPI fragment and were merged on paths and components. Every path, operation, parameter, schema and response below is the provider''s own published text, unmodified. Only the union is ours. The consolidated spec is not downloadable from ReadMe as one file - /openapi.json, /openapi.yaml and the /branches/1.0/apis/*.json paths return 404 or 429.'
+  sources:
+  - https://docs.streamsec.io/reference/
+  - https://docs.streamsec.io/llms.txt
+  fragments_merged: 34
+  ownership_check: Confirmed. info.title 'Stream Security API'; servers[] https://{app}.streamsec.io/openapi. streamsec.io is Stream.Security's own operational domain - app.streamsec.io is the product console named as 'YOUR STREAM SECURITY DOMAIN URL' in the provider's MCP setup docs, and docs.streamsec.io is the documentation host. The streamsec.io domain, rather than stream.security, is the pre-rename Lightlytics-era infrastructure the company still runs its product on.

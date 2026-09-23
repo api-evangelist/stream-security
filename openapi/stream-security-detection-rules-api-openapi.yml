@@ -1,0 +1,688 @@
+openapi: 3.2.0
+info:
+  title: Stream Security Detection Rules API
+  description: Stream Security API for managing security rules, integrations, AI interactions, and more.
+  version: 1.0.0
+servers:
+- url: https://{app}.streamsec.io/openapi
+tags:
+- name: Detection Rules
+paths:
+  /detection_rules/{detection_id}:
+    get:
+      operationId: detectionRules-details
+      summary: Get Detection Rule Details
+      description: 'Retrieves the full definition and configuration of a detection rule by its unique ID.
+
+
+        The response includes the rule’s name, severity, description, classification labels, notification channels, triggering conditions, any exclusion criteria, creation date and status.
+
+
+        Use this endpoint to review or validate a rule’s configuration, troubleshoot false positives, and audit detection coverage.'
+      tags:
+      - Detection Rules
+      security:
+      - BearerAuth: []
+      parameters:
+      - in: header
+        name: workspace
+        schema:
+          description: Workspace ID
+          type: string
+        description: Workspace ID
+      - in: path
+        name: detection_id
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  _id:
+                    type: string
+                  name:
+                    type: string
+                  created_at:
+                    type: string
+                  modified_at:
+                    type: string
+                  created_by:
+                    type: string
+                  description:
+                    type: string
+                  enabled:
+                    type: boolean
+                  type:
+                    type: string
+                    enum:
+                    - custom
+                    - identityml
+                    - predefined
+                  severity:
+                    type: string
+                    enum:
+                    - critical
+                    - high
+                    - medium
+                    - low
+                    - dynamic
+                  labels:
+                    type: array
+                    items:
+                      type: string
+                  condition:
+                    type: object
+                    properties:
+                      main_filter:
+                        type: object
+                        properties:
+                          operand:
+                            type: string
+                            enum:
+                            - and
+                            - or
+                          filters:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                field:
+                                  type: string
+                                match_type:
+                                  type: string
+                                  enum:
+                                  - is
+                                  - is_not
+                                  - contains
+                                  - not_contains
+                                  - regex
+                                  - gte
+                                  - lte
+                                  - exists
+                                  - not_exists
+                                  - empty
+                                  - not_empty
+                                value: {}
+                                tag:
+                                  type: object
+                                  properties:
+                                    key:
+                                      type: string
+                                    match_type:
+                                      type: string
+                                      enum:
+                                      - is
+                                      - is_not
+                                      - contains
+                                      - not_contains
+                                      - empty
+                                      - not_empty
+                                      - regex
+                                    value:
+                                      type: string
+                                  additionalProperties: false
+                                operand:
+                                  type: string
+                                  enum:
+                                  - and
+                                  - or
+                                filters:
+                                  type: array
+                                  items:
+                                    type: object
+                                    properties:
+                                      field:
+                                        type: string
+                                      match_type:
+                                        type: string
+                                        enum:
+                                        - is
+                                        - is_not
+                                        - contains
+                                        - not_contains
+                                        - regex
+                                        - gte
+                                        - lte
+                                        - exists
+                                        - not_exists
+                                        - empty
+                                        - not_empty
+                                      value: {}
+                                      tag:
+                                        type: object
+                                        properties:
+                                          key:
+                                            type: string
+                                          match_type:
+                                            type: string
+                                            enum:
+                                            - is
+                                            - is_not
+                                            - contains
+                                            - not_contains
+                                            - empty
+                                            - not_empty
+                                            - regex
+                                          value:
+                                            type: string
+                                        additionalProperties: false
+                                    additionalProperties: false
+                              additionalProperties: false
+                        required:
+                        - operand
+                        additionalProperties: false
+                      exclude:
+                        type: object
+                        properties:
+                          operand:
+                            type: string
+                            enum:
+                            - and
+                            - or
+                          filters:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                field:
+                                  type: string
+                                match_type:
+                                  type: string
+                                  enum:
+                                  - is
+                                  - is_not
+                                  - contains
+                                  - not_contains
+                                  - regex
+                                  - gte
+                                  - lte
+                                  - exists
+                                  - not_exists
+                                  - empty
+                                  - not_empty
+                                value: {}
+                                tag:
+                                  type: object
+                                  properties:
+                                    key:
+                                      type: string
+                                    match_type:
+                                      type: string
+                                      enum:
+                                      - is
+                                      - is_not
+                                      - contains
+                                      - not_contains
+                                      - empty
+                                      - not_empty
+                                      - regex
+                                    value:
+                                      type: string
+                                  additionalProperties: false
+                                operand:
+                                  type: string
+                                  enum:
+                                  - and
+                                  - or
+                                filters:
+                                  type: array
+                                  items:
+                                    type: object
+                                    properties:
+                                      field:
+                                        type: string
+                                      match_type:
+                                        type: string
+                                        enum:
+                                        - is
+                                        - is_not
+                                        - contains
+                                        - not_contains
+                                        - regex
+                                        - gte
+                                        - lte
+                                        - exists
+                                        - not_exists
+                                        - empty
+                                        - not_empty
+                                      value: {}
+                                      tag:
+                                        type: object
+                                        properties:
+                                          key:
+                                            type: string
+                                          match_type:
+                                            type: string
+                                            enum:
+                                            - is
+                                            - is_not
+                                            - contains
+                                            - not_contains
+                                            - empty
+                                            - not_empty
+                                            - regex
+                                          value:
+                                            type: string
+                                        additionalProperties: false
+                                    additionalProperties: false
+                              additionalProperties: false
+                        required:
+                        - operand
+                        additionalProperties: false
+                    additionalProperties: false
+                  notification_channels:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        type:
+                          anyOf:
+                          - type: string
+                            enum:
+                            - webhook
+                            - splunk
+                            - pagerduty
+                            - microsoftteams
+                            - opsgenie
+                            - logzio
+                            - googlecards
+                            - paloaltocortexxsiam
+                            - torq
+                          - type: string
+                            const: slack
+                        subtype:
+                          anyOf:
+                          - type: string
+                            enum:
+                            - webhook
+                            - splunk
+                            - pagerduty
+                            - microsoftteams
+                            - opsgenie
+                            - logzio
+                            - googlecards
+                            - paloaltocortexxsiam
+                            - torq
+                          - type: string
+                            const: slack
+                        id:
+                          type: string
+                      required:
+                      - type
+                      - id
+                      additionalProperties: false
+                  custom_config:
+                    type: object
+                    properties:
+                      log_type:
+                        type: string
+                        enum:
+                        - identity
+                        - network
+                        - audit
+                        - process
+                        - file
+                        - apis
+                      detection_field:
+                        type: string
+                        enum:
+                        - source
+                        - destination
+                    additionalProperties: false
+                  identityml_config:
+                    type: object
+                    properties:
+                      action:
+                        type: string
+                      match_type:
+                        type: string
+                        enum:
+                        - is
+                        - contains
+                    additionalProperties: false
+                  predefined_config:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        enum:
+                        - identity
+                        - network
+                        - audit
+                        - canary
+                        - process
+                        - file
+                    additionalProperties: false
+                required:
+                - _id
+                - name
+                additionalProperties: false
+        '400':
+          description: Invalid input data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.BAD_REQUEST'
+        '401':
+          description: Authorization not provided
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.UNAUTHORIZED'
+        '403':
+          description: Insufficient access
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.FORBIDDEN'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.NOT_FOUND'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.INTERNAL_SERVER_ERROR'
+  /detection_rules:
+    get:
+      operationId: detectionRules-list
+      summary: Get Detection Rules
+      description: 'Retrieves all detection rules in the system. A detection rule specifies the conditions that trigger a security event.
+
+
+        The response includes each rule’s name, severity, creation and update timestamps, status (enabled or disabled), labels, detection type, and owner.
+
+
+        Use this endpoint to review existing rules, assess detection coverage, and manage configurations.'
+      tags:
+      - Detection Rules
+      security:
+      - BearerAuth: []
+      parameters:
+      - in: header
+        name: workspace
+        schema:
+          description: Workspace ID
+          type: string
+        description: Workspace ID
+      - in: query
+        name: skip
+        schema:
+          default: 0
+          type: number
+      - in: query
+        name: limit
+        schema:
+          default: 10
+          type: number
+      - in: query
+        name: name
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    _id:
+                      type: string
+                    name:
+                      type: string
+                    created_at:
+                      type: string
+                    modified_at:
+                      type: string
+                    created_by:
+                      type: string
+                    description:
+                      type: string
+                    enabled:
+                      type: boolean
+                    type:
+                      type: string
+                      enum:
+                      - custom
+                      - identityml
+                      - predefined
+                    severity:
+                      type: string
+                      enum:
+                      - critical
+                      - high
+                      - medium
+                      - low
+                      - dynamic
+                    labels:
+                      type: array
+                      items:
+                        type: string
+                  required:
+                  - _id
+                  - name
+                  additionalProperties: false
+        '400':
+          description: Invalid input data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.BAD_REQUEST'
+        '401':
+          description: Authorization not provided
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.UNAUTHORIZED'
+        '403':
+          description: Insufficient access
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.FORBIDDEN'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.NOT_FOUND'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.INTERNAL_SERVER_ERROR'
+components:
+  schemas:
+    error.UNAUTHORIZED:
+      title: Authorization not provided error (401)
+      description: The error information
+      example:
+        code: UNAUTHORIZED
+        message: Authorization not provided
+        issues: []
+      type: object
+      properties:
+        message:
+          description: The error message
+          example: Authorization not provided
+          type: string
+        code:
+          description: The error code
+          example: UNAUTHORIZED
+          type: string
+        issues:
+          description: An array of issues that were responsible for the error
+          example: []
+          type: array
+          items:
+            type: object
+            properties:
+              message:
+                type: string
+            required:
+            - message
+            additionalProperties: false
+      required:
+      - message
+      - code
+      additionalProperties: false
+    error.INTERNAL_SERVER_ERROR:
+      title: Internal server error error (500)
+      description: The error information
+      example:
+        code: INTERNAL_SERVER_ERROR
+        message: Internal server error
+        issues: []
+      type: object
+      properties:
+        message:
+          description: The error message
+          example: Internal server error
+          type: string
+        code:
+          description: The error code
+          example: INTERNAL_SERVER_ERROR
+          type: string
+        issues:
+          description: An array of issues that were responsible for the error
+          example: []
+          type: array
+          items:
+            type: object
+            properties:
+              message:
+                type: string
+            required:
+            - message
+            additionalProperties: false
+      required:
+      - message
+      - code
+      additionalProperties: false
+    error.BAD_REQUEST:
+      title: Invalid input data error (400)
+      description: The error information
+      example:
+        code: BAD_REQUEST
+        message: Invalid input data
+        issues: []
+      type: object
+      properties:
+        message:
+          description: The error message
+          example: Invalid input data
+          type: string
+        code:
+          description: The error code
+          example: BAD_REQUEST
+          type: string
+        issues:
+          description: An array of issues that were responsible for the error
+          example: []
+          type: array
+          items:
+            type: object
+            properties:
+              message:
+                type: string
+            required:
+            - message
+            additionalProperties: false
+      required:
+      - message
+      - code
+      additionalProperties: false
+    error.NOT_FOUND:
+      title: Not found error (404)
+      description: The error information
+      example:
+        code: NOT_FOUND
+        message: Not found
+        issues: []
+      type: object
+      properties:
+        message:
+          description: The error message
+          example: Not found
+          type: string
+        code:
+          description: The error code
+          example: NOT_FOUND
+          type: string
+        issues:
+          description: An array of issues that were responsible for the error
+          example: []
+          type: array
+          items:
+            type: object
+            properties:
+              message:
+                type: string
+            required:
+            - message
+            additionalProperties: false
+      required:
+      - message
+      - code
+      additionalProperties: false
+    error.FORBIDDEN:
+      title: Insufficient access error (403)
+      description: The error information
+      example:
+        code: FORBIDDEN
+        message: Insufficient access
+        issues: []
+      type: object
+      properties:
+        message:
+          description: The error message
+          example: Insufficient access
+          type: string
+        code:
+          description: The error code
+          example: FORBIDDEN
+          type: string
+        issues:
+          description: An array of issues that were responsible for the error
+          example: []
+          type: array
+          items:
+            type: object
+            properties:
+              message:
+                type: string
+            required:
+            - message
+            additionalProperties: false
+      required:
+      - message
+      - code
+      additionalProperties: false
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+x-apis-io-provenance:
+  assembled: true
+  date: '2026-08-29'
+  method: searched
+  note: 'NOT a single verbatim download. Stream.Security publishes its OpenAPI as PER-OPERATION fragments embedded in its ReadMe-hosted reference pages: each https://docs.streamsec.io/reference/<operationId>.md carries a ''# OpenAPI definition'' block containing a complete OpenAPI 3.1.0 document for that one operation. 44 reference pages were fetched (all HTTP 200) on 2026-08-29; 34 contained an OpenAPI fragment and were merged on paths and components. Every path, operation, parameter, schema and response below is the provider''s own published text, unmodified. Only the union is ours. The consolidated spec is not downloadable from ReadMe as one file - /openapi.json, /openapi.yaml and the /branches/1.0/apis/*.json paths return 404 or 429.'
+  sources:
+  - https://docs.streamsec.io/reference/
+  - https://docs.streamsec.io/llms.txt
+  fragments_merged: 34
+  ownership_check: Confirmed. info.title 'Stream Security API'; servers[] https://{app}.streamsec.io/openapi. streamsec.io is Stream.Security's own operational domain - app.streamsec.io is the product console named as 'YOUR STREAM SECURITY DOMAIN URL' in the provider's MCP setup docs, and docs.streamsec.io is the documentation host. The streamsec.io domain, rather than stream.security, is the pre-rename Lightlytics-era infrastructure the company still runs its product on.

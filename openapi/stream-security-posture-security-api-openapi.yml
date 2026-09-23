@@ -1,0 +1,1190 @@
+openapi: 3.2.0
+info:
+  title: Stream Security Posture Security API
+  description: Stream Security API for managing security rules, integrations, AI interactions, and more.
+  version: 1.0.0
+servers:
+- url: https://{app}.streamsec.io/openapi
+tags:
+- name: Posture Security
+paths:
+  /rules:
+    get:
+      operationId: rules-list
+      summary: Get Posture Rules
+      description: 'Retrieves posture rules that define security, compliance, or configuration requirements for monitored environments. Each rule includes metadata such as name, description, severity, category, compliance mappings, status, state, finding type, remediation guidance, and associated labels.
+
+
+        Use this endpoint to review and manage the set of posture rules applied across your environment, identify active requirements, and assess compliance coverage.'
+      tags:
+      - Posture Security
+      security:
+      - BearerAuth: []
+      parameters:
+      - in: header
+        name: workspace
+        schema:
+          description: Workspace ID
+          type: string
+        description: Workspace ID
+      - in: query
+        name: _id
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: account_ids
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: severity
+        schema:
+          type: array
+          items:
+            type: number
+            minimum: 1
+            maximum: 4
+      - in: query
+        name: rule_type
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: finding_type
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - misconfiguration
+            - internet_exposed
+            - insecure_identity
+            - vulnerability
+            - high_privileges
+            - privilege_escalation
+            - data_access
+            - crown_jewel_access
+            - admin_privileges
+            - external_access
+            - segmentation_breach
+      - in: query
+        name: category
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - Security
+            - Cost
+            - Availability
+            - Sustainability
+            - Other
+      - in: query
+        name: labels
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: status
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: state
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: created_by
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: compliance_controls_ids
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: compliance
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: include_violations_count
+        schema:
+          type: boolean
+      - in: query
+        name: violations_resource_ids
+        schema:
+          minItems: 1
+          type: array
+          items:
+            type: string
+      - in: query
+        name: phrase
+        schema:
+          type: string
+      - in: query
+        name: skip
+        schema:
+          type: number
+          minimum: 0
+      - in: query
+        name: limit
+        schema:
+          type: number
+          minimum: 1
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        violations_count:
+                          type: number
+                        name:
+                          type: string
+                        status:
+                          type: string
+                          enum:
+                          - pending
+                          - pending_fullscan
+                          - processing
+                          - active
+                          - invalid
+                          - inactive
+                          - error
+                          - disabled
+                          - archived
+                          - draft
+                        exclusions_count:
+                          type: number
+                        state:
+                          type: string
+                          enum:
+                          - enabled
+                          - disabled
+                          - draft
+                          - archived
+                        category:
+                          type: string
+                          enum:
+                          - Security
+                          - Cost
+                          - Availability
+                          - Sustainability
+                          - Other
+                        severity:
+                          type: number
+                          minimum: 1
+                          maximum: 4
+                        description:
+                          type: string
+                        remediation:
+                          type: string
+                        labels:
+                          type: array
+                          items:
+                            type: string
+                        compliance:
+                          type: array
+                          items:
+                            type: string
+                        rule_type:
+                          type: string
+                          enum:
+                          - resource
+                          - path
+                        finding_type:
+                          type: string
+                          enum:
+                          - misconfiguration
+                          - internet_exposed
+                          - insecure_identity
+                          - vulnerability
+                          - high_privileges
+                          - privilege_escalation
+                          - data_access
+                          - crown_jewel_access
+                          - admin_privileges
+                          - external_access
+                          - segmentation_breach
+                        subject:
+                          type: string
+                          enum:
+                          - source
+                          - intermediate
+                          - destination
+                        path_source_predicates:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              resource_type:
+                                type: string
+                              resource_id:
+                                type: string
+                              attributes:
+                                type: object
+                                properties:
+                                  operand:
+                                    type: string
+                                    enum:
+                                    - OR
+                                    - AND
+                                  attributes_list:
+                                    type: array
+                                    items:
+                                      type: object
+                                      properties:
+                                        name:
+                                          type: string
+                                        value:
+                                          type: array
+                                          items: {}
+                                        match_type:
+                                          type: string
+                                          enum:
+                                          - equals
+                                          - not_equals
+                                          - contains
+                                          - not_contains
+                                          - is_null
+                                          - is_not_null
+                                          - greater_than
+                                          - greater_equal
+                                          - less_than
+                                          - less_equal
+                                      additionalProperties: false
+                                required:
+                                - operand
+                                - attributes_list
+                                additionalProperties: false
+                              tags:
+                                type: object
+                                properties:
+                                  operand:
+                                    type: string
+                                    enum:
+                                    - OR
+                                    - AND
+                                  attributes_list:
+                                    type: array
+                                    items:
+                                      type: object
+                                      properties:
+                                        name:
+                                          type: string
+                                        value:
+                                          type: array
+                                          items: {}
+                                        match_type:
+                                          type: string
+                                          enum:
+                                          - equals
+                                          - not_equals
+                                          - contains
+                                          - not_contains
+                                          - is_null
+                                          - is_not_null
+                                          - greater_than
+                                          - greater_equal
+                                          - less_than
+                                          - less_equal
+                                      additionalProperties: false
+                                required:
+                                - operand
+                                - attributes_list
+                                additionalProperties: false
+                              locations:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    location_type:
+                                      type: string
+                                      enum:
+                                      - Account
+                                      - Subscription
+                                      - GCPProjectAccount
+                                      - Region
+                                      - vpc
+                                    location_value:
+                                      type: string
+                                  required:
+                                  - location_type
+                                  - location_value
+                                  additionalProperties: false
+                            additionalProperties: false
+                        path_source_predicate_operand:
+                          type: string
+                          enum:
+                          - OR
+                          - AND
+                        path_intermediate_predicates:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              resource_type:
+                                type: string
+                              resource_id:
+                                type: string
+                              attributes:
+                                type: object
+                                properties:
+                                  operand:
+                                    type: string
+                                    enum:
+                                    - OR
+                                    - AND
+                                  attributes_list:
+                                    type: array
+                                    items:
+                                      type: object
+                                      properties:
+                                        name:
+                                          type: string
+                                        value:
+                                          type: array
+                                          items: {}
+                                        match_type:
+                                          type: string
+                                          enum:
+                                          - equals
+                                          - not_equals
+                                          - contains
+                                          - not_contains
+                                          - is_null
+                                          - is_not_null
+                                          - greater_than
+                                          - greater_equal
+                                          - less_than
+                                          - less_equal
+                                      additionalProperties: false
+                                required:
+                                - operand
+                                - attributes_list
+                                additionalProperties: false
+                              tags:
+                                type: object
+                                properties:
+                                  operand:
+                                    type: string
+                                    enum:
+                                    - OR
+                                    - AND
+                                  attributes_list:
+                                    type: array
+                                    items:
+                                      type: object
+                                      properties:
+                                        name:
+                                          type: string
+                                        value:
+                                          type: array
+                                          items: {}
+                                        match_type:
+                                          type: string
+                                          enum:
+                                          - equals
+                                          - not_equals
+                                          - contains
+                                          - not_contains
+                                          - is_null
+                                          - is_not_null
+                                          - greater_than
+                                          - greater_equal
+                                          - less_than
+                                          - less_equal
+                                      additionalProperties: false
+                                required:
+                                - operand
+                                - attributes_list
+                                additionalProperties: false
+                              locations:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    location_type:
+                                      type: string
+                                      enum:
+                                      - Account
+                                      - Subscription
+                                      - GCPProjectAccount
+                                      - Region
+                                      - vpc
+                                    location_value:
+                                      type: string
+                                  required:
+                                  - location_type
+                                  - location_value
+                                  additionalProperties: false
+                            additionalProperties: false
+                        path_intermediate_predicate_operand:
+                          type: string
+                          enum:
+                          - OR
+                          - AND
+                        path_destination_predicates:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              resource_type:
+                                type: string
+                              resource_id:
+                                type: string
+                              attributes:
+                                type: object
+                                properties:
+                                  operand:
+                                    type: string
+                                    enum:
+                                    - OR
+                                    - AND
+                                  attributes_list:
+                                    type: array
+                                    items:
+                                      type: object
+                                      properties:
+                                        name:
+                                          type: string
+                                        value:
+                                          type: array
+                                          items: {}
+                                        match_type:
+                                          type: string
+                                          enum:
+                                          - equals
+                                          - not_equals
+                                          - contains
+                                          - not_contains
+                                          - is_null
+                                          - is_not_null
+                                          - greater_than
+                                          - greater_equal
+                                          - less_than
+                                          - less_equal
+                                      additionalProperties: false
+                                required:
+                                - operand
+                                - attributes_list
+                                additionalProperties: false
+                              tags:
+                                type: object
+                                properties:
+                                  operand:
+                                    type: string
+                                    enum:
+                                    - OR
+                                    - AND
+                                  attributes_list:
+                                    type: array
+                                    items:
+                                      type: object
+                                      properties:
+                                        name:
+                                          type: string
+                                        value:
+                                          type: array
+                                          items: {}
+                                        match_type:
+                                          type: string
+                                          enum:
+                                          - equals
+                                          - not_equals
+                                          - contains
+                                          - not_contains
+                                          - is_null
+                                          - is_not_null
+                                          - greater_than
+                                          - greater_equal
+                                          - less_than
+                                          - less_equal
+                                      additionalProperties: false
+                                required:
+                                - operand
+                                - attributes_list
+                                additionalProperties: false
+                              locations:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    location_type:
+                                      type: string
+                                      enum:
+                                      - Account
+                                      - Subscription
+                                      - GCPProjectAccount
+                                      - Region
+                                      - vpc
+                                    location_value:
+                                      type: string
+                                  required:
+                                  - location_type
+                                  - location_value
+                                  additionalProperties: false
+                            additionalProperties: false
+                        path_destination_predicate_operand:
+                          type: string
+                          enum:
+                          - OR
+                          - AND
+                        path_source_predicate_equals_match:
+                          type: boolean
+                        path_intermediate_predicate_equals_match:
+                          type: boolean
+                        path_destination_predicate_equals_match:
+                          type: boolean
+                        exclusion_predicates:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              resource_type:
+                                type: string
+                              resource_id:
+                                type: string
+                              attributes:
+                                type: object
+                                properties:
+                                  operand:
+                                    type: string
+                                    enum:
+                                    - OR
+                                    - AND
+                                  attributes_list:
+                                    type: array
+                                    items:
+                                      type: object
+                                      properties:
+                                        name:
+                                          type: string
+                                        value:
+                                          type: array
+                                          items: {}
+                                        match_type:
+                                          type: string
+                                          enum:
+                                          - equals
+                                          - not_equals
+                                          - contains
+                                          - not_contains
+                                          - is_null
+                                          - is_not_null
+                                          - greater_than
+                                          - greater_equal
+                                          - less_than
+                                          - less_equal
+                                      additionalProperties: false
+                                required:
+                                - operand
+                                - attributes_list
+                                additionalProperties: false
+                              tags:
+                                type: object
+                                properties:
+                                  operand:
+                                    type: string
+                                    enum:
+                                    - OR
+                                    - AND
+                                  attributes_list:
+                                    type: array
+                                    items:
+                                      type: object
+                                      properties:
+                                        name:
+                                          type: string
+                                        value:
+                                          type: array
+                                          items: {}
+                                        match_type:
+                                          type: string
+                                          enum:
+                                          - equals
+                                          - not_equals
+                                          - contains
+                                          - not_contains
+                                          - is_null
+                                          - is_not_null
+                                          - greater_than
+                                          - greater_equal
+                                          - less_than
+                                          - less_equal
+                                      additionalProperties: false
+                                required:
+                                - operand
+                                - attributes_list
+                                additionalProperties: false
+                              locations:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    location_type:
+                                      type: string
+                                      enum:
+                                      - Account
+                                      - Subscription
+                                      - GCPProjectAccount
+                                      - Region
+                                      - vpc
+                                    location_value:
+                                      type: string
+                                  required:
+                                  - location_type
+                                  - location_value
+                                  additionalProperties: false
+                            additionalProperties: false
+                        resource_predicates:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              resource_type:
+                                type: string
+                              resource_id:
+                                type: string
+                              attributes:
+                                type: object
+                                properties:
+                                  operand:
+                                    type: string
+                                    enum:
+                                    - OR
+                                    - AND
+                                  attributes_list:
+                                    type: array
+                                    items:
+                                      type: object
+                                      properties:
+                                        name:
+                                          type: string
+                                        value:
+                                          type: array
+                                          items: {}
+                                        match_type:
+                                          type: string
+                                          enum:
+                                          - equals
+                                          - not_equals
+                                          - contains
+                                          - not_contains
+                                          - is_null
+                                          - is_not_null
+                                          - greater_than
+                                          - greater_equal
+                                          - less_than
+                                          - less_equal
+                                      additionalProperties: false
+                                required:
+                                - operand
+                                - attributes_list
+                                additionalProperties: false
+                              tags:
+                                type: object
+                                properties:
+                                  operand:
+                                    type: string
+                                    enum:
+                                    - OR
+                                    - AND
+                                  attributes_list:
+                                    type: array
+                                    items:
+                                      type: object
+                                      properties:
+                                        name:
+                                          type: string
+                                        value:
+                                          type: array
+                                          items: {}
+                                        match_type:
+                                          type: string
+                                          enum:
+                                          - equals
+                                          - not_equals
+                                          - contains
+                                          - not_contains
+                                          - is_null
+                                          - is_not_null
+                                          - greater_than
+                                          - greater_equal
+                                          - less_than
+                                          - less_equal
+                                      additionalProperties: false
+                                required:
+                                - operand
+                                - attributes_list
+                                additionalProperties: false
+                              locations:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    location_type:
+                                      type: string
+                                      enum:
+                                      - Account
+                                      - Subscription
+                                      - GCPProjectAccount
+                                      - Region
+                                      - vpc
+                                    location_value:
+                                      type: string
+                                  required:
+                                  - location_type
+                                  - location_value
+                                  additionalProperties: false
+                            additionalProperties: false
+                        ports:
+                          type: array
+                          items: {}
+                        allowed_actions: {}
+                        fail_simulation:
+                          type: boolean
+                        action:
+                          type: string
+                          enum:
+                          - create
+                          - modify
+                          - delete
+                        creation_date:
+                          type: string
+                        created_by:
+                          type: string
+                        relevant_attributes:
+                          type: array
+                          items:
+                            type: string
+                      required:
+                      - id
+                      - name
+                      - status
+                      - state
+                      - category
+                      - severity
+                      additionalProperties: false
+                  total_count:
+                    type: number
+                required:
+                - results
+                - total_count
+                additionalProperties: false
+        '400':
+          description: Invalid input data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.BAD_REQUEST'
+        '401':
+          description: Authorization not provided
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.UNAUTHORIZED'
+        '403':
+          description: Insufficient access
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.FORBIDDEN'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.NOT_FOUND'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.INTERNAL_SERVER_ERROR'
+  /rules/resource/{resource_id}/violations:
+    get:
+      operationId: rules-resourceViolations
+      summary: Get Resource Violations
+      description: 'Retrieves all policy violations and security findings associated with a specific resource.
+
+
+        A violation represents a misconfiguration, excessive permission, or risky exposure detected on the asset, including:
+
+
+        * Security misconfigurations (e.g., public access, weak authentication, missing encryption)
+
+
+        * Resources that can be accessed from this asset — such as databases, storage buckets, crown-jewel systems, AI models, or accounts with administrative or high-level privileges
+
+
+        * Privilege escalation risks and excessive permissions
+
+
+        Each result includes the violation’s category, severity, rule name, finding type, and the discovery timestamp (when the issue was first detected).'
+      tags:
+      - Posture Security
+      security:
+      - BearerAuth: []
+      parameters:
+      - in: header
+        name: workspace
+        schema:
+          description: Workspace ID
+          type: string
+        description: Workspace ID
+      - in: path
+        name: resource_id
+        schema:
+          type: string
+        required: true
+      - in: query
+        name: skip
+        schema:
+          default: 0
+          type: number
+          minimum: 0
+      - in: query
+        name: limit
+        schema:
+          default: 50
+          type: number
+          minimum: 1
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    rule_id:
+                      type: string
+                    first_seen_timestamp:
+                      type: string
+                  required:
+                  - rule_id
+                  additionalProperties: false
+        '400':
+          description: Invalid input data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.BAD_REQUEST'
+        '401':
+          description: Authorization not provided
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.UNAUTHORIZED'
+        '403':
+          description: Insufficient access
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.FORBIDDEN'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.NOT_FOUND'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.INTERNAL_SERVER_ERROR'
+  /rules/rule/{rule_id}/violations:
+    get:
+      operationId: rules-ruleViolations
+      summary: Get Rule Violations
+      description: 'Retrieves all violations triggered by a specific detection or compliance rule.
+
+
+        Each violation represents a resource that has failed the rule’s evaluation, indicating a misconfiguration, security risk, or policy non-compliance.'
+      tags:
+      - Posture Security
+      security:
+      - BearerAuth: []
+      parameters:
+      - in: header
+        name: workspace
+        schema:
+          description: Workspace ID
+          type: string
+        description: Workspace ID
+      - in: path
+        name: rule_id
+        schema:
+          type: string
+        required: true
+      - in: query
+        name: skip
+        schema:
+          type: number
+          minimum: 0
+      - in: query
+        name: limit
+        schema:
+          type: number
+          minimum: 1
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        subject_id:
+                          type: string
+                        first_seen_timestamp:
+                          type: string
+                      required:
+                      - subject_id
+                      additionalProperties: false
+                required:
+                - results
+                additionalProperties: false
+        '400':
+          description: Invalid input data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.BAD_REQUEST'
+        '401':
+          description: Authorization not provided
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.UNAUTHORIZED'
+        '403':
+          description: Insufficient access
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.FORBIDDEN'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.NOT_FOUND'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.INTERNAL_SERVER_ERROR'
+components:
+  schemas:
+    error.UNAUTHORIZED:
+      title: Authorization not provided error (401)
+      description: The error information
+      example:
+        code: UNAUTHORIZED
+        message: Authorization not provided
+        issues: []
+      type: object
+      properties:
+        message:
+          description: The error message
+          example: Authorization not provided
+          type: string
+        code:
+          description: The error code
+          example: UNAUTHORIZED
+          type: string
+        issues:
+          description: An array of issues that were responsible for the error
+          example: []
+          type: array
+          items:
+            type: object
+            properties:
+              message:
+                type: string
+            required:
+            - message
+            additionalProperties: false
+      required:
+      - message
+      - code
+      additionalProperties: false
+    error.INTERNAL_SERVER_ERROR:
+      title: Internal server error error (500)
+      description: The error information
+      example:
+        code: INTERNAL_SERVER_ERROR
+        message: Internal server error
+        issues: []
+      type: object
+      properties:
+        message:
+          description: The error message
+          example: Internal server error
+          type: string
+        code:
+          description: The error code
+          example: INTERNAL_SERVER_ERROR
+          type: string
+        issues:
+          description: An array of issues that were responsible for the error
+          example: []
+          type: array
+          items:
+            type: object
+            properties:
+              message:
+                type: string
+            required:
+            - message
+            additionalProperties: false
+      required:
+      - message
+      - code
+      additionalProperties: false
+    error.BAD_REQUEST:
+      title: Invalid input data error (400)
+      description: The error information
+      example:
+        code: BAD_REQUEST
+        message: Invalid input data
+        issues: []
+      type: object
+      properties:
+        message:
+          description: The error message
+          example: Invalid input data
+          type: string
+        code:
+          description: The error code
+          example: BAD_REQUEST
+          type: string
+        issues:
+          description: An array of issues that were responsible for the error
+          example: []
+          type: array
+          items:
+            type: object
+            properties:
+              message:
+                type: string
+            required:
+            - message
+            additionalProperties: false
+      required:
+      - message
+      - code
+      additionalProperties: false
+    error.NOT_FOUND:
+      title: Not found error (404)
+      description: The error information
+      example:
+        code: NOT_FOUND
+        message: Not found
+        issues: []
+      type: object
+      properties:
+        message:
+          description: The error message
+          example: Not found
+          type: string
+        code:
+          description: The error code
+          example: NOT_FOUND
+          type: string
+        issues:
+          description: An array of issues that were responsible for the error
+          example: []
+          type: array
+          items:
+            type: object
+            properties:
+              message:
+                type: string
+            required:
+            - message
+            additionalProperties: false
+      required:
+      - message
+      - code
+      additionalProperties: false
+    error.FORBIDDEN:
+      title: Insufficient access error (403)
+      description: The error information
+      example:
+        code: FORBIDDEN
+        message: Insufficient access
+        issues: []
+      type: object
+      properties:
+        message:
+          description: The error message
+          example: Insufficient access
+          type: string
+        code:
+          description: The error code
+          example: FORBIDDEN
+          type: string
+        issues:
+          description: An array of issues that were responsible for the error
+          example: []
+          type: array
+          items:
+            type: object
+            properties:
+              message:
+                type: string
+            required:
+            - message
+            additionalProperties: false
+      required:
+      - message
+      - code
+      additionalProperties: false
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+x-apis-io-provenance:
+  assembled: true
+  date: '2026-08-29'
+  method: searched
+  note: 'NOT a single verbatim download. Stream.Security publishes its OpenAPI as PER-OPERATION fragments embedded in its ReadMe-hosted reference pages: each https://docs.streamsec.io/reference/<operationId>.md carries a ''# OpenAPI definition'' block containing a complete OpenAPI 3.1.0 document for that one operation. 44 reference pages were fetched (all HTTP 200) on 2026-08-29; 34 contained an OpenAPI fragment and were merged on paths and components. Every path, operation, parameter, schema and response below is the provider''s own published text, unmodified. Only the union is ours. The consolidated spec is not downloadable from ReadMe as one file - /openapi.json, /openapi.yaml and the /branches/1.0/apis/*.json paths return 404 or 429.'
+  sources:
+  - https://docs.streamsec.io/reference/
+  - https://docs.streamsec.io/llms.txt
+  fragments_merged: 34
+  ownership_check: Confirmed. info.title 'Stream Security API'; servers[] https://{app}.streamsec.io/openapi. streamsec.io is Stream.Security's own operational domain - app.streamsec.io is the product console named as 'YOUR STREAM SECURITY DOMAIN URL' in the provider's MCP setup docs, and docs.streamsec.io is the documentation host. The streamsec.io domain, rather than stream.security, is the pre-rename Lightlytics-era infrastructure the company still runs its product on.

@@ -1,0 +1,620 @@
+openapi: 3.2.0
+info:
+  title: Stream Security Config Changes API
+  description: Stream Security API for managing security rules, integrations, AI interactions, and more.
+  version: 1.0.0
+servers:
+- url: https://{app}.streamsec.io/openapi
+tags:
+- name: Config Changes
+paths:
+  /config-changes/{id}:
+    get:
+      operationId: configChanges-details
+      summary: Get Configuration Change Details
+      description: 'Retrieves the full details of a specific configuration change by its unique ID, including associated violations and attack paths.
+
+
+        Configuration changes are write audit events analyzed for security impact, such as internet exposure, privilege escalation, or new database access.
+
+
+        Use this endpoint to investigate the change, assess its risk, and understand potential exploitation paths.'
+      tags:
+      - Config Changes
+      security:
+      - BearerAuth: []
+      parameters:
+      - in: header
+        name: workspace
+        schema:
+          description: Workspace ID
+          type: string
+        description: Workspace ID
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  details:
+                    type: object
+                    properties:
+                      _id:
+                        type: string
+                      severity:
+                        type: number
+                      event_name:
+                        type: string
+                      timestamp:
+                        type: string
+                      source:
+                        type: object
+                        properties:
+                          type:
+                            type: string
+                          metadata:
+                            type: object
+                            propertyNames:
+                              type: string
+                            additionalProperties: {}
+                        additionalProperties: false
+                      sub_events:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            _id:
+                              type: string
+                            is_base:
+                              type: boolean
+                            severity:
+                              type: number
+                            action_type:
+                              type: string
+                            cloud_provider:
+                              type: string
+                            cloud_source_ip:
+                              type: string
+                            cloud_user_arn:
+                              type: string
+                            account_id:
+                              type: string
+                            region:
+                              type: string
+                            resource_blocks:
+                              type: array
+                              items:
+                                type: string
+                            resource_ids:
+                              type: array
+                              items:
+                                type: string
+                            entities:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  id:
+                                    type: string
+                                  type:
+                                    type: string
+                                required:
+                                - id
+                                additionalProperties: false
+                            config_changes:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  resource_id:
+                                    type: string
+                                  before: {}
+                                  after: {}
+                                required:
+                                - resource_id
+                                - before
+                                - after
+                                additionalProperties: false
+                            user_agent:
+                              type: string
+                            comment:
+                              type: string
+                            impact_types:
+                              type: array
+                              items:
+                                type: string
+                            hidden:
+                              type: boolean
+                          required:
+                          - _id
+                          additionalProperties: false
+                      impact_types:
+                        type: array
+                        items:
+                          type: string
+                      account_ids:
+                        type: array
+                        items:
+                          type: string
+                      violations_by_violated_rules_severity:
+                        type: object
+                        propertyNames:
+                          type: string
+                        additionalProperties:
+                          type: number
+                      raw_event: {}
+                    required:
+                    - _id
+                    additionalProperties: false
+                  risks:
+                    type: object
+                    properties:
+                      violations:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            name:
+                              type: string
+                            description:
+                              type: string
+                            severity:
+                              type: number
+                          required:
+                          - id
+                          additionalProperties: false
+                      attackPaths:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            name:
+                              type: string
+                            description:
+                              type: string
+                            severity:
+                              type: number
+                            finding_types:
+                              type: array
+                              items:
+                                type: string
+                          required:
+                          - id
+                          additionalProperties: false
+                    required:
+                    - violations
+                    - attackPaths
+                    additionalProperties: false
+                required:
+                - details
+                - risks
+                additionalProperties: false
+        '400':
+          description: Invalid input data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.BAD_REQUEST'
+        '401':
+          description: Authorization not provided
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.UNAUTHORIZED'
+        '403':
+          description: Insufficient access
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.FORBIDDEN'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.NOT_FOUND'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.INTERNAL_SERVER_ERROR'
+  /config-changes:
+    get:
+      operationId: configChanges-list
+      summary: Get Configuration Changes
+      description: 'Retrieves recent configuration changes -write audit events analyzed for security impact, such as internet exposure, privilege escalation, or new database access.
+
+
+        The response includes what was changed, its severity and time, affected resources, related user and network details, along with any linked events and raw data.
+
+
+        Use this endpoint to investigate recent changes to understand their security implications and identify potential risks.'
+      tags:
+      - Config Changes
+      security:
+      - BearerAuth: []
+      parameters:
+      - in: header
+        name: workspace
+        schema:
+          description: Workspace ID
+          type: string
+        description: Workspace ID
+      - in: query
+        name: resource_ids
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: resource_type
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: cloud_user_arn
+        schema:
+          type: string
+      - in: query
+        name: account_id
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: from_timestamp
+        schema:
+          type: string
+          format: date-time
+          pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
+      - in: query
+        name: to_timestamp
+        schema:
+          type: string
+          format: date-time
+          pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
+      - in: query
+        name: event_name
+        schema:
+          type: string
+      - in: query
+        name: region
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: action_type
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: cloud_source_ip
+        schema:
+          type: string
+      - in: query
+        name: user_agent
+        schema:
+          type: string
+      - in: query
+        name: severity
+        schema:
+          type: array
+          items:
+            type: number
+      - in: query
+        name: pageIndex
+        schema:
+          description: The 0-based index of the page to retrieve.
+          default: 0
+          type: integer
+          minimum: 0
+          maximum: 9007199254740991
+      - in: query
+        name: pageSize
+        schema:
+          description: The number of items to retrieve per page.
+          default: 10
+          type: integer
+          minimum: 1
+          maximum: 100
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        _id:
+                          type: string
+                        severity:
+                          type: number
+                        event_name:
+                          type: string
+                        timestamp:
+                          type: string
+                        impact_types:
+                          type: array
+                          items:
+                            type: string
+                        account_ids:
+                          type: array
+                          items:
+                            type: string
+                        violations_by_violated_rules_severity:
+                          type: object
+                          propertyNames:
+                            type: string
+                          additionalProperties:
+                            type: number
+                        source_type:
+                          type: string
+                        resource_ids:
+                          type: array
+                          items:
+                            type: string
+                        cloud_user_arn:
+                          type: array
+                          items:
+                            type: string
+                        cloud_source_ip:
+                          type: array
+                          items:
+                            type: string
+                        resource_type:
+                          type: array
+                          items:
+                            type: string
+                        action_type:
+                          type: array
+                          items:
+                            type: string
+                        region:
+                          type: array
+                          items:
+                            type: string
+                        user_agent:
+                          type: array
+                          items:
+                            type: string
+                      required:
+                      - _id
+                      additionalProperties: false
+                  total_count:
+                    type: number
+                required:
+                - results
+                - total_count
+                additionalProperties: false
+        '400':
+          description: Invalid input data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.BAD_REQUEST'
+        '401':
+          description: Authorization not provided
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.UNAUTHORIZED'
+        '403':
+          description: Insufficient access
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.FORBIDDEN'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.NOT_FOUND'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error.INTERNAL_SERVER_ERROR'
+components:
+  schemas:
+    error.UNAUTHORIZED:
+      title: Authorization not provided error (401)
+      description: The error information
+      example:
+        code: UNAUTHORIZED
+        message: Authorization not provided
+        issues: []
+      type: object
+      properties:
+        message:
+          description: The error message
+          example: Authorization not provided
+          type: string
+        code:
+          description: The error code
+          example: UNAUTHORIZED
+          type: string
+        issues:
+          description: An array of issues that were responsible for the error
+          example: []
+          type: array
+          items:
+            type: object
+            properties:
+              message:
+                type: string
+            required:
+            - message
+            additionalProperties: false
+      required:
+      - message
+      - code
+      additionalProperties: false
+    error.INTERNAL_SERVER_ERROR:
+      title: Internal server error error (500)
+      description: The error information
+      example:
+        code: INTERNAL_SERVER_ERROR
+        message: Internal server error
+        issues: []
+      type: object
+      properties:
+        message:
+          description: The error message
+          example: Internal server error
+          type: string
+        code:
+          description: The error code
+          example: INTERNAL_SERVER_ERROR
+          type: string
+        issues:
+          description: An array of issues that were responsible for the error
+          example: []
+          type: array
+          items:
+            type: object
+            properties:
+              message:
+                type: string
+            required:
+            - message
+            additionalProperties: false
+      required:
+      - message
+      - code
+      additionalProperties: false
+    error.BAD_REQUEST:
+      title: Invalid input data error (400)
+      description: The error information
+      example:
+        code: BAD_REQUEST
+        message: Invalid input data
+        issues: []
+      type: object
+      properties:
+        message:
+          description: The error message
+          example: Invalid input data
+          type: string
+        code:
+          description: The error code
+          example: BAD_REQUEST
+          type: string
+        issues:
+          description: An array of issues that were responsible for the error
+          example: []
+          type: array
+          items:
+            type: object
+            properties:
+              message:
+                type: string
+            required:
+            - message
+            additionalProperties: false
+      required:
+      - message
+      - code
+      additionalProperties: false
+    error.NOT_FOUND:
+      title: Not found error (404)
+      description: The error information
+      example:
+        code: NOT_FOUND
+        message: Not found
+        issues: []
+      type: object
+      properties:
+        message:
+          description: The error message
+          example: Not found
+          type: string
+        code:
+          description: The error code
+          example: NOT_FOUND
+          type: string
+        issues:
+          description: An array of issues that were responsible for the error
+          example: []
+          type: array
+          items:
+            type: object
+            properties:
+              message:
+                type: string
+            required:
+            - message
+            additionalProperties: false
+      required:
+      - message
+      - code
+      additionalProperties: false
+    error.FORBIDDEN:
+      title: Insufficient access error (403)
+      description: The error information
+      example:
+        code: FORBIDDEN
+        message: Insufficient access
+        issues: []
+      type: object
+      properties:
+        message:
+          description: The error message
+          example: Insufficient access
+          type: string
+        code:
+          description: The error code
+          example: FORBIDDEN
+          type: string
+        issues:
+          description: An array of issues that were responsible for the error
+          example: []
+          type: array
+          items:
+            type: object
+            properties:
+              message:
+                type: string
+            required:
+            - message
+            additionalProperties: false
+      required:
+      - message
+      - code
+      additionalProperties: false
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+x-apis-io-provenance:
+  assembled: true
+  date: '2026-08-29'
+  method: searched
+  note: 'NOT a single verbatim download. Stream.Security publishes its OpenAPI as PER-OPERATION fragments embedded in its ReadMe-hosted reference pages: each https://docs.streamsec.io/reference/<operationId>.md carries a ''# OpenAPI definition'' block containing a complete OpenAPI 3.1.0 document for that one operation. 44 reference pages were fetched (all HTTP 200) on 2026-08-29; 34 contained an OpenAPI fragment and were merged on paths and components. Every path, operation, parameter, schema and response below is the provider''s own published text, unmodified. Only the union is ours. The consolidated spec is not downloadable from ReadMe as one file - /openapi.json, /openapi.yaml and the /branches/1.0/apis/*.json paths return 404 or 429.'
+  sources:
+  - https://docs.streamsec.io/reference/
+  - https://docs.streamsec.io/llms.txt
+  fragments_merged: 34
+  ownership_check: Confirmed. info.title 'Stream Security API'; servers[] https://{app}.streamsec.io/openapi. streamsec.io is Stream.Security's own operational domain - app.streamsec.io is the product console named as 'YOUR STREAM SECURITY DOMAIN URL' in the provider's MCP setup docs, and docs.streamsec.io is the documentation host. The streamsec.io domain, rather than stream.security, is the pre-rename Lightlytics-era infrastructure the company still runs its product on.
