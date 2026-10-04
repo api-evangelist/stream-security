@@ -1,0 +1,70 @@
+slug: stream-security
+provider: Stream.Security
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 6
+edges:
+- tag: Threat Detection
+  spec_file: stream-security-threat-detection-api-openapi.yml
+  capability_id: BC-620.30
+  capability_id_l1: BC-620
+  capability_name: Threat Detection & Response Management
+  confidence: 0.92
+  evidence: PUT /detections/status  detections-setStatus  Update Detection Status
+  reason: Listing detections, triaging status and commenting with AI summaries is security detection and
+    incident response workflow on a CDR platform.
+- tag: Vulnerabilities
+  spec_file: stream-security-vulnerabilities-api-openapi.yml
+  capability_id: BC-620.40
+  capability_id_l1: BC-620
+  capability_name: Vulnerability Management
+  confidence: 0.9
+  evidence: GET /cve  cve-listCves  List CVEs with filtering, sorting, and pagination; GET /cve/resources  List
+    resources affected by CVE(s)
+  reason: Operations enumerate CVEs and the cloud resources they affect — vulnerability identification
+    and exposure tracking, the core of Vulnerability Management under Cybersecurity.
+- tag: Attack Paths
+  spec_file: stream-security-attack-paths-api-openapi.yml
+  capability_id: BC-620
+  capability_id_l1: BC-620
+  capability_name: Cybersecurity Management
+  confidence: 0.88
+  evidence: GET /attack_paths/violations  attackPaths-violations  Get Attack Path Violations
+  reason: Exposes exploitable cloud attack paths and their violations for a CNAPP/CDR product — clearly
+    cybersecurity management; evidence does not cleanly single out vulnerability vs threat-detection sub-capability.
+- tag: Detection Rules
+  spec_file: stream-security-detection-rules-api-openapi.yml
+  capability_id: BC-620.30
+  capability_id_l1: BC-620
+  capability_name: Threat Detection & Response Management
+  confidence: 0.85
+  evidence: GET /detection_rules  detectionRules-list  Get Detection Rules
+  reason: Management of security detection rules on a cloud detection and response platform corresponds
+    to threat detection and response tooling (SIEM/SOC rule content).
+- tag: Posture Security
+  spec_file: stream-security-posture-security-api-openapi.yml
+  capability_id: BC-620
+  capability_id_l1: BC-620
+  capability_name: Cybersecurity Management
+  confidence: 0.85
+  evidence: GET /rules/rule/{rule_id}/violations  rules-ruleViolations  Get Rule Violations
+  reason: Cloud security posture rules and their violations sit squarely in cybersecurity management;
+    the evidence straddles security governance/controls and vulnerability remediation, so no L2 asserted.
+- tag: Network & Identity Logs
+  spec_file: stream-security-network-identity-logs-api-openapi.yml
+  capability_id: BC-620.30
+  capability_id_l1: BC-620
+  capability_name: Threat Detection & Response Management
+  confidence: 0.8
+  evidence: GET /network/identity-logs  network-identityLogs  Get IAM Identity Activity Logs
+  reason: IAM activity, Kubernetes audit and network traffic log retrieval are classic SOC/SIEM telemetry
+    sources used for threat detection and investigation.
