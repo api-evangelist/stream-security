@@ -422,6 +422,8 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: RateLimits
+  url: rate-limits/stream-security-rate-limits.yml
 - type: CapabilityMap
   url: capabilities/stream-security-capability-edges.yml
   name: Stream.Security Business Capability Map
