@@ -64,5 +64,137 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Stream.Security is a company surfaced via the API Evangelist harvest backlog (source: secondary-market) and added to the network as a stub for full-pipeline profiling.
-- https://www.hiive.com/securities/stream-security-stock
+Stream.Security (formerly Lightlytics) is a cloud detection and response (CDR) and real-time CNAPP vendor that builds a live model of a customer's cloud - its "CloudTwin" - by continuously ingesting configuration state and activity from AWS, Azure, GCP, Kubernetes, ECS and VMware vSphere, then correlating posture drift against runtime behaviour to expose exploitable attack paths, excessive privilege, external exposure and active threats. The platform combines cloud-native log ingestion (CloudTrail, VPC Flow Logs, Route53 DNS, ELB/ALB, WAF, Entra ID audit) with eBPF runtime agents on Kubernetes, ECS and standalone VMs, adds canary/trap decoy resources and auto-remediation, and exposes it all through a public REST API and an MCP server so security teams and agents can query inventory, detections, vulnerabilities, attack paths and posture violations programmatically.
+
+**Areas:** Company · Security · Cloud Security · Cloud Detection and Response · CNAPP · Threat Detection · Vulnerability Management · Kubernetes · Observability · DevSecOps · Artificial Intelligence
+
+## Stream.Security on APIs.io
+
+Everything profiled for Stream.Security is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/stream-security/](https://apis.io/providers/stream-security/)** — or go straight to one of the APIs or properties below.
+
+### APIs (13)
+
+- [Stream Security MCP Server](https://apis.io/apis/stream-security/stream-security-mcp-server/) — Hosted remote MCP server that lets an agent query the Stream Security CloudTwin in natural language - resource metadata, configuration changes,…
+- [Stream.Security Attack Paths API](https://apis.io/apis/stream-security/stream-security-attack-paths-api/) — The Attack Paths API from Stream.Security — 3 operation(s) for attack paths.
+- [Stream.Security Canaries API](https://apis.io/apis/stream-security/stream-security-canaries-api/) — The Canaries API from Stream.Security — 1 operation(s) for canaries.
+- [Stream.Security Config Changes API](https://apis.io/apis/stream-security/stream-security-config-changes-api/) — The Config Changes API from Stream.Security — 2 operation(s) for config changes.
+- [Stream.Security Detection Rules API](https://apis.io/apis/stream-security/stream-security-detection-rules-api/) — The Detection Rules API from Stream.Security — 2 operation(s) for detection rules.
+- [Stream.Security Integrations API](https://apis.io/apis/stream-security/stream-security-integrations-api/) — The Integrations API from Stream.Security — 2 operation(s) for integrations.
+- [Stream.Security Inventory API](https://apis.io/apis/stream-security/stream-security-inventory-api/) — The Inventory API from Stream.Security — 5 operation(s) for inventory.
+- [Stream.Security Network & Identity Logs API](https://apis.io/apis/stream-security/stream-security-network-identity-logs-api/) — The Network & Identity Logs API from Stream.Security — 3 operation(s) for network & identity logs.
+- [Stream.Security Notifications API](https://apis.io/apis/stream-security/stream-security-notifications-api/) — The Notifications API from Stream.Security — 2 operation(s) for notifications.
+- [Stream.Security Posture Security API](https://apis.io/apis/stream-security/stream-security-posture-security-api/) — The Posture Security API from Stream.Security — 3 operation(s) for posture security.
+- [Stream.Security Threat Detection API](https://apis.io/apis/stream-security/stream-security-threat-detection-api/) — The Threat Detection API from Stream.Security — 4 operation(s) for threat detection.
+- [Stream.Security Vulnerabilities API](https://apis.io/apis/stream-security/stream-security-vulnerabilities-api/) — The Vulnerabilities API from Stream.Security — 3 operation(s) for vulnerabilities.
+- [Stream.Security Workspaces API](https://apis.io/apis/stream-security/stream-security-workspaces-api/) — The Workspaces API from Stream.Security — 1 operation(s) for workspaces.
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### AsyncAPI (1)
+
+Event-driven and webhook contracts.
+
+- [Stream Security Notifications Webhooks](https://apis.io/asyncapis/stream-security/stream-security-notifications-webhooks/)
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [Stream Security MCP Server](https://apis.io/servers/stream-security/stream-security-mcp-server/)
+
+#### Overlays (1)
+
+OpenAPI overlays, including conversational phrasing for each operation.
+
+- [Stream Security Api Overlay](https://apis.io/overlays/stream-security/stream-security-api-overlay/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Stream Security Authentication](https://apis.io/security/stream-security/stream-security-authentication/)
+- [Stream Security Domain Security](https://apis.io/security/stream-security/stream-security-domain-security/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Stream Security Plans Pricing](https://apis.io/plans/stream-security/stream-security-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Stream Security Rate Limits](https://apis.io/rate-limits/stream-security/stream-security-rate-limits/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://www.stream.security/)
+- [Documentation](https://docs.streamsec.io/)
+- [Getting started](https://docs.streamsec.io/docs/onboarding)
+- [API reference](https://docs.streamsec.io/reference)
+- [Sign up](https://app.streamsec.io/)
+- [Support](https://www.stream.security/contact-us)
+- [Blog](https://www.stream.security/blog)
+- [Terms of service](https://www.stream.security/terms)
+- [Privacy policy](https://www.stream.security/privacy-policy)
+- [GitHub](https://github.com/lightlytics)
+
+## API Evangelist rating
+
+**Kin Score 39.6** — developing · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 75.0 |
+| Contract quality | 61.2 |
+| Contract governance | 4.5 |
+| Operational transparency | 10.5 |
+| Developer ergonomics | 39.9 |
+| Access clarity | 28.9 |
+
+**Agent readiness 36.2** — agent-ready
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | — |
+| Reversibility Documented | — |
+| MCP Server | verified |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | verified |
+| OpenAPI Examples | — |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | derived (partial credit) |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | partial |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 27.3** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/stream-security/](https://apis.io/providers/stream-security/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Stream.Security: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/stream-security/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
